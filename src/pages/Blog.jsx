@@ -1,7 +1,7 @@
 import React from "react";
 import Navigation from "../components/Navigation";
 
-export default function About() {
+export default function Blog() {
   return (
     <div className="p-2.5 bg-black h-full text-white flex flex-col flex-1">
       <Navigation />

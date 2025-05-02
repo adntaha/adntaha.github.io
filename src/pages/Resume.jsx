@@ -3,15 +3,15 @@ import Navigation from "../components/Navigation";
 
 export default function About() {
   return (
-    <div className="p-2.5 bg-black h-full text-white flex flex-col flex-1">
+    <div className="flex h-full flex-1 flex-col bg-black p-2.5 text-white">
       <Navigation />
-      <main className="grid grid-cols-3 grid-rows-2 gap-2.5 p-2.5 border-x-2 box-border border-stone-800 font-mono bg-yellow-600 grow">
-        <div className="bg-black row-start-1 col-start-1 col-span-2 row-span-2 p-5">
-          <div className="bg-black row-start-1 col-start-1 col-span-1 row-span-2">Big square</div>
-          <div className="bg-black row-start-1 col-start-2 col-span-1 row-span-1">
+      <main className="box-border grid grow grid-cols-3 grid-rows-2 gap-2.5 border-x-2 border-stone-800 bg-yellow-600 p-2.5 font-mono">
+        <div className="col-span-2 col-start-1 row-span-2 row-start-1 bg-black p-5">
+          <div className="col-span-1 col-start-1 row-span-2 row-start-1 bg-black">Big square</div>
+          <div className="col-span-1 col-start-2 row-span-1 row-start-1 bg-black">
             Small squares
           </div>
-          <div className="bg-black row-start-2 col-start-2 col-span-1 row-span-1">
+          <div className="col-span-1 col-start-2 row-span-1 row-start-2 bg-black">
             Small squares
           </div>
         </div>

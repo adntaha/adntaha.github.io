@@ -4,5 +4,8 @@
     "*.md": [
       "parcel-transformer-markdown"
     ]
-  }
+  },
+  "reporters": [
+    "parcel-reporter-static-files-copy"
+  ]
 }

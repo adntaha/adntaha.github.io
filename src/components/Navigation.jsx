@@ -1,12 +1,7 @@
+import clsx from "clsx";
 import PropTypes from "prop-types";
 import React from "react";
 import { Link } from "react-router";
-
-const clsx = (...args) =>
-  args
-    .map((a) => a.trim())
-    .filter(Boolean)
-    .join(" ");
 
 const MarqueeButton = ({ name, link }) => {
   const highlighted = link == location.pathname;
@@ -15,12 +10,12 @@ const MarqueeButton = ({ name, link }) => {
     <Link
       to={highlighted ? "/" : link}
       className={clsx(
-        "h-full w-full text-center flex flex-col justify-center",
+        "flex size-full flex-col justify-center text-center",
         highlighted
           ? "bg-yellow-600 text-black"
-          : "bg-transparent text-white hover:text-black transition-colors duration-150 ease-in-out border-2 border-stone-800",
+          : "border-2 border-stone-800 bg-transparent text-white transition-colors duration-150 ease-in-out hover:text-black",
         location.pathname == "/" || highlighted
-          ? "hover:bg-yellow-600 border-t-2 border-x-2 border-stone-800 box-border"
+          ? "box-border border-x-2 border-t-2 border-stone-800 hover:bg-yellow-600"
           : "hover:bg-yellow-800"
       )}
     >
@@ -38,7 +33,7 @@ const Navigation = () => {
   return (
     <header>
       <div className="overflow-hidden whitespace-nowrap">
-        <div className="font-mono animate-marquee inline-grid grid-cols-5 grid-rows-1 gap-2.5 w-full h-15 relative">
+        <div className="relative inline-grid w-full grid-cols-5 grid-rows-1 h-15 gap-2.5 font-mono">
           <MarqueeButton name="About" link="/" />
           <MarqueeButton name="Blog" link="/blog" variable />
           <MarqueeButton name="Projects" link="/projects" />

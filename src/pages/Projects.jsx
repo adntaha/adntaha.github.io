@@ -1,23 +1,27 @@
-import React from "react";
+import clsx from "clsx";
 import Navigation from "../components/Navigation";
+import React from "react";
+
+const projects = []
 
 export default function About() {
   return (
-    <div className="p-2.5 bg-black h-full text-white flex flex-col flex-1">
+    <div className="flex h-full flex-1 flex-col bg-black p-2.5 text-white">
       <Navigation />
-      <main className="grid grid-cols-3 grid-rows-2 gap-2.5 p-2.5 border-x-2 box-border border-stone-800 font-mono bg-yellow-600 grow">
-        <div className="bg-black row-start-1 col-start-1 col-span-2 row-span-2 p-5">
-          <div className="bg-black row-start-1 col-start-1 col-span-1 row-span-2">Big square</div>
-          <div className="bg-black row-start-1 col-start-2 col-span-1 row-span-1">
-            Small squares
-          </div>
-          <div className="bg-black row-start-2 col-start-2 col-span-1 row-span-1">
-            Small squares
-          </div>
-        </div>
-        <footer>Made by Aidan Taha.</footer>
+      <main className="box-border grid grow grid-cols-3 grid-rows-1 gap-2.5 border-x-2 border-stone-800 bg-yellow-600 p-2.5 font-mono">
+        {projects.map((project, index) => {
+          const rest = index % 3;
+          return (
+            <div key={index} className={clsx(
+              `row-start-${(index-rest)/3+1} col-start-${rest+1}`,
+              "col-span-1 row-span-1 bg-black p-5"
+            )}>
+              {project}
+            </div>
+          );
+        })}
       </main>
+      <footer className="mx-auto my-5">Made by Aidan Taha.</footer>
     </div>
-
   );
 }

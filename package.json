@@ -6,15 +6,16 @@
     "packageExports": true
   },
   "scripts": {
-    "start": "parcel",
-    "watch": "parcel watch",
-    "build": "parcel build",
+    "clean-dist": "rm -rf dist && mkdir dist",
+    "copy-assets": "cp -vR src/assets dist/assets",
+    "init": "npm run clean-dist && npm run copy-assets",
+    "start": "npm run init && parcel",
+    "build": "npm run init && parcel build",
     "lint": "eslint"
   },
   "dependencies": {
     "clsx": "^2.1.1",
     "fecha": "^4.2.3",
-    "next": "^15.3.1",
     "prop-types": "^15.8.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -32,7 +33,6 @@
     "eslint-plugin-react": "^7.37.5",
     "globals": "^16.0.0",
     "parcel": "^2.14.4",
-    "parcel-reporter-static-files-copy": "^1.5.3",
     "parcel-transformer-markdown": "^3.0.1",
     "tailwindcss": "^4.1.4"
   }

@@ -35,5 +35,8 @@
     "parcel": "^2.14.4",
     "parcel-transformer-markdown": "^3.0.1",
     "tailwindcss": "^4.1.4"
+  },
+  "optionalDependencies": {
+    "@parcel/watcher-linux-x64-glibc": "^2.5.1"
   }
 }

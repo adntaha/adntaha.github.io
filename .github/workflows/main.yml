@@ -1,3 +1,8 @@
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 on:
   push:
     branches:
@@ -37,6 +42,7 @@ jobs:
   deploy:
     name: deploy website on github pages
     runs-on: ubuntu-latest
+    needs: build
 
     steps:
     - name: Deploy GitHub Pages site

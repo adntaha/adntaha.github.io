@@ -1,0 +1,45 @@
+on:
+  push:
+    branches:
+    - main
+    workflow_dispatch:
+
+jobs:
+  build:
+    name: build website
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4.2.2
+
+    - name: Setup Node
+      uses: actions/setup-node@v4.2.0
+      with:
+        node-version: '20.x'
+
+    - name: Install packages
+      run: npm ci
+
+    - name: Build website
+      run: |
+        npm run build
+        npm run copy-assets
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.6.2
+      with:
+        name: website-dist
+        path: dist/
+        retention-days: 1
+        overwrite: true
+
+  deploy:
+    name: deploy website on github pages
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy GitHub Pages site
+      uses: actions/deploy-pages@v4.0.5
+      with:
+        artifact_name: website-dist

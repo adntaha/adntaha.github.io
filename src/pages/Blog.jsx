@@ -17,7 +17,7 @@ export default function Blog() {
                 <Link to={"/blog/" + post.route} className="flex flex-row justify-between border-2 border-stone-800 p-2.5">
                   <h3 className="font-semibold">
                     {post.title}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" height="16" width="16" fill="white" className="-mt-0.5 ml-2 inline">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" height={16} width={16} fill="white" className="-mt-0.5 ml-2 inline">
                       <path d="M228-110q-49.7 0-83.85-34.15Q110-178.3 110-228v-504q0-49.7 34.15-83.85Q178.3-850 228-850h252v118H228v504h504v-252h118v252q0 49.7-34.15 83.85Q781.7-110 732-110H228Zm190-226-82-82 314-314h-74v-118h274v274H732v-74L418-336Z" />
                     </svg>
                   </h3>

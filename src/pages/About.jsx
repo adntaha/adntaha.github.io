@@ -9,8 +9,8 @@ export default function About() {
   return (
     <Layout className="grid grid-cols-3 grid-rows-2">
       <div className="col-span-2 col-start-1 row-span-2 row-start-1 bg-black p-5">
-        <h1 className="my-auto text-4xl">
-          Hi. I&apos;m Aidan.
+        <h1 className="my-auto text-4xl mb-2">
+          hi. i&apos;m aidan.
         </h1>
         I enjoy tinkering with <Link to="/projects">things</Link>.<br/><br/>
         I&apos;m currently working on:

@@ -22,12 +22,13 @@ function parseRelativeDate(date) {
   }
 }
 
+// TODO: image
 export const BlogCover = ({ title, date, _image, link }) => {
   return <Link to={link}>
     <div className="flex shrink flex-col m-5 border-stone-800 border-2">
       <div className="h-48 w-72"></div> {/* image */}
       <div className="bg-neutral-500 p-2.5">
-      <h3 className="font-bold">{title}</h3>
+      <h1 className="font-bold">{title}</h1>
       <footer>{parseRelativeDate(date)}</footer></div>
     </div>
   </Link>
@@ -40,7 +41,7 @@ BlogCover.propTypes = {
   link: PropTypes.string
 };
 
-const BlogPost = ({ title, date, image, content }) => {
+export default function BlogPost({ title, date, image, content }) {
   return <article>
     <h2>{title}</h2>
     <img src={image} />
@@ -57,5 +58,3 @@ BlogPost.propTypes = {
   image: PropTypes.string,
   content: PropTypes.string
 };
-
-export default BlogPost;

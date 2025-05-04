@@ -11,11 +11,11 @@ export default function Layout(props) {
         {props.children}
       </main>
       <footer className="mx-auto my-5">Made by Aidan Taha.</footer>
-  </div>
+    </div>
   );
 }
 
 Layout.propTypes = {
   children: PropTypes.node,
-  className: PropTypes.string // grid-cols-3 grid-rows-2 MINIMALLY
+  className: PropTypes.string
 };

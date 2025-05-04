@@ -10,7 +10,7 @@ const MarqueeButton = ({ name, link }) => {
     <Link
       to={highlighted ? "/" : link}
       className={clsx(
-        "flex size-full flex-col justify-center text-center",
+        "flex size-full flex-row items-center justify-center text-center",
         highlighted
           ? "bg-yellow-600 text-black"
           : "border-2 border-stone-800 bg-transparent text-white transition-colors duration-150 ease-in-out hover:text-black",
@@ -20,6 +20,14 @@ const MarqueeButton = ({ name, link }) => {
       )}
     >
       {name}
+      {
+        // external
+        !link.startsWith("/")
+          ? <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" height="16" width="16" fill="currentColor" className="ml-2 mt-0.5 inline">
+              <path d="M228-110q-49.7 0-83.85-34.15Q110-178.3 110-228v-504q0-49.7 34.15-83.85Q178.3-850 228-850h252v118H228v504h504v-252h118v252q0 49.7-34.15 83.85Q781.7-110 732-110H228Zm190-226-82-82 314-314h-74v-118h274v274H732v-74L418-336Z" />
+            </svg>
+          : null
+      }
     </Link>
   );
 };
@@ -37,7 +45,7 @@ const Navigation = () => {
           <MarqueeButton name="About" link="/" />
           <MarqueeButton name="Blog" link="/blog" variable />
           <MarqueeButton name="Projects" link="/projects" />
-          <MarqueeButton name="Resume" link="/resume" />
+          <MarqueeButton name="Resume" link="https://drive.google.com/file/d/1-NLNdKKA595L2ugI_tt8hfYSvcjan2sv/view?usp=sharing" />
           <MarqueeButton name="Contact" link="/contact" />
         </div>
       </div>

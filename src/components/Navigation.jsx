@@ -1,14 +1,15 @@
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import React from "preact";
-import { Link } from "react-router";
+import { Link } from "../utils";
 
 const MarqueeButton = ({ name, link }) => {
   const highlighted = link === location.pathname;
 
   return (
     <Link
-      to={highlighted ? "/" : link}
+      href={highlighted ? "/" : link}
+      
       className={clsx(
         "flex size-full flex-row items-center justify-center text-center border-2 border-(--border)",
         highlighted

@@ -1,5 +1,5 @@
 import React from "preact";
-import { Link } from "react-router";
+import { Link } from "../utils";
 import { parse } from "fecha";
 
 import Layout from "../components/Layout";
@@ -14,7 +14,7 @@ export default function Blog() {
             .sort((a, b) => parse(b.date, "MMMM Do YYYY") - parse(a.date, "MMMM Do YYYY"))
             .map((post, index) => (
               <li key={index}>
-                <Link to={"/blog/" + post.route} className="flex flex-row justify-between border-2 border-(--border) p-2.5">
+                <Link href={"/blog/" + post.route} className="flex flex-row justify-between border-2 border-(--border) p-2.5">
                   <h3 className="font-semibold">
                     {post.title}
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" height={16} width={16} fill="currentColor" className="-mt-0.5 ml-2 inline">

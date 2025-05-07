@@ -1,5 +1,5 @@
 import React from "preact";
-import { Link } from "react-router";
+import { Link } from "../utils";
 import Layout from "../components/Layout";
 import { BlogCover } from "../components/BlogPost";
 import Posts from "../posts/posts";
@@ -12,7 +12,7 @@ export default function About() {
         <h1 className="my-auto text-4xl mb-2">
           hi. i&apos;m aidan.
         </h1>
-        I enjoy tinkering with <Link to="/projects">things</Link>.<br/><br/>
+        I enjoy tinkering with <Link href="/projects">things</Link>.<br/><br/>
         I&apos;m currently working on:
         <ul className="list-inside list-disc">
           <li className="after:content-[';'] last:after:content-['.']">making people passionate about computers</li>
@@ -21,7 +21,7 @@ export default function About() {
             {/* <img className="inline w-6 h-6 -mt-1 bg-white rounded-md p-0.5" src="/assets/images/task_kitchen_dark.png" /> */}
             <img className="inline w-6 h-6 -mt-1 rounded-md" src="/assets/images/task_kitchen_light.png" />
             {" "}
-            <Link to="https://task.kitchen">Task Kitchen</Link>
+            <Link href="https://task.kitchen">Task Kitchen</Link>
           </li>
         </ul>
       </div>

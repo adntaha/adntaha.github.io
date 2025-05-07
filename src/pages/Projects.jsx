@@ -1,5 +1,5 @@
 import Layout from "../components/Layout";
-import { Link } from "react-router";
+import { Link } from "../utils";
 import React from "preact";
 
 const projects = [
@@ -34,7 +34,7 @@ export default function Projects() {
             <img src={project.image} alt={project.title} />
             <div className="bg-(--accent) text-(--text-inversed) p-2.5">
               <div className="flex flex-row justify-between">
-                <Link to={project.link}>
+                <Link href={project.link}>
                   <h2 className="font-bold text-2xl">
                     {project.title}
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" height={24} width={24} fill="currentColor" className="-mt-0.5 ml-2 inline">

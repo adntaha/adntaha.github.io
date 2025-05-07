@@ -17,13 +17,12 @@
     "clsx": "^2.1.1",
     "fecha": "^4.2.3",
     "preact": "^10.26.6",
+    "preact-markdown": "^2.1.0",
     "prop-types": "^15.8.1",
-    "react-markdown": "^10.1.0",
-    "react-router": "^7.5.2",
-    "react-router-dom": "^7.5.2",
     "rehype-mathjax": "^7.1.0",
     "remark-gfm": "^4.0.1",
-    "remark-math": "^6.0.0"
+    "remark-math": "^6.0.0",
+    "wouter-preact": "^3.7.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.1",
@@ -36,6 +35,7 @@
     "tailwindcss": "^4.1.4"
   },
   "optionalDependencies": {
+    "@parcel/watcher-darwin-x64": "^2.5.1",
     "@parcel/watcher-linux-x64-glibc": "^2.5.1"
   }
 }

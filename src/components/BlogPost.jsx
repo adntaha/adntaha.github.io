@@ -1,11 +1,12 @@
 import React from "preact";
 import PropTypes from "prop-types";
-import Markdown from "react-markdown";
+import Markdown from "preact-markdown";
 import remarkGfm from "remark-gfm"
 import rehypeMathjax from "rehype-mathjax/browser"
 import remarkMath from "remark-math"
-import { Link } from "react-router";
+import { Link } from "../utils";
 import { parse } from "fecha";
+import Posts from "../posts/posts";
 
 function parseRelativeDate(date) {
   let today = new Date();
@@ -24,7 +25,7 @@ function parseRelativeDate(date) {
 
 // TODO: image
 export const BlogCover = ({ title, date, _image, link }) => {
-  return <Link to={link}>
+  return <Link href={link}>
     <div className="flex shrink flex-col m-5 border-(--border-inversed) border-2">
       <div className="h-64 w-full bg-(--background)"></div> {/* image */}
       <div className="bg-(--accent) text-(--text-inversed) p-2.5">
@@ -41,20 +42,19 @@ BlogCover.propTypes = {
   link: PropTypes.string
 };
 
-export default function BlogPost({ title, date, image, content }) {
+export default function BlogPost({ params }) {
+  const { title, date, image, content } = Posts.find((post) => post.route === params.route);
+
   return <article>
     <h2>{title}</h2>
     <img src={image} />
     <span>{date.toUpperCase()}.</span>
-    <Markdown remarkPlugins={[[remarkGfm, {singleTilde: false}], remarkMath]} rehypePlugins={[rehypeMathjax]}>
-      {content}
-    </Markdown>
+    <Markdown markdown={content} remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeMathjax]} />
   </article>
 }
 
 BlogPost.propTypes = {
-  title: PropTypes.string,
-  date: PropTypes.string,
-  image: PropTypes.string,
-  content: PropTypes.string
+  params: {
+    route: PropTypes.string
+  }
 };

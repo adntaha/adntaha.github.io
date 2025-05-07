@@ -1,9 +1,9 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import Markdown from "react-markdown";
-import remarkGfm from 'remark-gfm'
-import rehypeMathjax from 'rehype-mathjax/browser'
-import remarkMath from 'remark-math'
+import remarkGfm from "remark-gfm"
+import rehypeMathjax from "rehype-mathjax/browser"
+import remarkMath from "remark-math"
 import { Link } from "react-router";
 import { parse } from "fecha";
 
@@ -25,9 +25,9 @@ function parseRelativeDate(date) {
 // TODO: image
 export const BlogCover = ({ title, date, _image, link }) => {
   return <Link to={link}>
-    <div className="flex shrink flex-col m-5 border-stone-800 border-2">
-      <div className="h-48 w-72"></div> {/* image */}
-      <div className="bg-neutral-500 p-2.5">
+    <div className="flex shrink flex-col m-5 border-(--border-inversed) border-2">
+      <div className="h-64 w-full bg-(--background)"></div> {/* image */}
+      <div className="bg-(--accent) text-(--text-inversed) p-2.5">
       <h1 className="font-bold">{title}</h1>
       <footer>{parseRelativeDate(date)}</footer></div>
     </div>

@@ -10,13 +10,10 @@ const MarqueeButton = ({ name, link }) => {
     <Link
       to={highlighted ? "/" : link}
       className={clsx(
-        "flex size-full flex-row items-center justify-center text-center",
+        "flex size-full flex-row items-center justify-center text-center border-2 border-(--border)",
         highlighted
-          ? "bg-yellow-600 text-black"
-          : "border-2 border-stone-800 bg-transparent text-white transition-colors duration-150 ease-in-out hover:text-black",
-        location.pathname === "/" || highlighted
-          ? "box-border border-x-2 border-t-2 border-stone-800 hover:bg-yellow-600"
-          : "hover:bg-yellow-800"
+          ? "text-(--text-inversed) bg-(--foreground) border-b-0"
+          : "text-(--text) transition-colors duration-150 ease-in-out hover:text-(--text-inversed) hover:bg-(--foreground-hover)",
       )}
     >
       {name}

@@ -30,19 +30,19 @@ export default function Projects() {
     <Layout className="grid grid-cols-3 grid-rows-[min-content]">
       {projects.map((project, index) => {
         return (
-          <div key={index} className="border-stone-800 border-2 box-border">
+          <div key={index} className="border-(--border-inversed) border-2 box-border">
             <img src={project.image} alt={project.title} />
-            <div className="bg-neutral-500 p-2.5">
+            <div className="bg-(--accent) text-(--text-inversed) p-2.5">
               <div className="flex flex-row justify-between">
                 <Link to={project.link}>
                   <h2 className="font-bold text-2xl">
                     {project.title}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" height={24} width={24} fill="white" className="-mt-0.5 ml-2 inline">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" height={24} width={24} fill="currentColor" className="-mt-0.5 ml-2 inline">
                       <path d="M228-110q-49.7 0-83.85-34.15Q110-178.3 110-228v-504q0-49.7 34.15-83.85Q178.3-850 228-850h252v118H228v504h504v-252h118v252q0 49.7-34.15 83.85Q781.7-110 732-110H228Zm190-226-82-82 314-314h-74v-118h274v274H732v-74L418-336Z" />
                     </svg>
                   </h2>
                 </Link>
-                <p className="flex flex-row-reverse gap-2.5 items-center flex-wrap text-white">
+                <p className="flex flex-row-reverse gap-2.5 items-center flex-wrap">
                   {project.tools.map((tool) => (
                   <svg key={tool} xmlns="http://www.w3.org/2000/svg" height={24} width={24} viewBox="0 -960 960 960" fill="currentColor">
                       <path d={iconPath(tool)} />

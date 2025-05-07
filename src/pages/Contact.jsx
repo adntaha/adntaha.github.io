@@ -7,11 +7,11 @@ function copyOnClick(e) {
 
   if (!text.startsWith("@")) {
     navigator.clipboard.writeText(text);
-    target.innerHTML = "<span class=\"text-neutral-400\">copied!</span>";
+    target.innerHTML = "<span class=\"text-(--accent)\">copied!</span>";
   } else {
     text = text.slice(1);
     navigator.clipboard.writeText(text);
-    target.innerHTML = "<span class=\"text-neutral-400\">copied!</span>";
+    target.innerHTML = "<span class=\"text-(--accent)\">copied!</span>";
     text = "@" + text;
   }
 
@@ -21,7 +21,7 @@ function copyOnClick(e) {
 export default function Contact() {
   return (
     <Layout>
-      <div className="flex justify-center items-center size-full p-5 bg-black">
+      <div className="flex justify-center items-center size-full p-5 bg-(--background)">
         <div>
           heya there,<br />
           <br />

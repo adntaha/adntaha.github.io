@@ -30,6 +30,7 @@ export function useDarkMode() {
   return isDarkMode;
 }
 
+// https://github.com/molefrog/wouter/issues/158#issuecomment-759486033
 export const Link = ({ href, ...rest }) => {
   const LinkComponent = href.includes("://") ? "a" : WouterLink;
   return <LinkComponent href={href} {...rest} />;

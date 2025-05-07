@@ -1,5 +1,4 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import React, { render } from 'preact';
 import { BrowserRouter, Routes, Route } from "react-router";
 
 import "./globals.css";
@@ -12,9 +11,7 @@ import Contact from "./pages/Contact";
 import BlogPost from "./components/BlogPost";
 import Posts from "./posts/posts";
 
-const root = document.getElementById("app");
-
-ReactDOM.createRoot(root).render(
+render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<About />} />
@@ -37,5 +34,6 @@ ReactDOM.createRoot(root).render(
         />
       ))}
     </Routes>
-  </BrowserRouter>
+  </BrowserRouter>,
+  document.getElementById("app")
 );

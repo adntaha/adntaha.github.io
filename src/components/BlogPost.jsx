@@ -1,4 +1,4 @@
-import React from "react";
+import React from "preact";
 import PropTypes from "prop-types";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm"

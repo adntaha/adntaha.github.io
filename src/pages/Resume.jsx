@@ -1,4 +1,4 @@
-import React from "react";
+import React from "preact";
 import Layout from "../components/Layout";
 
 export default function Resume() {

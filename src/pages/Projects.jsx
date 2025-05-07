@@ -1,6 +1,6 @@
 import Layout from "../components/Layout";
 import { Link } from "react-router";
-import React from "react";
+import React from "preact";
 
 const projects = [
   {

@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import React from "react";
+import React from "preact";
 import { Link } from "react-router";
 
 const MarqueeButton = ({ name, link }) => {

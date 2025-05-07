@@ -1,4 +1,4 @@
-import React from "react";
+import React from "preact";
 import { Link } from "react-router";
 import Layout from "../components/Layout";
 import { BlogCover } from "../components/BlogPost";

@@ -1,4 +1,4 @@
-import React from "react";
+import React from "preact";
 import Navigation from "./Navigation";
 import PropTypes from "prop-types";
 import clsx from "clsx";

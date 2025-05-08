@@ -27,7 +27,7 @@ function iconPath(tool) {
 
 export default function Projects() {
   return (
-    <Layout className="grid grid-cols-3 grid-rows-[min-content]">
+    <Layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-[min-content]">
       {projects.map((project, index) => {
         return (
           <div key={index} className="border-(--border-inversed) border-2 box-border">

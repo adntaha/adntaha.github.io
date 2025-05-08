@@ -4,7 +4,7 @@ import React from "preact";
 import { Link } from "../utils";
 
 const MarqueeButton = ({ name, link }) => {
-  const highlighted = link === location.pathname;
+  const highlighted = link === location.hash.slice(1);
 
   return (
     <Link

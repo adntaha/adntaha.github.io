@@ -2,13 +2,14 @@
   "name": "adntaha-portfolio",
   "version": "0.1.0",
   "source": "src/index.html",
+  "homepage": "dist/index.html",
   "@parcel/resolver-default": {
     "packageExports": true
   },
   "scripts": {
     "clean-dist": "rm -rf dist && mkdir dist",
     "copy-assets": "cp -vR src/assets dist/assets",
-    "init": "npm run clean-dist && npm run copy-assets",
+    "init": "npm run clean-dist && npm run copy-assets && echo /* /index.html 200 > dist/_redirects",
     "start": "npm run init && parcel",
     "build": "npm run init && parcel build",
     "lint": "eslint"

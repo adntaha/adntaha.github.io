@@ -9,7 +9,6 @@ const MarqueeButton = ({ name, link }) => {
   return (
     <Link
       href={highlighted ? "/" : link}
-      
       className={clsx(
         "flex size-full flex-row items-center justify-center text-center border-2 border-(--border)",
         highlighted

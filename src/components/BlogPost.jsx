@@ -56,7 +56,7 @@ export default function BlogPost({ params: { route } }) {
 
   return (
     <Layout className="h-fit">
-      <div className="m-10 p-5 max-w-[768px] mx-auto bg-(--background) h-full">
+      <div className="m-5 p-5 max-w-[768px] mx-auto bg-(--background) h-full">
         <article>
           <h2 className="text-4xl mb-2">{title}</h2>
           {/* <img src={image} className="float-right" /> */}

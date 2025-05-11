@@ -4,11 +4,18 @@ import React from "preact";
 import { Link } from "../utils";
 
 const MarqueeButton = ({ name, link }) => {
-  const highlighted = link === (location.hash.slice(1) || "/");
+  const secondLevelLink = link !== "/" && link !== location.hash.slice(1) && location.hash.slice(1).startsWith(link);
+  const highlighted = link === "/" ? (location.hash === "" || location.hash === "#/") : location.hash.slice(1).startsWith(link);
 
   return (
     <Link
-      href={highlighted ? "/" : link}
+      href={
+        highlighted
+          ? secondLevelLink
+            ? "/" + location.hash.slice(2).split("/")[0]
+            : "/"
+          : link
+      }
       className={clsx(
         "flex size-full flex-row items-center justify-center text-center border-2 border-(--border)",
         highlighted
@@ -37,14 +44,12 @@ MarqueeButton.propTypes = {
 export default function Navigation() {
   return (
     <header>
-      <div className="overflow-hidden whitespace-nowrap">
-        <div className="relative inline-grid w-full grid-cols-5 grid-rows-1 h-15 gap-2.5 font-mono">
-          <MarqueeButton name="about" link="/" />
-          <MarqueeButton name="blog" link="/blog" variable />
-          <MarqueeButton name="projects" link="/projects" />
-          <MarqueeButton name="resume" link="https://drive.google.com/file/d/1-NLNdKKA595L2ugI_tt8hfYSvcjan2sv/view?usp=sharing" />
-          <MarqueeButton name="contact" link="/contact" />
-        </div>
+      <div className="grid grid-cols-5 h-18 gap-3 font-mono">
+        <MarqueeButton name="about" link="/" />
+        <MarqueeButton name="blog" link="/blog" variable />
+        <MarqueeButton name="projects" link="/projects" />
+        <MarqueeButton name="resume" link="https://drive.google.com/file/d/1-NLNdKKA595L2ugI_tt8hfYSvcjan2sv/view?usp=sharing" />
+        <MarqueeButton name="contact" link="/contact" />
       </div>
     </header>
   );

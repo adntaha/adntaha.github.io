@@ -1,15 +1,31 @@
 import FirstBlogPost from "./sample.md";
-// import FirstBlogPostImage from "../assets/img/post_1.png";
 
-const Posts = [
-  {
-    route: "cool-blog-post",
-    title: "Sample Blog Post",
-    date: "May 6th 2025",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    content: FirstBlogPost,
-  },
-];
+const posts = [FirstBlogPost];
 
-export default Posts;
+function parseBlogPostFile(file) {
+  const lines = file.split("\n").filter(Boolean);
+  let lastMetadataLine = 0;
+  const metadata = {};
+
+  if (lines[0] !== "---") return;
+
+  for (let i = 1; i < lines.length; i++) {
+    if (lines[i] === "---") {
+      lastMetadataLine = i;
+      break;
+    }
+    const key = lines[i].split(":")[0].trim();
+    const value = lines[i].split(":")[1].trim();
+    metadata[key] = value;
+  }
+
+  metadata.content = lines.slice(lastMetadataLine + 1).join("\n");
+
+  if (!Object.prototype.hasOwnProperty.call(metadata, "image")) {
+    metadata.image = null;
+  }
+
+  return metadata;
+}
+
+export default posts.map((f) => parseBlogPostFile(f));

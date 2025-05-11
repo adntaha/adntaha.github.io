@@ -30,7 +30,7 @@ export default function About() {
           Posts
             .sort((a, b) => parse(b.date, "MMMM Do YYYY") - parse(a.date, "MMMM Do YYYY"))
             .slice(0, 2)
-            .map((post, index) => <BlogCover key={index} title={post.title} date={post.date} link={"/blog/" + post.route} />)
+            .map((post, index) => <BlogCover key={index} {...post} link={"/blog/" + post.route} />)
         }
       </div>
     </Layout>

@@ -31,7 +31,7 @@ function parseRelativeDate(date) {
 // TODO: image
 export const BlogCover = ({ title, date, image, link }) => {
   return <Link href={link}>
-    <figure className="flex shrink flex-col m-5 border-(--border-inversed) border-2">
+    <figure className="flex shrink flex-col m-5 border-(--accent) border-2">
       <div className="my-auto h-64 w-full bg-(--background)">
         <img src={image} alt={title} />
       </div>

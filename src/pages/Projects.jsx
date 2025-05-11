@@ -30,7 +30,7 @@ export default function Projects() {
     <Layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-[min-content]">
       {projects.map((project, index) => {
         return (
-          <div key={index} className="border-(--border-inversed) border-2 box-border">
+          <div key={index} className="border-(--accent) border-2 box-border">
             <img src={project.image} alt={project.title} />
             <div className="bg-(--accent) text-(--text-inversed) p-2.5">
               <div className="flex flex-row justify-between">

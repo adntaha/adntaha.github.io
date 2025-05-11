@@ -2,28 +2,21 @@
 
 :root {
   --background: #ededed;
-  --border: #d6d3d1 /* stone-300 */;
-  --border-inversed: #262626 /* neutral-800 */;
-  --accent: #262626 /* neutral-800 */;
-  --foreground: #a16207 /* yellow-700 */;
-  --foreground-hover: #ca8a04 /* yellow-600 */;
+  --border: theme(--color-stone-300) /* stone-300 */;
+  --accent: theme(--color-neutral-800) /* neutral-800 */;
+  --foreground: theme(--color-yellow-700) /* yellow-700 */;
+  --foreground-hover: theme(--color-yellow-600) /* yellow-600 */;
   --text: #0a0a0a;
   --text-inversed: #ededed;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --border: #292524 /* stone-800 */;
-    --border-inversed: #d4d4d4 /* neutral-300 */;
-    --accent: #d4d4d4 /* neutral-300 */;
-    --foreground: #ca8a04 /* yellow-600 */;
-    --foreground-hover: #854d0e /* yellow-800 */;
+    --border: theme(--color-stone-800) /* stone-800 */;
+    --accent: theme(--color-neutral-300) /* neutral-300 */;
+    --foreground: theme(--color-yellow-600) /* yellow-600 */;
+    --foreground-hover: theme(--color-yellow-800) /* yellow-800 */;
     --text: #ededed;
     --text-inversed: #0a0a0a;
   }

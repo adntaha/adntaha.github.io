@@ -21,7 +21,7 @@ function copyOnClick(e) {
 export default function Contact() {
   return (
     <Layout>
-      <div className="flex justify-center items-center size-full p-5 bg-(--background)">
+      <div className="flex justify-center items-center p-5 bg-(--background)">
         <div>
           heya there,<br />
           <br />

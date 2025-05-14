@@ -25,7 +25,7 @@ export default function About() {
           </li>
         </ul>
       </div>
-      <div className="col-span-1 col-start-3 row-span-2 row-start-1 flex flex-col bg-(--foreground)">
+      <div className="col-span-1 col-start-3 row-span-2 row-start-1 flex flex-col bg-(--foreground) rounded-xl">
         {
           Posts
             .sort((a, b) => parse(b.date, "MMMM Do YYYY") - parse(a.date, "MMMM Do YYYY"))

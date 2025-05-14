@@ -13,8 +13,8 @@ export default function Blog() {
           Posts
             .sort((a, b) => parse(b.date, "MMMM Do YYYY") - parse(a.date, "MMMM Do YYYY"))
             .map((post, index) => (
-              <li key={index}>
-                <Link href={"/blog/" + post.route} className="flex flex-row justify-between border-2 border-(--border) p-2.5">
+              <li key={index} className="hover:-mt-0.5 transition-all duration-150 shadow">
+                <Link href={"/blog/" + post.route} className="flex flex-row justify-between border-2 border-(--border) p-2.5 rounded-xl">
                   <h3 className="font-semibold">
                     {post.title}
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" height={16} width={16} fill="currentColor" className="-mt-0.5 ml-2 inline">

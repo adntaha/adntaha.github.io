@@ -17,10 +17,10 @@ const MarqueeButton = ({ name, link }) => {
           : link
       }
       className={clsx(
-        "flex size-full flex-row items-center justify-center text-center",
+        "flex size-full flex-row items-center justify-center text-center rounded-2xl",
         highlighted
           ? "text-(--text-inversed) bg-(--foreground)"
-          : "text-(--text) transition-colors duration-150 ease-in-out hover:text-(--text-inversed) hover:bg-(--foreground-hover)",
+          : "text-(--text) transition-all duration-300 ease-in-out hover:border-2 border-(--foreground-hover)",
       )}
     >
       {name}

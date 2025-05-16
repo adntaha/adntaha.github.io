@@ -5,6 +5,10 @@
   "@parcel/resolver-default": {
     "packageExports": true
   },
+  "alias": {
+    "react": "preact/compat",
+    "react-dom": "preact/compat"
+  },
   "scripts": {
     "clean-dist": "rm -rf dist && mkdir dist",
     "copy-assets": "cp -vR src/assets dist/assets",
@@ -17,8 +21,8 @@
     "clsx": "^2.1.1",
     "fecha": "^4.2.3",
     "preact": "^10.26.6",
-    "preact-markdown": "^2.1.0",
     "prop-types": "^15.8.1",
+    "react-markdown": "^10.1.0",
     "rehype-mathjax": "^7.1.0",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",

@@ -49,6 +49,15 @@ body {
   font-style: italic;
 }
 
+.markup p {
+  margin-bottom: 1rem;
+}
+
+.markup hr {
+  margin-top: 0.625rem;
+  margin-bottom: 0.625rem;
+}
+
 .markup table {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
@@ -57,4 +66,8 @@ body {
 .markup th, .markup td {
   padding: 0.625rem;
   border: 1px solid theme(--color-neutral-300);
+}
+
+.markup [data-footnote-ref], .markup [data-footnote-backref] {
+  display: none;
 }

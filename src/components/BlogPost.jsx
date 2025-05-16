@@ -1,6 +1,6 @@
 import React from "preact";
 import PropTypes from "prop-types";
-import Markdown from "preact-markdown";
+import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm"
 import rehypeMathjax from "rehype-mathjax/browser"
 import remarkMath from "remark-math"
@@ -62,7 +62,11 @@ export default function BlogPost({ params: { route } }) {
           {/* <img src={image} className="float-right" /> */}
           <time dateTime={parseDate(date)}>{date.toUpperCase()}</time>.<br/>
           <hr className="my-2.5" />
-          <Markdown markdown={content} remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeMathjax]} />
+          <div className="markup">
+            <Markdown remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeMathjax]}>
+              {content}
+            </Markdown>
+          </div>
         </article>
       </div>
     </Layout>

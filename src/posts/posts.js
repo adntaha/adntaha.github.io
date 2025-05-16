@@ -1,6 +1,6 @@
-import FirstBlogPost from "./sample.md";
+import EntrepreneurshipNytSubmission from "./entrepreneurship-nyt-submission.md";
 
-const posts = [FirstBlogPost];
+const posts = [EntrepreneurshipNytSubmission];
 
 function parseBlogPostFile(file) {
   const lines = file.split("\n").filter(Boolean);

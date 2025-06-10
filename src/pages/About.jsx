@@ -9,8 +9,8 @@ export default function About() {
   return (
     <Layout className="grid grid-cols-3 grid-rows-2">
       <div className="col-span-2 col-start-1 row-span-2 row-start-1 bg-(--background) p-5">
-        <h1 className="my-auto text-4xl mb-2">
-          hi. i&apos;m aidan.
+        <h1 className="my-auto text-5xl mb-2">
+          Hi. I&apos;m Aidan.
         </h1>
         I enjoy tinkering with <Link href="/projects">things</Link>.<br/><br/>
         I&apos;m currently working on:
@@ -25,7 +25,7 @@ export default function About() {
           </li>
         </ul>
       </div>
-      <div className="col-span-1 col-start-3 row-span-2 row-start-1 flex flex-col bg-(--foreground) rounded-xl">
+      <div className="col-span-1 col-start-3 row-span-2 row-start-1 flex flex-col bg-(--foreground) rounded-2xl">
         {
           Posts
             .sort((a, b) => parse(b.date, "MMMM Do YYYY") - parse(a.date, "MMMM Do YYYY"))

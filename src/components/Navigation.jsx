@@ -44,12 +44,12 @@ MarqueeButton.propTypes = {
 export default function Navigation() {
   return (
     <header>
-      <div className="grid grid-cols-5 h-18 gap-3 font-mono">
-        <MarqueeButton name="about" link="/" />
-        <MarqueeButton name="blog" link="/blog" variable />
-        <MarqueeButton name="projects" link="/projects" />
-        <MarqueeButton name="resume" link="https://drive.google.com/file/d/1-NLNdKKA595L2ugI_tt8hfYSvcjan2sv/view?usp=sharing" />
-        <MarqueeButton name="contact" link="/contact" />
+      <div className="grid grid-cols-5 h-16 gap-3 mb-2.5">
+        <MarqueeButton name="About" link="/" /> 
+        <MarqueeButton name="Blog" link="/blog" variable />
+        <MarqueeButton name="Projects" link="/projects" />
+        <MarqueeButton name="Resume" link="https://drive.google.com/file/d/1-NLNdKKA595L2ugI_tt8hfYSvcjan2sv/view?usp=sharing" />
+        <MarqueeButton name="Contact" link="/contact" />
       </div>
     </header>
   );

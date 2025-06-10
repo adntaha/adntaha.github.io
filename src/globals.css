@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: InterVariable, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
 :root {
   --background: #ededed;
   --border: theme(--color-stone-300) /* stone-300 */;
@@ -41,12 +45,11 @@ body {
 } */
 
 .markup h1 {
-  font-size: theme(--text-2xl);
+  font-size: theme(--text-3xl);
 }
 
 .markup h2 {
-  font-size: theme(--text-xl);
-  font-style: italic;
+  font-size: theme(--text-2xl);
 }
 
 .markup p {

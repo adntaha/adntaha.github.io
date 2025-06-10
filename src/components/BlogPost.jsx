@@ -32,7 +32,7 @@ function parseRelativeDate(date) {
 export const BlogCover = ({ title, date, image, link }) => {
   return <Link href={link}>
     <figure className="flex shrink flex-col m-5 border-(--accent) border-2">
-      <div className="my-auto h-64 w-full bg-(--background)">
+      <div className="my-auto w-full bg-(--background)">
         <img src={image} alt={title} />
       </div>
       <figcaption className="bg-(--accent) text-(--text-inversed) p-2.5">
@@ -56,9 +56,9 @@ export default function BlogPost({ params: { route } }) {
 
   return (
     <Layout className="h-fit">
-      <div className="m-5 p-5 max-w-[768px] mx-auto bg-(--background) h-full">
+      <div className="p-5 max-w-[768px] mx-auto bg-(--background) h-full">
         <article>
-          <h2 className="text-4xl mb-2">{title}</h2>
+          <h2 className="text-5xl mb-2">{title}</h2>
           {/* <img src={image} className="float-right" /> */}
           <time dateTime={parseDate(date)}>{date.toUpperCase()}</time>.<br/>
           <hr className="my-2.5" />

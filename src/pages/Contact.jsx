@@ -7,11 +7,11 @@ function copyOnClick(e) {
 
   if (!text.startsWith("@")) {
     navigator.clipboard.writeText(text);
-    target.innerHTML = "<span class=\"text-(--accent)\">copied!</span>";
+    target.innerHTML = "<span class=\"text-(--accent-inversed)\">copied!</span>";
   } else {
     text = text.slice(1);
     navigator.clipboard.writeText(text);
-    target.innerHTML = "<span class=\"text-(--accent)\">copied!</span>";
+    target.innerHTML = "<span class=\"text-(--accent-inversed)\">copied!</span>";
     text = "@" + text;
   }
 

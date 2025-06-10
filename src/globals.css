@@ -8,6 +8,7 @@
   --background: #ededed;
   --border: theme(--color-stone-300) /* stone-300 */;
   --accent: theme(--color-neutral-800) /* neutral-800 */;
+  --accent-inversed: theme(--color-neutral-300) /* neutral-300 */;
   --foreground: theme(--color-sky-700) /* yellow-700 */;
   --foreground-hover: theme(--color-sky-600) /* yellow-600 */;
   --text: #0a0a0a;
@@ -19,6 +20,7 @@
     --background: #0a0a0a;
     --border: theme(--color-stone-800) /* stone-800 */;
     --accent: theme(--color-neutral-300) /* neutral-300 */;
+    --accent-inversed: theme(--color-neutral-800); /* neutral-800 */;
     --foreground: theme(--color-sky-600) /* yellow-600 */;
     --foreground-hover: theme(--color-sky-800) /* yellow-800 */;
     --text: #ededed;

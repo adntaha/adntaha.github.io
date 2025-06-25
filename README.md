@@ -1,27 +1,15 @@
-# Minimal Mistakes remote theme starter
+# Aidan's Personal Website and Blog
 
-Click [**Use this template**](https://github.com/mmistakes/mm-github-pages-starter/generate) button above for the quickest method of getting started with the [Minimal Mistakes Jekyll theme](https://github.com/mmistakes/minimal-mistakes).
+This repository contains the source code for my personal website and blog, hosted at [adntaha.github.io](https://adntaha.github.io).
 
-Contains basic configuration to get you a site with:
+This blog focuses on AI Safety, with a special emphasis on technical alignment and interpretability. I often analyze how these specific challenges are impacted by progress in the broader AI landscape.
 
-- Sample posts.
-- Sample top navigation.
-- Sample author sidebar with social links.
-- Sample footer links.
-- Paginated home page.
-- Archive pages for posts grouped by year, category, and tag.
-- Sample about page.
-- Sample 404 page.
-- Site wide search.
+## Tech Stack
 
-Replace sample content with your own and [configure as necessary](https://mmistakes.github.io/minimal-mistakes/docs/configuration/).
+- **Framework:** [Jekyll](https://jekyllrb.com/)
+- **Theme:** [Minimal Mistakes](https://github.com/mmistakes/minimal-mistakes)
+- **Hosting:** [GitHub Pages](https://pages.github.com/), a true classic.
 
----
+## Acknowledgments
 
-## Troubleshooting
-
-If you have a question about using Jekyll, start a discussion on the [Jekyll Forum](https://talk.jekyllrb.com/) or [StackOverflow](https://stackoverflow.com/questions/tagged/jekyll). Other resources:
-
-- [Ruby 101](https://jekyllrb.com/docs/ruby-101/)
-- [Setting up a Jekyll site with GitHub Pages](https://jekyllrb.com/docs/github-pages/)
-- [Configuring GitHub Metadata](https://github.com/jekyll/github-metadata/blob/master/docs/configuration.md#configuration) to work properly when developing locally and avoid `No GitHub API authentication could be found. Some fields may be missing or have incorrect data.` warnings.
+This site would not be possible without the Minimal Mistakes Jekyll theme, created by Michael Rose.

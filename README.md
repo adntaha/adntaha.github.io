@@ -1,8 +1,6 @@
 # Aidan's Personal Website and Blog
 
-This repository contains the source code for my personal website and blog, hosted at [adntaha.github.io](https://adntaha.github.io).
-
-This blog focuses on AI Safety, with a special emphasis on technical alignment and interpretability. I often analyze how these specific challenges are impacted by progress in the broader AI landscape.
+This repository contains the source code for my blog, hosted at [adntaha.github.io](https://adntaha.github.io).
 
 ## Tech Stack
 

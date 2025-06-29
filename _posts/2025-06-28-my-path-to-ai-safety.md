@@ -1,4 +1,10 @@
-# My Path to AI Safety
+---
+title: "My Path to AI Safety"
+excerpt: "How a frustrating school project with medical AI and a leaked language model led me to discover AI safety, and why I think you should care too."
+date: 2025-06-28T15:52:20-04:00
+categories:
+  - blog
+---
 
 Hi there. I'm Aidan. If you've landed on this blog, then I can safely assume that AI interests you.
 

@@ -3,6 +3,8 @@ title: "My Path to AI Safety"
 excerpt: "How a frustrating school project with medical AI and a leaked language model led me to discover AI safety, and why I think you should care too."
 date: 2025-06-28T15:52:20-04:00
 categories:
+  - Blog
+tags:
   - AI Safety
 ---
 

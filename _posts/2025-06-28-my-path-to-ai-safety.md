@@ -1,11 +1,16 @@
 ---
 title: "My Path to AI Safety"
-excerpt: "How a frustrating school project with medical AI and a leaked language model led me to discover AI safety, and why I think you should care too."
+excerpt: "How a frustrating school project involving medical AI and a leaked language model led me to discover AI safety, and why I think you should care too."
 date: 2025-06-28T15:52:20-04:00
 categories:
-  - Blog
+  - Decoding AI
 tags:
   - AI Safety
+  - Career Path
+  - Computer Vision
+  - Medical AI
+  - LLMs
+  - Model Failure
 ---
 
 Hi there. I'm Aidan. If you've landed on this blog, then I can safely assume that AI interests you.

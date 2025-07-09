@@ -16,7 +16,7 @@
 title: Aidan Taha
 subtitle: Exploring AI Safety
 name: Aidan Taha
-email:
+email: adnanaidantaha@gmail.com
 url: "https://adntaha.github.io"
 repository: "adntaha/adntaha.github.io"
 description: >- # this means to ignore newlines until "baseurl:"
@@ -113,9 +113,9 @@ defaults:
       layout: single
       author_profile: true
 
-# category_archive:
-#   type: liquid
-#   path: /categories/
+ category_archive:
+   type: liquid
+   path: /categories/
 tag_archive:
   type: liquid
   path: /tags/

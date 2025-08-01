@@ -65,7 +65,7 @@ plugins:
 author:
   name   : "Aidan Taha"
   avatar : "/assets/images/bio-photo.jpg"
-  bio    : "Aspiring AI Safety researcher exploring alignment and interpretability. Alongside my research, I'm passionate about building software and leading tech initiatives."
+  bio    : "I'm an aspiring AI Safety researcher exploring alignment and interpretability. Alongside my research, I'm passionate about building software and leading tech initiatives."
   links:
     - label: "Website"
       icon: "fas fa-fw fa-link"
@@ -73,24 +73,24 @@ author:
 #   - label: "Twitter"
 #     icon: "fab fa-fw fa-twitter-square"
 #     url: "https://twitter.com/"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/adntaha"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/adntaha"
-#   - label: "Instagram"
-#     icon: "fab fa-fw fa-instagram"
-#     url: "https://instagram.com/"
 
 footer:
   links:
 #   - label: "Twitter"
 #     icon: "fab fa-fw fa-twitter-square"
 #     url: "https://twitter.com/"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/adntaha"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/adntaha"
-#    - label: "Instagram"
-#      icon: "fab fa-fw fa-instagram"
-#      url: "https://instagram.com/"
 
 defaults:
   # _posts

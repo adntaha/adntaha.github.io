@@ -20,7 +20,7 @@ name: Aidan Taha
 email: adnanaidantaha@gmail.com
 url: "https://adntaha.github.io"
 repository: "adntaha/adntaha.github.io"
-description: "The personal website of Aidan Taha, an aspiring AI Safety researcher. Translating complex ideas into accessible writing, deconstructing black boxes in AI and elsewhere."
+description: "The personal website of Aidan Taha, a maker, a novice writer, and an aspiring AI Safety researcher."
 # twitter_username: username
 github_username: adntaha
 minimal_mistakes_skin: default
@@ -63,7 +63,7 @@ plugins:
 author:
   name   : "Aidan Taha"
   avatar : "/assets/images/bio-photo.jpg"
-  bio    : "I'm a builder and aspiring AI safety researcher. I write to deconstruct black boxes in AI and elsewhere, translating complex ideas into accessible writing."
+  bio    : "I'm a builder and aspiring AI safety researcher. I write to deconstruct black boxes in AI and elsewhere, to simplify complicated ideas."
   links:
     - label: "Website"
       icon: "fas fa-fw fa-link"

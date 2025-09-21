@@ -1,6 +1,6 @@
 ---
 title: "CD Player Kidnapping Saga"
-excerpt: "How I got convinced to help my friend fix his grandparents' CD player."
+excerpt: "How I got convinced to help fix my friend's grandparents' CD player."
 date: 2025-09-21T14:30:20-04:00
 categories:
   - Logbook

@@ -11,11 +11,11 @@ tags:
 
 I helped a friend with fixing an old, 1990s-era[^1], CD player that belonged to his grandparents. But before we get into that, we need to talk about how I was convinced into helping him[^2]. It all started quite ominously:
 
-![Instagram DM screenshot, from my friend on Friday at 1:34PM : Mr. Taha, Je te kidnap après anglais, Tu as été prévenu. My response is "pardon." Lmao](../Image%20-%20Untitled%20-%202025-09-21.png)
+![Instagram DM screenshot, from my friend on Friday at 1:34PM : Mr. Taha, Je te kidnap après anglais, Tu as été prévenu. My response is "pardon." Lmao](/assets/images/cd-player-kidnapping-saga/kidnap-dms.png)
 *Translation: "Mr. Taha, I'm kidnapping you after English, you've been warned", and my response was "what." For context, our English literature class had just started when I received this DM from him. It was a few confusing seconds before I realized what he meant.*
 
 The more helpful piece of context came from another friend, let's call him Nicolas which ran the community bike repair shop whose workspace we were about to borrow for about 5 hours.
-![](/assets/images/cd-player-kidnapping-saga/kidnap-dms.png)
+![](/assets/images/cd-player-kidnapping-saga/helpful-dms.png)
 *Translation: At 1:27 PM on Friday, "Are you in class right now?", "Yes", and at 1:42 PM, "Midadouille, Hadrien needs help." \[Friend #1\] is the friend who sent those ominous messages. I have no idea what "Midadouille" is or where it came from.*
 
 ---

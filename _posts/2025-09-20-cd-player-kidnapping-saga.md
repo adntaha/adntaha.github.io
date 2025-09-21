@@ -1,4 +1,16 @@
+---
+title: "CD Player Kidnapping Saga"
+excerpt: "How I got convinced to help my friend fix his grandparents' CD player."
+date: 2025-09-21T14:30:20-04:00
+categories:
+  - Logbook
+tags:
+  - Analog systems
+  - Reverse engineering
+---
+
 I helped a friend with fixing an old, 1990s-era[^1], CD player that belonged to his grandparents. But before we get into that, we need to talk about how I was convinced into helping him[^2]. It all started quite ominously:
+
 ![Instagram DM screenshot, from my friend on Friday at 1:34PM : Mr. Taha, Je te kidnap après anglais, Tu as été prévenu. My response is "pardon." Lmao](../Image%20-%20Untitled%20-%202025-09-21.png)
 *Translation: "Mr. Taha, I'm kidnapping you after English, you've been warned", and my response was "what." For context, our English literature class had just started when I received this DM from him. It was a few confusing seconds before I realized what he meant.*
 

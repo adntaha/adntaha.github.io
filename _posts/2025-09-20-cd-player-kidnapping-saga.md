@@ -15,7 +15,7 @@ I helped a friend with fixing an old, 1990s-era[^1], CD player that belonged to 
 
 *Translation: "Mr. Taha, I'm kidnapping you after English, you've been warned", and my response was "what." For context, our English literature class had just started when I received this DM from him. It was a few confusing seconds before I realized what he meant.*
 
-The more helpful piece of context came from another friend, let's call him Nicolas which ran the community bike repair shop whose workspace we were about to borrow for about 5 hours.
+The more helpful piece of context came from another friend, let's call him Nicolas, which ran the community bike repair shop whose workspace we were about to borrow for about 5 hours.
 ![Instagram DM screenshot, from another friend on Friday at 1:34PM : T'as un cours rn?, I respond "oui", he responds at 1:42 PM, "Maidadouille, Hadrien a besoin d'aide", along with a picture of the CD player open on a table.](/assets/images/cd-player-kidnapping-saga/helpful-dms.png)
 
 *Translation: At 1:27 PM on Friday, "Are you in class right now?", "Yes", and at 1:42 PM, "Midadouille, Hadrien needs help." \[Friend #1\] is the friend who sent those ominous messages. I have no idea what "Midadouille" is or where it came from.*
@@ -24,7 +24,7 @@ The more helpful piece of context came from another friend, let's call him Nicol
 
 Skipping to the part where we start working on it, we unscrew it, and find that everything is electronic except the part that pops out and reads the CD, which is connected to the rest using a bunch of connectors.
 
-Using the tools at ours disposal, we spend at least 30 minutes unplugging a few of these [JST-style connectors](https://en.wikipedia.org/wiki/JST_connector#/media/File:Balancer_Buchse_XH.JPG), most of which were much more annoying because they had two bits that locked into their casing which we needed to kind of push out on the casing a bit to get them out.
+Using the tools at our disposal, we spend at least 30 minutes unplugging a few of these [JST-style connectors](https://en.wikipedia.org/wiki/JST_connector#/media/File:Balancer_Buchse_XH.JPG), most of which were much more annoying because they had two bits that locked into their casing which we needed to kind of push out on the casing a bit to get them out.
 
 We then took it out (which was pretty straightforward because we had access to the owner's manual, which had so. much. information.)
 
@@ -46,7 +46,7 @@ It's also important to note that we had a weirdly shaped piece[^3] and a bunch o
 
 There were also two plastic wheels on the other piece of plastic. It took us embarrassingly long to figure out that the rubber band was supposed to link between them, but we eventually did. However, issue #1, we did not have any rubber bands that fit the specs. By using a piece of tape that I wrapped around them, I figured out that we needed something with a 10cm circumference and a 1-1.5mm diameter. And unfortunately they don't have small specific rubber bands at a community bike repair station, I even went up to ask and the answer was still a no. :(
 
-So I got crafting. I tried shrinking a really close rubber band that we somehow found at the corner of a desk by melting it with a hot glue gun (it didn't work), using electrical tape (green in the image bellow), masking tape, even making one out of hot glue (this actually almost worked).
+So I got crafting. I tried shrinking a really close rubber band that we somehow found at the corner of a desk by melting it with a hot glue gun (it didn't work), using electrical tape (green in the image below), masking tape, even making one out of hot glue (this actually almost worked).
 
 ![A lot of wires and circles made of electrical tape, masking tape, hot glue, some pieces of rubber band. It's not a very good looking desk, very disorganised, you're lucky that you have trouble seeing it, trust me.](/assets/images/cd-player-kidnapping-saga/new-rubber-band-attempts.png)
 

@@ -3,10 +3,10 @@ title: "CD Player Kidnapping Saga"
 excerpt: "How I got convinced to help fix my friend's grandparents' CD player."
 date: 2025-09-21T14:30:20-04:00
 categories:
-  - Logbook
+  - The Workshop
 tags:
-  - Analog systems
-  - Reverse engineering
+  - Analog Systems
+  - Reverse Engineering
 ---
 
 I helped a friend with fixing an old, 1990s-era[^1], CD player that belonged to his grandparents. But before we get into that, we need to talk about how I was convinced into helping him[^2]. It all started quite ominously:

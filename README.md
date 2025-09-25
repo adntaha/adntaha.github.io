@@ -1,8 +1,8 @@
-# Aidan's Personal Website and Blog
+# Aidan's personal website
 
-This repository contains the source code for my blog, hosted at [adntaha.github.io](https://adntaha.github.io).
+This repository contains the source code for my personal site, hosted at [adntaha.github.io](https://adntaha.github.io).
 
-## Tech Stack
+## Tech stack
 
 - **Framework:** [Jekyll](https://jekyllrb.com/)
 - **Theme:** [Minimal Mistakes](https://github.com/mmistakes/minimal-mistakes)

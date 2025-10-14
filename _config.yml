@@ -30,7 +30,7 @@ search: true
 markdown: kramdown
 remote_theme: "mmistakes/minimal-mistakes@4.27.1"
 # Outputting
-permalink: /:categories/:title/
+permalink: /blog/:title/
 paginate: 5 # amount of posts to show
 paginate_path: /page:num/
 locale: en-CA

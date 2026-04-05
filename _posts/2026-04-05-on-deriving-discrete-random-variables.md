@@ -13,7 +13,7 @@ It all started with the following IB practice problem:
 
 What I want to bring your focus to is the last one, (d): *Find the number of yellow tapes that we're most likely to end up with.*
 
-To solve this, our instructor made use of brute force, where she just tried $P(X=1)$ to $P(X=3)$, and noticed that $P(X=2)$ was a maxima. But isn't there a better way to do this? That's what this article will be dedicated to, and excuse the bad math, I'm not use to posting it online. Nor am I sure that it's correct.
+To solve this, our instructor made use of brute force, where she just tried $P(X=1)$ to $P(X=3)$, and noticed that $P(X=2)$ was a maxima. But isn't there a better way to do this? using the derivative, such as $\frac{d(f(x))}{dx} = 0$ if and only if f(x) is a local extremum (max or min). That's what this article will be dedicated to, and excuse the bad math, I'm not use to posting it online. Nor am I sure that it's correct.
 
 So a few days after that class, the following idea came to mind: If we define the combinatorial function $\binom{n}{r}$ using the following definitions of $n!$ and $\Gamma(m)$ to extend the factorial's domain to include reals, doesn't it become continuous and therefore differentiable?
 
@@ -71,6 +71,6 @@ therefore, we can state that
 
 $$\binom{n}{r} = \frac{n(n-r)}{rB(r, n-r)}=\frac{n+1}{(nr - r^2 + n + 1)B(r, n-r)}$$
 
-now, how we actually derive either of these is another mystery. hahahaha.
+now, how we actually derive either of these, before setting them to zero, is another mystery.. hahahaha.
 
 [^1]: Anyone notice how this looks really similar to the binomial distribution's probability mass function $P(X=r)=\binom {n}{r}p^{r}(1-p)^{n-r}$ with n being the amount of retractions done? In fact, $B(n+1, n-r+1)$ brings us even closer...

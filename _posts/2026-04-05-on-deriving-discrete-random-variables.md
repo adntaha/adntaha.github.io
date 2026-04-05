@@ -47,7 +47,7 @@ $$B(a, c) = \frac{\Gamma(a)\Gamma(c)}{\Gamma(c-a)}$$
 
 $$\iff B(r, n-r) = \frac{\Gamma(r)\Gamma(n-r)}{\Gamma(n)}$$
 
-(parenthesis: not to be confused with the binomial distribution, this one's formal definition is $B(z_{1},z_{2})=\int _{0}^{1}t^{z_{1}-1}(1-t)^{z_{2}-1}\,dt$ [^1])
+(parenthesis: not to be confused with the binomial distribution, this one's formal definition is $B(z_{1}, z_{2}) = \int _{0}^{1} t^{z_{1}-1} (1-t)^{z_{2}-1} \, dt$ )[^1]
 
 which, combined with the above expression, makes for
 

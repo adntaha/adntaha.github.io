@@ -116,6 +116,7 @@ defaults:
       share: true
       related: false
       enable_copy_code_button: true
+      mathjax: true
   # _pages
   - scope:
       path: "_pages"

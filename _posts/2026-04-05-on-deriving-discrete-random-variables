@@ -1,6 +1,6 @@
 ---
-title: "On deriving discrete random variables (hear me out)"
-excerpt: "Oh boy, factorials get weird when it comes to nCr and differentiability."
+title: "On deriving discrete random variables"
+excerpt: "Just hear me out. On another note, factorials do get weird when it comes to nCr and differentiability."
 date: 2026-04-05T03:07:41-04:00
 categories:
   - The Workshop
@@ -9,7 +9,7 @@ tags:
 ---
 
 It all started with the following IB practice problem:
-![Screenshot of an IB math AA problem from 2006, in French](../assets/ibmathproblem.png)
+![Screenshot of an IB math AA problem from 2006, in French](/assets/images/ibmathproblem.png)
 
 What I want to bring your focus to is the last one, (d): *Find the number of yellow tapes that we're most likely to end up with.*
 

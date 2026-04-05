@@ -1,6 +1,6 @@
 ---
-title: "On deriving discrete random variables"
-excerpt: "Just hear me out. On another note, factorials do get weird when it comes to nCr and differentiability."
+title: "On deriving discrete random variables (hear me out)"
+excerpt: "On another note, factorials do get weird when it comes to nCr and differentiability."
 date: 2026-04-05T03:07:41-04:00
 categories:
   - The Workshop

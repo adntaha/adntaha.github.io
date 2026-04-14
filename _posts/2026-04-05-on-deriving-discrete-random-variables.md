@@ -73,24 +73,39 @@ $$\binom{n}{r} = \frac{n(n-r)}{rB(r, n-r)}=\frac{n+1}{(nr - r^2 + n + 1)B(r, n-r
 
 now, how we actually derive either of these, before setting them to zero, is another mystery.. hahahaha.
 
-Edit (april 13th, 2026): I've tried integrating the beta function as it seems getting rid of the integral would probably help in terms of deriving the whole thing, but after two integrations by parts, it doesn't work unless I know $r$ and $n$. However, by waving the white flag and accepting an estimation, using the 3 first terms of the MacLauren series, using the definition stated above, we get the following solution: $$B(z_{1}, z_{2}) = \int _{0}^{1} t^{z_{1}-1} (1-t)^{z_{2}-1} \, dt$$
+Edit (april 13th, 2026): I've tried integrating the beta function as it seems getting rid of the integral would probably help in terms of deriving the whole thing, but after two integrations by parts, it doesn't work unless I know $r$ and $n$. However, by waving the white flag and accepting an estimation, using the 3 first terms of the MacLauren series, using the definition stated above, we get the following solution:
+
+$$B(z_{1}, z_{2}) = \int _{0}^{1} t^{z_{1}-1} (1-t)^{z_{2}-1} \, dt$$
+
 $$\approx \left[\frac{t^{z_1}}{z_1} + \frac{(z_2-1)t^{z_1+1}}{z_1+1} + \frac{(z_2-1)(z_2-2)t^{(z_1-1)^2-1}}{(z_1-1)^2-1}+\text{C}\right]_0^1$$
+
 $$\approx \frac{1^{z_1}}{z_1} + \frac{(z_2-1)1^{z_1+1}}{z_1+1} + \frac{(z_2-1)(z_2-2)1^{(z_1-1)^2-1}}{(z_1-1)^2-1}$$
+
 Since I don't plan on using complex numbers, by arbitrarily limiting the domain of $z_1$ and $z_2$ to the integers $\mathbb{R}$, we can simplify it to:
+
 $$B(z_{1}, z_{2}) \approx \frac{1}{z_1} + \frac{z_2-1}{z_1+1} + \frac{(z_2-1)(z_2-2)}{(z_1-1)^2-1}$$
+
 Substituting $r=z_1$ and $n-r=z_2$, we get
+
 $$B(r, n-r) \approx \frac{1}{r} + \frac{n-r-1}{r+1} + \frac{(n-r-1)(n-r-2)}{(r-1)^2-1}$$
+
 Therefore
+
 $$\binom{n}{r} \approx \frac{n(n-r)}{r\left(\frac{1}{r} + \frac{n-r-1}{r+1} + \frac{(n-r-1)(n-r-2)}{(r-1)^2-1}\right)}$$
+
 $$\binom{n}{r} \approx \frac{n(n-r)}{1 + \frac{r(n-r-1)}{r+1} + \frac{r(n-r-1)(n-r-2)}{((r-1)-1)((r-1)+1)}}$$
+
 $$\binom{n}{r} \approx \frac{n(n-r)}{1 + \frac{r(n-r-1)}{r+1} + \frac{\cancel{r}(n-r-1)(n-r-2)}{\cancel{r}(r-2)}}$$
+
 $$\binom{n}{r} \approx \frac{n(n-r)}{1 + \frac{r(n-r-1)}{r+1} + \frac{(n-r-1)(n-r-2)}{r-2}}$$
 
-Yay! Now to find $\frac{d\binom{n}{r}}{dr}$...
+Yay! Now to isolate $r$ in $\frac{d\binom{n}{r}}{dr}=0$...
 
-$$\frac{d\binom{n}{r}}{dr} \approx \frac{d\left(\frac{n(n-r)}{1 + \frac{r(n-r-1)}{r+1} + \frac{(n-r-1)(n-r-2)}{r-2}}\right)}{dr}$$
-$$\approx \frac{d\left(\frac{n^2-nr}{1 + \frac{nr-r^2-r}{r+1} + \frac{r^2+(3-2n)r+n^2-3n+2}{r-2}}\right)}{dr}$$
-et cetera... To be continued.
+$$\frac{d\binom{n}{r}}{dr} \approx \frac{d}{dr}\left(\frac{n(n-r)}{1 + \frac{r(n-r-1)}{r+1} + \frac{(n-r-1)(n-r-2)}{r-2}}\right)$$
+
+$$\approx \frac{d}{dr}\left(\frac{n^2-nr}{1 + \frac{nr-r^2-r}{r+1} + \frac{r^2+(3-2n)r+n^2-3n+2}{r-2}}\right)$$
+
+et cetera... Wow this is feeling like a very *very* _very_ long expression. To be continued.
 
 
 [^1]: Anyone notice how this looks really similar to the binomial distribution's probability mass function $P(X=r)=\binom {n}{r}p^{r}(1-p)^{n-r}$ with n being the amount of retractions done? In fact, $B(n+1, n-r+1)$ brings us even closer...

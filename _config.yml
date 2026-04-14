@@ -106,7 +106,7 @@ comments:
     input_position: "top"
     theme: "light" # "light" (default), "dark", "dark_dimmed", "transparent_dark", "preferred_color_scheme"
     lang: "en"
-    loading: "lazy
+    loading: "lazy"
 
 defaults:
   # _posts

@@ -97,9 +97,9 @@ comments:
   provider: "giscus"
   giscus:
     repo_id: "MDEwOlJlcG9zaXRvcnkyOTkxMjMyOTI=" # Shown during giscus setup at https://giscus.app
-    category_name: "Comments" # Full text name of the category
+    category: "Comments" # Full text name of the category
     category_id: "DIC_kwDOEdRCXM4Cv3hi" # Shown during giscus setup at https://giscus.app
-    discussion_term: "pathname"
+    mapping: "pathname"
     strict: "1"
     reactions_enabled: "1"
     emit_metadata: "1"

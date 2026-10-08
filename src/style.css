@@ -123,8 +123,8 @@ a:hover {
   animation-duration: 0.12s;
 }
 
-/* --- Layout: one centred column. On wide screens the column moves left to
-   make room for margin notes on the right. */
+/* --- Layout: one centred column. Margin notes hang outside it, in the empty
+   space on the right; below 70rem there isn't room, so they fold away. */
 
 .site-header,
 main,
@@ -132,15 +132,6 @@ main,
   max-width: calc(var(--column) + 2 * var(--pad));
   margin-inline: auto;
   padding-inline: var(--pad);
-}
-
-@media (min-width: 70rem) {
-  .site-header,
-  main,
-  .site-footer {
-    max-width: calc(var(--column) + var(--gutter) + var(--margin) + 2 * var(--pad));
-    padding-right: calc(var(--gutter) + var(--margin) + var(--pad));
-  }
 }
 
 .site-header {

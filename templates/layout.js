@@ -46,6 +46,12 @@ export function layout(site, page, content) {
 ${page.hasMath ? html`<link rel="stylesheet" href="/katex/katex.min.css">` : ''}
 <script type="speculationrules">${raw(speculationRules)}</script>
 ${page.scripts?.map((src) => html`<script type="module" src="${site.assets[src]}"></script>`)}
+${page.url === '/' ? '' : html`<script>
+  // If this page was reached by reloading inside the homepage's project panel, Back
+  // only changes the URL; nothing would re-render. Load the page it now points to.
+  const here = location.pathname;
+  addEventListener('popstate', () => location.pathname !== here && location.reload());
+</script>`}
 ${site.production && site.analytics
   ? html`<script defer src="${site.analytics.src}" data-website-id="${site.analytics.websiteId}"></script>`
   : ''}

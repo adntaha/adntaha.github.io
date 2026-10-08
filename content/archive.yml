@@ -1,7 +1,9 @@
 # The quieter list on /projects/. Projects with their own page live in content/projects/.
-# Inline Markdown works in `blurb` and `intro`.
+# Inline Markdown works in `blurb` and `intro`. Groups with `grid: true` show as picture cards
+# (`image` is optional); the others are a plain list.
 
 - heading: Hackathons and school projects
+  grid: true
   items:
     - name: Fracture detection (MYP personal project)
       year: 2023–24
@@ -10,23 +12,31 @@
     - name: Rollz
       year: "2026"
       url: https://devpost.com/software/thirdplace
+      image: /media/archive/rollz.jpg
       blurb: navigation that takes mobility needs into account when choosing a route. MariHacks IX.
     - name: EasyAppoint
       year: "2025"
       url: https://devpost.com/software/easyappoint
+      image: /media/archive/easyappoint.jpg
       blurb: a healthcare appointment-booking prototype. MariHacks 8.0, MLH Best Domain Name from GoDaddy Registry.
     - name: Arborescent
       year: "2025"
-      url: https://devpost.com/adntaha
+      url: https://devpost.com/software/arborescent
+      image: /media/archive/arborescent.jpg
       blurb: forest-health risk in Québec from satellite data and machine learning. PolyHacks.
     - name: Tracks
       year: "2025"
       url: https://devpost.com/software/tracks-vb3u0l
+      image: /media/archive/tracks.jpg
       blurb: computer-vision exercise tracking with music that follows your workout's intensity. McHacks 12, with Bill Xu.
 
 - heading: Small experiments
   intro: Allowed to stay small.
   items:
+    - name: telos
+      year: ""
+      url: https://github.com/adntaha/telos
+      blurb: the smallest agent harness I could make. The model gets one tool, Python, and can spawn copies of itself and restart to load its own changes.
     - name: discord-markov
       year: ""
       url: https://github.com/adntaha/discord-markov
@@ -39,10 +49,6 @@
       year: ""
       url: https://github.com/adntaha/httpcat-bot
       blurb: an unofficial Discord bot for HTTP Cats.
-    - name: text-to-svg
-      year: ""
-      url: https://github.com/adntaha/text-to-svg
-      blurb: poking at AI-generated vector graphics.
     - name: sillycat-worker
       year: ""
       url: https://github.com/adntaha/sillycat-worker

@@ -39,7 +39,7 @@ export function home(site, { home, featured, posts }) {
     <p class="lede">${md(home.intro)}</p>
     <p class="contact">
       <a href="mailto:${site.email}">${site.email}</a>
-      ${site.resume ? html` · <a href="${site.resume}">Résumé</a>` : ''}
+      ${site.resume ? html` · <a href="${site.resume}">résumé</a>` : ''}
     </p>
   </header>
 

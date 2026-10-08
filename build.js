@@ -66,7 +66,7 @@ write(
 for (const p of projects) {
   write(p.url, layout(site, { url: p.url, title: p.title, description: p.summary }, project(site, p)));
 }
-write('/projects/', layout(site, { url: '/projects/', title: 'Projects' }, projectsIndex(site, projects, archive)));
+write('/projects/', layout(site, { url: '/projects/', title: 'Projects', bodyClass: 'is-wide' }, projectsIndex(site, projects, archive)));
 
 for (const p of posts) {
   write(p.url, layout(site, { url: p.url, title: p.title, description: p.description, type: 'post', hasMath: p.hasMath }, post(site, p)));

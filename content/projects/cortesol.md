@@ -5,6 +5,7 @@ period: "2026"
 summary: Critical thinking over a knowledge graph. A memory for research agents that can change its mind, and show why.
 outcome: Hack the 6ix finalist
 team: Kuan Yi Wang, Bill Xu, David Liang, and me
+thumb: /media/cortesol/thumb.jpg
 asset:
   type: image
   src: /media/cortesol/demo.jpg

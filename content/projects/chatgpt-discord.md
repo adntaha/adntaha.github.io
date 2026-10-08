@@ -20,4 +20,10 @@ ChatGPT came out on November 30, 2022. There was no API yet, but there was a web
 
 The demo above is that original 32-second clip. You type `/talk` with a message, and the bot answers in the channel. Under its answer is a **Respond** button, which opens a little form so you can keep the conversation going.
 
-<!-- TODO: how did it work under the hood, with no official API? That's the story people will want. -->
+## How it worked, with no API
+
+<!-- TODO: this section is Claude's draft from your notes. Approve or rewrite. -->
+
+There was no official API yet, so the first version simply borrowed my own login: I copied my ChatGPT session token and called the same internal API the website used.
+
+Next I switched to the `chatgpt` npm package, but it didn't run on Cloudflare Workers, where the bot lived. So I rebuilt the part I needed myself: keeping the login alive. A scheduled Worker refreshed the token on a timer and stored the fresh one in Workers KV, where the bot could read it.

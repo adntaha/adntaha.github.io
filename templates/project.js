@@ -10,16 +10,18 @@ function asset(media) {
   if (!media) return '';
   const size = mediaSize(`public${media.src}`);
   const dims = size ? html` width="${size.width}" height="${size.height}"` : '';
+  // `loop: true` is for short silent demos that used to be GIFs: they play by
+  // themselves, but keep controls so anyone can pause the motion.
+  const playback = media.loop ? html` autoplay muted loop` : '';
   const element =
     media.type === 'video'
-      ? html`<video src="${media.src}"${dims} controls playsinline preload="metadata" aria-label="${media.alt}"></video>`
+      ? html`<video src="${media.src}"${dims}${playback} controls playsinline preload="metadata" aria-label="${media.alt}"></video>`
       : html`<img src="${media.src}" alt="${media.alt}"${dims} decoding="async">`;
   return html`<figure class="project-asset">${element}${media.caption ? html`<figcaption>${md(media.caption)}</figcaption>` : ''}</figure>`;
 }
 
 const facts = (project) =>
   [
-    ['Role', project.role],
     ['Team', project.team],
     ['Result', project.outcome],
     ['Built with', project.stack],

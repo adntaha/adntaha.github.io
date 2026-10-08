@@ -27,7 +27,7 @@ npm run build   # writes the finished site to dist/
 Markdown, with a few extras:
 
 - `[^1]` footnotes
-- `$x$` inline and `$$ … $$` display math (rendered at build time; no math JavaScript in the browser)
+- `$x$` inline and `$$ … $$` display math (rendered at build time; no math JavaScript in the browser). Write money as `\$50`, or it may be read as math.
 - `^[a note]` puts a handwritten note in the margin (a ✎ toggle on phones)
 - `<!-- TODO … -->` in a body, or `# TODO …` in frontmatter or YAML, marks something unfinished. Every build lists them.
 

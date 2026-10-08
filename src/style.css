@@ -508,6 +508,14 @@ main {
   background: var(--rule);
 }
 
+/* Tall media (phone recordings, square demos) shouldn't take over the screen. */
+.project-asset video {
+  width: auto;
+  max-width: 100%;
+  max-height: min(32rem, 70vh);
+  margin-inline: auto;
+}
+
 .project-asset figcaption {
   margin-top: 0.5rem;
   font-size: 0.875rem;

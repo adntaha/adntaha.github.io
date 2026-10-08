@@ -23,7 +23,8 @@ const started = performance.now();
 const OUT = 'dist';
 const production = !process.argv.includes('--dev');
 
-fs.rmSync(OUT, { recursive: true, force: true });
+// Retries: on Windows a file can be briefly locked (say, a video the dev server is streaming).
+fs.rmSync(OUT, { recursive: true, force: true, maxRetries: 5 });
 fs.cpSync('public', OUT, { recursive: true });
 
 // --- Assets: src/style.css → /style.3f9a1c2b.css, so browsers can cache it forever.

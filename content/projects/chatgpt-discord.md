@@ -22,8 +22,8 @@ The demo above is that original 32-second clip. You type `/talk` with a message,
 
 ## How it worked, with no API
 
-<!-- TODO: this section is Claude's draft from your notes. Approve or rewrite. -->
-
 There was no official API yet, so the first version simply borrowed my own login: I copied my ChatGPT session token and called the same internal API the website used.
 
-Next I switched to the `chatgpt` npm package, but it didn't run on Cloudflare Workers, where the bot lived. So I rebuilt the part I needed myself: keeping the login alive. A scheduled Worker refreshed the token on a timer and stored the fresh one in Workers KV, where the bot could read it.
+Then, to make it work consistently, I kept the login alive with a refresh token: a scheduled worker refreshed it periodically and stored the fresh one in Workers KV, where the bot could always use the latest version.
+
+Of course, a few months later, an official API was created and this method was patched, unfortunately.

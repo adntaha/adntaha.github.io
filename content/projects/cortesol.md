@@ -20,7 +20,7 @@ links:
 
 Research agents read a lot, and not all of it is true. A paper gets retracted, a benchmark turns out to be contaminated, two sources disagree. If an agent's memory is just a pile of notes, it has no good way to notice that something it "knows" has lost its footing.
 
-Cortesol stores what an agent believes as a graph of claims, each one tied to the evidence for and against it. When new evidence arrives, confidence in a claim moves in controlled steps, and every update is recorded, so you can look back and see exactly why the agent believes what it believes.
+Cortesol stores what an agent believes as a graph of claims, each one tied to the evidence for and against it, as a number. When new evidence arrives, this number (claim confidence) moves in discrete steps, and every update is recorded, so you can look back and see exactly why the agent believes what it believes.
 
 The key design choice is a split of responsibilities. The language model never edits the graph directly: it *proposes* structured changes, which are validated before anything is applied. And when the model reads a piece of evidence, all it gets to say is whether it supports or contradicts a claim, and whether it's weak, moderate or strong. The actual change in confidence is computed by a small, deterministic engine, with no model in the loop:
 
@@ -30,7 +30,7 @@ The key design choice is a split of responsibilities. The language model never e
 - red flags like possible fraud or a missing control shrink a report's weight toward zero;
 - and no single report can move a claim past a hard limit.
 
-Confidence is stored as log-odds, so each update is a simple addition: Bayes' rule, written in log form. Every step of that arithmetic is shown in the app's reasoning log, so you can open any update and see exactly why a claim moved as much as it did.
+Confidence is stored as log-odds, so each update is a simple addition (Bayes' rule in log form). Every step of that arithmetic is shown in the app's reasoning log, so you can open any update and see exactly why a claim moved as much as it did.
 
 My part was the assistant that works with the graph, which calls the model with the right tools and shows its thinking traces in the interface, and a lot of the frontend.
 

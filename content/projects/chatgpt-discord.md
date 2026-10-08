@@ -1,0 +1,24 @@
+---
+title: ChatGPT in Discord
+featured: 5
+half: true
+period: Dec 2022
+summary: Five days after ChatGPT launched, I had it talking inside Discord. It was one of the first publicly demonstrated ChatGPT integrations.
+# TODO: summary sentence is Claude's new wording around the agreed framing ("one of the first publicly demonstrated ChatGPT integrations"). Rewrite if it's not your voice.
+note: I was 15. The bot was called "ChatGPT Staging."
+asset:
+  type: video
+  src: /media/chatgpt-discord/demo.mp4
+  alt: Screen recording of the bot answering a /talk command in Discord, then taking a follow-up through a Respond button.
+links:
+  - label: The original tweet
+    url: https://x.com/adntaha_ai/status/1599654574536593408
+---
+
+ChatGPT came out on November 30, 2022. There was no API yet, but there was a website, and people were already wiring it into WhatsApp, Telegram and Twitter. On December 5, I posted this:
+
+![Tweet from December 5, 2022: "i made a thing using #ChatGPT", with a video of a Discord bot named ChatGPT Staging answering a /talk command](/media/chatgpt-discord/tweet.png)
+
+The demo above is that original 32-second clip. You type `/talk` with a message, and the bot answers in the channel. Under its answer is a **Respond** button, which opens a little form so you can keep the conversation going.
+
+<!-- TODO: how did it work under the hood, with no official API? That's the story people will want. -->

@@ -1,0 +1,20 @@
+{
+  "name": "adntaha.github.io",
+  "private": true,
+  "type": "module",
+  "description": "Aidan Taha's personal website. No framework: build.js turns content/ into dist/.",
+  "scripts": {
+    "dev": "node dev.js",
+    "build": "node build.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "katex": "^0.18.10",
+    "marked": "^18.1.0",
+    "marked-footnote": "^1.4.0",
+    "marked-katex-extension": "^5.1.13",
+    "yaml": "^2.9.1"
+  }
+}

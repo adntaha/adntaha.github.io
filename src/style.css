@@ -1,0 +1,797 @@
+/*
+  One stylesheet for the whole site. The idea is a well-kept notebook: a crisp
+  column of ink on warm paper for people who came for something specific, and
+  handwritten notes in the margin for people who like to wander.
+
+  Contents: fonts · colours · base · layout · margin notes · homepage ·
+  lists · project pages · prose · the aside · small utilities
+*/
+
+/* --- Fonts: self-hosted, Latin subset only. Body text uses the system font: zero bytes. */
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-latin.woff2') format('woff2');
+  font-weight: 300 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Caveat';
+  src: url('/fonts/caveat-latin.woff2') format('woff2');
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+/* --- Colours. Light by default; dark follows the operating system. */
+
+:root {
+  --paper: #f8f6f1;
+  --ink: #1f1d1a;
+  --ink-soft: #46423b;
+  --muted: #7a746a;
+  --rule: rgb(31 29 26 / 0.12);
+  --accent: #2c4a7a; /* fountain-pen blue */
+
+  --serif: 'Fraunces', Georgia, serif;
+  --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
+  --hand: 'Caveat', 'Segoe Print', cursive;
+
+  --column: 38rem;
+  --margin: 13rem; /* width of the margin-note column on wide screens */
+  --gutter: 2.5rem;
+  --pad: 1.25rem;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #171614;
+    --ink: #ebe7df;
+    --ink-soft: #c9c3b8;
+    --muted: #938c81;
+    --rule: rgb(235 231 223 / 0.14);
+    --accent: #9fbaea;
+  }
+}
+
+/* --- Base */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 1.0625rem/1.6 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--serif);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+/* Page-to-page navigation crossfades instead of flashing white. Kept short:
+   the site should feel decisive, never like it's waiting on an animation. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.12s;
+}
+
+/* --- Layout: one centred column. On wide screens the column moves left to
+   make room for margin notes on the right. */
+
+.site-header,
+main,
+.site-footer {
+  max-width: calc(var(--column) + 2 * var(--pad));
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+
+@media (min-width: 70rem) {
+  .site-header,
+  main,
+  .site-footer {
+    max-width: calc(var(--column) + var(--gutter) + var(--margin) + 2 * var(--pad));
+    padding-right: calc(var(--gutter) + var(--margin) + var(--pad));
+  }
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 1.5rem;
+}
+
+.site-name {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.15rem;
+  text-decoration: none;
+}
+
+.site-header nav {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.site-header nav a {
+  text-decoration: none;
+  color: var(--ink-soft);
+}
+
+.site-header nav a:hover {
+  color: var(--accent);
+}
+
+main {
+  padding-block: 1rem 2rem;
+}
+
+.site-footer {
+  margin-top: 3rem;
+  padding-block: 1.5rem 3rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.site-footer p {
+  margin: 0.25rem 0;
+}
+
+/* --- Margin notes. Beside the text on wide screens; behind a ✎ toggle on
+   narrow ones (a checkbox does the toggling, so no JavaScript). */
+
+.mn {
+  display: block;
+  float: right;
+  clear: right;
+  width: var(--margin);
+  margin-right: calc(-1 * (var(--margin) + var(--gutter)));
+  font: 400 1.3rem/1.1 var(--hand);
+  letter-spacing: 0;
+  color: var(--accent);
+  rotate: -1.5deg;
+  text-wrap: pretty;
+}
+
+.mn a {
+  text-decoration-color: currentColor;
+}
+
+.mn-toggle,
+.mn-toggle-input {
+  display: none;
+}
+
+@media (max-width: 69.99rem) {
+  .mn {
+    display: none;
+  }
+
+  .mn-toggle {
+    display: inline;
+    margin-left: 0.2em;
+    /* Fonts with a plain ✎, so it doesn't turn into a colour emoji. */
+    font: 400 1rem 'Segoe UI Symbol', 'Apple Symbols', 'DejaVu Sans', var(--sans);
+    color: var(--accent);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* Visually hidden but still focusable, so keyboard users can open notes. */
+  .mn-toggle-input {
+    display: inline;
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+
+  .mn-toggle-input:focus-visible + .mn,
+  .mn-toggle:has(+ .mn-toggle-input:focus-visible) {
+    outline: 2px solid var(--accent);
+  }
+
+  .mn-toggle-input:checked + .mn {
+    display: block;
+    float: none;
+    width: auto;
+    margin: 0.5rem 0 0.75rem;
+    rotate: none;
+  }
+}
+
+/* --- Homepage */
+
+.intro {
+  padding-top: clamp(2rem, 8vh, 5rem);
+}
+
+.portrait {
+  display: block;
+  width: 7rem;
+  height: 7rem;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 1.25rem;
+}
+
+.intro h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2.5rem, 7vw, 3.25rem);
+}
+
+.lede {
+  margin: 0 0 1rem;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.contact {
+  margin: 0;
+}
+
+.label {
+  margin: 2.5rem 0 0.75rem;
+  font: 500 0.75rem/1.4 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.now .label:first-child {
+  margin-top: 3rem;
+}
+
+.entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.entries li {
+  margin-bottom: 0.35rem;
+}
+
+.entries strong {
+  font-weight: 600;
+}
+
+.entries span,
+.previously {
+  color: var(--ink-soft);
+}
+
+.previously {
+  margin: 0;
+}
+
+/* Keep each item whole; lines break at the separators between them. */
+.previously > span {
+  white-space: nowrap;
+}
+
+@media (max-width: 30rem) {
+  .previously > span {
+    white-space: normal;
+  }
+}
+
+.work h2,
+.writing h2 {
+  margin: 3.5rem 0 0.5rem;
+  font-size: 1.6rem;
+}
+
+.more {
+  margin-top: 1.25rem;
+  font-size: 0.95rem;
+}
+
+/* --- Lists of work and posts */
+
+.work-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.work-item {
+  border-top: 1px solid var(--rule);
+}
+
+/* On phones, a work item's margin note (which comes first in the markup, so
+   it can float level with the title on wide screens) moves below the summary. */
+@media (max-width: 69.99rem) {
+  .work-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .work-item > a {
+    order: 1;
+    align-self: stretch;
+  }
+
+  .work-item > .mn-toggle {
+    order: 2;
+    margin: -0.75rem 0 0.75rem;
+  }
+
+  .work-item > .mn {
+    order: 3;
+  }
+}
+
+.work-item > a {
+  display: grid;
+  gap: 0.15rem;
+  padding: 1rem 0;
+  text-decoration: none;
+}
+
+.work-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1.2;
+}
+
+.work-item > a:hover .work-title {
+  color: var(--accent);
+}
+
+.work-item > a:hover .work-title::after {
+  content: ' →';
+}
+
+.work-meta {
+  font: 0.75rem/1.5 var(--mono);
+  color: var(--muted);
+}
+
+.work-summary {
+  color: var(--ink-soft);
+}
+
+/* The two smaller entries share a row: notable, but a step below the three above. */
+.work-list--pair {
+  border-top: 1px solid var(--rule);
+}
+
+.work-list--pair .work-item {
+  border-top: 0;
+}
+
+.work-list--pair .work-title {
+  font-size: 1.1rem;
+}
+
+.work-list--pair .work-summary {
+  font-size: 0.95rem;
+}
+
+@media (min-width: 40rem) {
+  .work-list--pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2rem;
+  }
+}
+
+.post-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post-list li {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 0 1rem;
+  padding: 0.45rem 0;
+}
+
+.post-list time,
+.archive-year {
+  font: 0.8rem/1.9 var(--mono);
+  color: var(--muted);
+}
+
+.post-list--long li {
+  padding: 0.75rem 0;
+}
+
+.post-list--long p {
+  grid-column: 2;
+  margin: 0.2rem 0 0;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 30rem) {
+  .post-list li {
+    grid-template-columns: 1fr;
+  }
+
+  .post-list--long p {
+    grid-column: 1;
+  }
+}
+
+.listing h1 {
+  margin: 1rem 0 0.5rem;
+  font-size: 2.25rem;
+}
+
+.listing .lede {
+  margin-bottom: 1.5rem;
+}
+
+.archive {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.archive li {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 1rem;
+  padding: 0.4rem 0;
+}
+
+.archive--undated li {
+  grid-template-columns: 1fr;
+}
+
+.quiet {
+  color: var(--muted);
+}
+
+/* --- Project pages (and the aside, which shows the same <article>) */
+
+.project-asset {
+  margin: 1rem 0 0;
+}
+
+.project-asset img,
+.project-asset video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid var(--rule);
+  background: var(--rule);
+}
+
+.project-asset figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.project-header h1 {
+  margin: 0 0 0.5rem;
+  font-size: 2.25rem;
+}
+
+.project-header .label {
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.summary {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.facts {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1.5rem 0 0;
+  padding: 1rem 0;
+  border-block: 1px solid var(--rule);
+}
+
+.facts div {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 1rem;
+}
+
+.facts dt {
+  font: 500 0.75rem/1.9 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.facts dd {
+  margin: 0;
+}
+
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+}
+
+.project-links a {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.project-links a:hover {
+  border-color: currentColor;
+}
+
+/* --- Long-form writing */
+
+.post-header h1 {
+  margin: 0.25rem 0 0;
+  font-size: clamp(2rem, 5vw, 2.5rem);
+}
+
+.post-header .label {
+  margin-top: 2rem;
+}
+
+.prose {
+  margin-top: 1.5rem;
+  text-wrap: pretty;
+}
+
+.prose h2 {
+  margin: 2.5rem 0 0.75rem;
+  font-size: 1.5rem;
+}
+
+.prose h3 {
+  margin: 2rem 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.prose img {
+  display: block;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: 34rem;
+  margin: 1.5rem auto;
+  border-radius: 6px;
+}
+
+.prose blockquote {
+  margin: 1.5rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--rule);
+  color: var(--ink-soft);
+}
+
+.prose code {
+  font: 0.9em var(--mono);
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+  background: var(--rule);
+}
+
+.prose pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 6px;
+  background: var(--rule);
+}
+
+.prose pre code {
+  padding: 0;
+  background: none;
+}
+
+.prose .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.25rem;
+}
+
+/* Footnotes, generated by marked-footnote. */
+.prose sup a {
+  text-decoration: none;
+  color: var(--accent);
+}
+
+.footnotes {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+/* --- The aside: project details opened from the homepage without leaving it.
+   It's a native <dialog>, so focus handling and Esc come from the browser. */
+
+.aside {
+  position: fixed;
+  inset: 0 0 0 auto;
+  width: min(44rem, 100vw);
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.aside::backdrop {
+  background: rgb(0 0 0 / 0.3);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aside[open] {
+    animation: aside-in 0.16s ease-out;
+  }
+}
+
+@keyframes aside-in {
+  from {
+    translate: 1.5rem 0;
+    opacity: 0;
+  }
+}
+
+html:has(.aside[open]) {
+  overflow: hidden;
+}
+
+.aside-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 1.25rem;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.9rem;
+}
+
+.aside-close {
+  font: inherit;
+  font-size: 1rem;
+  padding: 0.25rem 0.5rem;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.aside-close:hover {
+  background: var(--rule);
+}
+
+.aside-body {
+  padding: 0.5rem clamp(1.25rem, 5vw, 2.5rem) 3rem;
+}
+
+/* No margin to write in inside the aside, so notes always use the ✎ toggle. */
+.aside .mn {
+  display: none;
+}
+
+.aside .mn-toggle {
+  display: inline;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.aside .mn-toggle-input:checked + .mn {
+  display: block;
+  float: none;
+  width: auto;
+  margin: 0.5rem 0;
+  rotate: none;
+}
+
+@media (max-width: 40rem) {
+  .aside {
+    border-left: 0;
+  }
+}
+
+/* --- Utilities */
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  padding: 0.5rem 1rem;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 4px;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

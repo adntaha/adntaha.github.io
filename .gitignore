@@ -1,5 +1,2 @@
-_site
-.sass-cache
-.jekyll-metadata
-Gemfile.lock
-_default_posts
+node_modules/
+dist/

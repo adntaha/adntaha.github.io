@@ -5,8 +5,7 @@ export default {
   // Absolute URL, used only where relative links aren't allowed (feed, sitemap, social cards).
   url: 'https://adntaha.github.io',
   title: 'Aidan Taha',
-  description:
-    'Aidan Taha studies computer science and statistics at McGill, researches how language models behave, and builds things.',
+  description: 'AI safety researcher, builder, writer, learner. CS and Stats at McGill.',
   author: 'Aidan Taha',
   locale: 'en-CA',
   location: 'Montréal',
@@ -25,8 +24,8 @@ export default {
   // Optional. Drop an image in public/images/ and set e.g. { src: '/images/portrait.jpg', alt: '…' }.
   portrait: null,
 
-  // Optional. Set to '/resume.pdf' once a public version is in public/.
-  resume: null,
+  // The public résumé, public/resume.pdf (chosen 2026-10-08: coolest_resume_ever.pdf).
+  resume: '/resume.pdf',
 
   // Loaded only in production builds, so local development doesn't count as visits.
   analytics: {

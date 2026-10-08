@@ -5,6 +5,9 @@ import { mediaSize } from '../lib/media.js';
 
 const md = (text) => raw(renderInline(text));
 
+// One line of "Now" or "Previously": where, then what.
+const entry = (item) => html`<li><strong>${md(item.where)}</strong> <span>${md(item.what)}</span>${note(item.note)}</li>`;
+
 function portrait({ src, alt }) {
   const size = mediaSize(`public${src}`);
   return html`<img class="portrait" src="${src}" alt="${alt}"${size ? html` width="${size.width}" height="${size.height}"` : ''}>`;
@@ -42,11 +45,9 @@ export function home(site, { home, featured, posts }) {
 
   <section class="now" aria-labelledby="now-heading">
     <h2 class="label" id="now-heading">Now</h2>
-    <ul class="entries">
-      ${home.now.map((item) => html`<li><strong>${md(item.where)}</strong> <span>${md(item.what)}</span>${note(item.note)}</li>`)}
-    </ul>
+    <ul class="entries">${home.now.map(entry)}</ul>
     <h2 class="label">Previously</h2>
-    <p class="previously">${home.previously.map((item, i) => html`${i ? ' · ' : ''}<span>${md(item)}</span>`)}</p>
+    <ul class="entries entries--past">${home.previously.map(entry)}</ul>
   </section>
 
   <section class="work" aria-labelledby="work-heading">

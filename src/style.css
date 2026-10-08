@@ -310,24 +310,13 @@ main {
   font-weight: 600;
 }
 
-.entries span,
-.previously {
+.entries span {
   color: var(--ink-soft);
 }
 
-.previously {
-  margin: 0;
-}
-
-/* Keep each item whole; lines break at the separators between them. */
-.previously > span {
-  white-space: nowrap;
-}
-
-@media (max-width: 30rem) {
-  .previously > span {
-    white-space: normal;
-  }
+/* The past is a little quieter than the present. */
+.entries--past strong {
+  font-weight: 500;
 }
 
 .work h2,

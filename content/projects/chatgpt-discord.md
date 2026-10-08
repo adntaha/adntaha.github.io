@@ -3,8 +3,7 @@ title: ChatGPT in Discord
 featured: 5
 half: true
 period: Dec 2022
-summary: Five days after ChatGPT launched, I had it talking inside Discord. It was one of the first publicly demonstrated ChatGPT integrations.
-# TODO: summary sentence is Claude's new wording around the agreed framing ("one of the first publicly demonstrated ChatGPT integrations"). Rewrite if it's not your voice.
+summary: One of the first publicly demonstrated ChatGPT integrations. I built it less than five days after ChatGPT launched.
 note: I was 15. The bot was called "ChatGPT Staging."
 asset:
   type: video

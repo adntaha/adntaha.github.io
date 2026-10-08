@@ -1,27 +1,27 @@
 # The homepage's words. Inline Markdown works in every text field,
 # and `note` fields become handwritten-style margin notes.
 
-# TODO: intro copy is a draft by Claude. Rewrite in your own voice.
-intro: >-
-  I study computer science and statistics at McGill, research how language
-  models behave, and build things. Some are big, some are twenty lines long.
+intro: AI safety researcher, builder, writer, learner. CS and Stats at McGill.
 
-# TODO: Now / Previously wording is Claude's draft from the brief. Approve or rewrite each line.
 now:
   - where: Harvard MADSys Lab
-    what: research assistant, evaluating language models across languages
-    # TODO: confirm how much of the Harvard project is ready to describe publicly (brief §9).
+    what: research assistant, LLM evaluations for sovereign models
   - where: AI Alignment McGill
     what: co-director; revived the club and facilitate its reading groups
   - where: McGill University
     what: Joint Honours B.Sc., Computer Science & Statistics
 
 previously:
-  - "[MIT AI Alignment](https://mitaialignment.org/aisf/summer-2026/fellows/) AISF fellow"
-  - University of Basel, medical image segmentation research
-  - Holopin, integrations lead
-  - AI Control Hackathon, organizer
-  - BrébeufHx, co-president
+  - where: "[MIT AI Alignment](https://mitaialignment.org/aisf/summer-2026/fellows/)"
+    what: AISF fellow
+  - where: University of Basel
+    what: medical image segmentation research
+  - where: Holopin
+    what: integrations lead
+  - where: AI Control Hackathon
+    what: organizer
+  - where: BrébeufHx
+    what: co-president
 
 # Margin notes shown beside sections on wide screens (behind a ✎ on phones).
 notes:

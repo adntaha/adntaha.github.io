@@ -6,29 +6,29 @@
   grid: true
   items:
     - name: Fracture detection (MYP personal project)
-      year: 2023–24
+      year: 2023-24
       url: https://github.com/adntaha/pp-detection-fracture-recherche
-      blurb: compared seven models across five datasets for spotting bone fractures in X-rays, and shipped a Flutter demo app. It's also [how I got into AI safety](/blog/my-path-to-ai-safety/).
+      blurb: compared seven models across five datasets for spotting bone fractures in X-rays, and shipped a Flutter demo app. It's also [how I first got into AI safety](/blog/my-path-to-ai-safety/).
     - name: Rollz
       year: "2026"
       url: https://devpost.com/software/thirdplace
       image: /media/archive/rollz.jpg
-      blurb: navigation that takes mobility needs into account when choosing a route. MariHacks IX.
+      blurb: navigation that takes mobility needs into account when choosing a route
     - name: EasyAppoint
       year: "2025"
       url: https://devpost.com/software/easyappoint
       image: /media/archive/easyappoint.jpg
-      blurb: a healthcare appointment-booking prototype. MariHacks 8.0, MLH Best Domain Name from GoDaddy Registry.
+      blurb: a healthcare appointment-booking prototype
     - name: Arborescent
       year: "2025"
       url: https://devpost.com/software/arborescent
       image: /media/archive/arborescent.jpg
-      blurb: forest-health risk in Québec from satellite data and machine learning. PolyHacks.
+      blurb: forest-health risk in Québec from satellite data and machine learning
     - name: Tracks
       year: "2025"
       url: https://devpost.com/software/tracks-vb3u0l
       image: /media/archive/tracks.jpg
-      blurb: computer-vision exercise tracking with music that follows your workout's intensity. McHacks 12, with Bill Xu.
+      blurb: computer-vision exercise tracking with music that follows your workout's intensity
 
 - heading: Small experiments
   intro: Allowed to stay small.
@@ -44,11 +44,11 @@
     - name: biblio-generator
       year: ""
       url: https://github.com/adntaha/biblio-generator
-      blurb: a bibliography helper for tired IB students.
+      blurb: a bibliography helper for tired IB MYP students.
     - name: httpcat-bot
       year: ""
       url: https://github.com/adntaha/httpcat-bot
-      blurb: an unofficial Discord bot for HTTP Cats.
+      blurb: an unofficial Discord bot for HTTP status code cat images ([http.cat](https://http.cat)).
     - name: sillycat-worker
       year: ""
       url: https://github.com/adntaha/sillycat-worker

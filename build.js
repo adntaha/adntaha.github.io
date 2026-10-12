@@ -2,7 +2,7 @@
 //
 //   content/   what the site says: Markdown and YAML
 //   templates/ how it's laid out: functions that return HTML
-//   src/       CSS and the one small script, fingerprinted for caching
+//   src/       the stylesheet and two small scripts, fingerprinted for caching
 //   public/    copied as-is (fonts, images, video)
 
 import fs from 'node:fs';
@@ -59,7 +59,7 @@ function write(url, contents, { inSitemap = true } = {}) {
 
 write(
   '/',
-  layout(site, { url: '/', bodyClass: 'is-home' },
+  layout(site, { url: '/', bodyClass: 'is-home', scripts: ['stars.js'] },
     home(site, { home: homeData, featured: projects.filter((p) => p.featured), posts })),
 );
 

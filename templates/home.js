@@ -3,6 +3,7 @@ import { renderInline, marginNote, readNote } from '../lib/markdown.js';
 import { formatDate, isoDate } from '../lib/dates.js';
 import { mediaSize } from '../lib/media.js';
 import { projectRow } from './work.js';
+import { messyStar, messyArrow } from './doodles.js';
 
 const md = (text) => raw(renderInline(text));
 
@@ -35,13 +36,19 @@ function postNote(post, value) {
   </span>${note(text, `mn-home-${post.slug}`)}`;
 }
 
+// Three stars in the margins that draw themselves as they scroll into view.
+// Decoration only, so hidden from screen readers.
+const star = (n) => html`<svg class="doodle star star-${n}" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+  <path pathLength="1" d="${messyStar(n * 7919)}"/>
+</svg>`;
+
 export function home(site, { home, featured, posts }) {
   const full = featured.filter((p) => !p.half);
   const half = featured.filter((p) => p.half);
 
   return html`
 <article class="home">
-  <header class="intro">
+  <header class="intro">${star(1)}
     ${site.portrait ? portrait(site.portrait) : ''}
     <h1>${site.title}</h1>
     <p class="lede">${md(home.intro)}</p>
@@ -58,15 +65,15 @@ export function home(site, { home, featured, posts }) {
     <ul class="entries entries--past">${home.previously.map(entry)}</ul>
   </section>
 
-  <section class="work" aria-labelledby="work-heading">
+  <section class="work" aria-labelledby="work-heading">${star(2)}
     <h2 id="work-heading">Selected work</h2>
     <ul class="work-list">${full.map((p) => projectRow(p))}</ul>
     ${half.length ? html`<ul class="work-list work-list--pair">${half.map((p) => projectRow(p))}</ul>` : ''}
     <p class="more"><a href="/projects/">Everything else, including small experiments →</a></p>
   </section>
 
-  <section class="writing" aria-labelledby="writing-heading">
-    <h2 id="writing-heading">Writing${note(home.notes?.writing, 'mn-home-writing')}</h2>
+  <section class="writing" aria-labelledby="writing-heading">${star(3)}
+    <h2 id="writing-heading">Writing</h2>
     <ul class="post-list">
       ${posts.map((post) => html`<li><time datetime="${isoDate(post.date)}">${formatDate(post.date)}</time> <a href="${post.url}">${post.title}</a></li>`)}
     </ul>

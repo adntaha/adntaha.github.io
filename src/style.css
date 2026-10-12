@@ -376,6 +376,127 @@ main {
   font-size: 0.95rem;
 }
 
+/* --- Doodles (templates/doodles.js): three one-stroke stars in the homepage
+   margins that draw themselves as they scroll into view, and an arrow from
+   each note beside a post in "Writing" to that post. They're handwriting on the board, like
+   the margin notes: same colour, same chalk grain, same layer. Once someone
+   picks up a marker, src/board.js turns them into strokes on its canvas (so
+   they can be erased) and hides these. Only on screens wide enough to have
+   margins. */
+
+.doodle {
+  display: none;
+  overflow: visible; /* a stroke can overshoot its box */
+  fill: none;
+  stroke: var(--note);
+  stroke-width: 2.75; /* about as thick as the margin notes' handwriting */
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.doodle path {
+  vector-effect: non-scaling-stroke;
+}
+
+.doodle.on-board {
+  visibility: hidden;
+}
+
+@media (min-width: 70rem) {
+  .doodle {
+    display: block;
+  }
+
+  .intro,
+  .work,
+  .writing {
+    position: relative;
+  }
+
+  .star {
+    position: absolute;
+    z-index: -2;
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+
+  /* Top right, beside the name. */
+  .star-1 {
+    top: 2.5rem;
+    right: calc(-1 * var(--margin));
+    rotate: 8deg;
+  }
+
+  /* Left, beside "Selected work". */
+  .star-2 {
+    top: -1.25rem;
+    left: calc(-1 * (var(--gutter) + 6rem));
+    rotate: -12deg;
+  }
+
+  /* Right, above the note beside the posts in "Writing". */
+  .star-3 {
+    top: -1.5rem;
+    right: calc(-1 * var(--margin) + 10rem);
+    rotate: 16deg;
+  }
+
+  /* From a post's note, back across to the end of its title: it fills the
+     rest of the line and the gutter, stopping just short of the note. */
+  .post-list li > span:has(.post-arrow) {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  /* One line tall, so it runs level with the title's first line and the
+     note's (which line up: see .post-list .mn). */
+  .post-arrow {
+    display: block;
+    position: relative;
+    z-index: -2; /* with the notes, under the drawing layer */
+    flex: 1;
+    min-width: 2rem;
+    height: 1lh;
+    margin: 0 calc(-1 * var(--gutter) + 0.5rem) 0 0.6rem;
+  }
+
+  .post-arrow-shaft {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .post-arrow-head {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0.875rem;
+    height: 100%;
+  }
+}
+
+/* Drawn in: the line is a dash as long as the whole star, slid into place.
+   The first star is already in view when the page opens, so it draws itself
+   just after you arrive; src/stars.js draws the others as you scroll. With
+   reduced motion (or no JavaScript), they're simply already there. */
+@media (prefers-reduced-motion: no-preference) {
+  .doodle.star-1 path {
+    stroke-dasharray: 1;
+    animation: draw-star 0.9s 0.4s ease-in-out both;
+  }
+}
+
+@keyframes draw-star {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 /* --- Lists of work and posts */
 
 .work-list {
@@ -479,6 +600,26 @@ a.work-row:hover .work-title::after {
   grid-template-columns: 7.5rem 1fr;
   gap: 0 1rem;
   padding: 0.45rem 0;
+}
+
+/* A note beside a post hangs in the margin from that row, without making the
+   row taller (a float would stretch it, since a grid cell contains its floats). */
+@media (min-width: 70rem) {
+  .post-list li {
+    position: relative;
+  }
+
+  .post-list .mn {
+    position: absolute;
+    top: 0.45rem; /* the row's padding: first lines level */
+    right: calc(-1 * (var(--margin) + var(--gutter)));
+    margin: 0;
+  }
+
+  .post-list .mn--left {
+    right: auto;
+    left: calc(-1 * (var(--margin) + var(--gutter)));
+  }
 }
 
 .post-list time {

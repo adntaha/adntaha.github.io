@@ -1,5 +1,5 @@
 // Local development: serves dist/ at http://localhost:4000, rebuilds when
-// anything changes, and reloads open tabs. No dependencies, just Node.
+// anything in WATCH changes, and reloads open tabs. No dependencies, just Node.
 //
 // Each rebuild runs build.js in a fresh process. That takes a fraction of a
 // second and guarantees edited templates are picked up (Node caches imports).
@@ -37,6 +37,7 @@ function build() {
 const server = http.createServer((req, res) => {
   if (req.url === '/__reload') {
     res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache' });
+    res.flushHeaders(); // so the tab knows it's connected straight away
     listeners.add(res);
     req.on('close', () => listeners.delete(res));
     return;
@@ -55,33 +56,46 @@ const server = http.createServer((req, res) => {
   res.end(body);
 });
 
+
+// Watching for changes: every 300ms, compare each watched file's modification
+// time and size with the last look, and rebuild if anything was added, edited
+// or deleted. (fs.watch would be instant, but it misses edits made from
+// Windows to files under WSL's /mnt/c, and on Windows it reports a "change"
+// whenever a file is merely read. Polling a few dozen files is cheap.)
+function snapshot() {
+  const seen = new Map();
+  const visit = (file) => {
+    let stat;
+    try {
+      stat = fs.statSync(file);
+    } catch {
+      return; // deleted mid-scan
+    }
+    if (stat.isDirectory()) {
+      for (const name of fs.readdirSync(file)) visit(path.join(file, name));
+    } else {
+      seen.set(file, `${stat.mtimeMs}:${stat.size}`);
+    }
+  };
+  WATCH.forEach(visit);
+  return seen;
+}
+
+function changed(before, after) {
+  if (before.size !== after.size) return true;
+  for (const [file, stamp] of after) if (before.get(file) !== stamp) return true;
+  return false;
+}
+
+// The first look comes before the first build, so a file saved while that
+// build runs still counts as a change.
+let last = snapshot();
 build();
 server.listen(PORT, () => console.log(`\nhttp://localhost:${PORT}`));
 
-// On Windows, watching a single file reports a "change" every time it's merely
-// read, and every build reads build.js and site.config.js. Without this check
-// each build would trigger the next one. So: only rebuild if the file's
-// modification time actually moved.
-const mtimes = new Map();
-function modified(file) {
-  try {
-    const mtime = fs.statSync(file).mtimeMs;
-    if (mtimes.get(file) === mtime) return false;
-    mtimes.set(file, mtime);
-  } catch {
-    mtimes.delete(file); // deleted counts as modified
-  }
-  return true;
-}
-WATCH.forEach(modified);
-
-// Editors often save in several steps; wait for a quiet moment before rebuilding.
-let timer;
-for (const target of WATCH) {
-  const isDir = fs.statSync(target).isDirectory();
-  fs.watch(target, { recursive: true }, (event, name) => {
-    if (!modified(isDir && name ? path.join(target, name) : target)) return;
-    clearTimeout(timer);
-    timer = setTimeout(build, 50);
-  });
-}
+setInterval(() => {
+  const now = snapshot();
+  if (!changed(last, now)) return;
+  last = now; // taken before the build, so anything saved during it is caught next time
+  build();
+}, 300);

@@ -4,8 +4,6 @@ description: On another note, factorials do get weird when it comes to nCr and
   differentiability.
 date: 2026-04-05T03:07:41-04:00
 category: The Workshop
-tags:
-  - Mathematics
 ---
 
 It all started with the following IB practice problem:

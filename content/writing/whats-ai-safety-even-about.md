@@ -5,10 +5,6 @@ description: Where did this field even come from? Why are we worrying about the
   Safety researchers do, they worry about something else.
 date: 2025-08-17T19:43:13-04:00
 category: Decoding AI
-tags:
-  - AI Safety
-  - LLMs
-  - Medical AI
 ---
 
 If you pay attention, alongside big AI labs like DeepMind or OpenAI's [releases on the performance of their models on the IMO](https://www.nature.com/articles/d41586-025-02343-x), you'll notice that they'll talk about things like making their AIs 'safe', 'interpretable' or even 'trustworthy' in their blog posts. Or at least that was my case.

@@ -4,11 +4,6 @@ description: The story of a catastrophic failure, a 55% accurate model, and the
   rabbit hole that led me to the most important problem in tech.
 date: 2025-06-28T15:52:20-04:00
 category: Decoding AI
-tags:
-  - AI Safety
-  - Medical AI
-  - LLMs
-  - Model Failure
 ---
 
 Hi there. I'm Aidan. If you've landed on this blog, then I can safely assume that AI interests you.

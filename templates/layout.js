@@ -33,7 +33,8 @@ export function layout(site, page, content) {
 <meta property="og:url" content="${canonical}">
 <meta property="og:type" content="${page.type === 'post' ? 'article' : 'website'}">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="alternate" type="application/atom+xml" title="${site.title}" href="/feed.xml">
 <link rel="preload" href="/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${site.assets['style.css']}">

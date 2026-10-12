@@ -59,10 +59,10 @@ export function home(site, { home, featured, posts }) {
   </header>
 
   <section class="now" aria-labelledby="now-heading">
-    <h2 class="label" id="now-heading">Now</h2>
+    <h2 class="subhead" id="now-heading">Now</h2>
     <ul class="entries">${home.now.map(entry)}</ul>
-    <h2 class="label">Previously</h2>
-    <ul class="entries entries--past">${home.previously.map(entry)}</ul>
+    <h2 class="subhead">Previously</h2>
+    <ul class="entries">${home.previously.map(entry)}</ul>
   </section>
 
   <section class="work" aria-labelledby="work-heading">${star(2)}

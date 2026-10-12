@@ -200,7 +200,7 @@ main {
   clear: right;
   width: var(--margin);
   margin-right: calc(-1 * (var(--margin) + var(--gutter)));
-  font: 400 1.3rem/1.1 var(--hand);
+  font: 500 1.55rem/1.1 var(--hand);
   letter-spacing: 0;
   color: var(--note);
   rotate: -1.5deg;
@@ -338,7 +338,14 @@ main {
   color: var(--muted);
 }
 
-.now .label:first-child {
+/* "Now" and "Previously": small headings in the serif, one step below
+   "Selected work" and "Writing". */
+.subhead {
+  margin: 2.25rem 0 0.5rem;
+  font-size: 1.15rem;
+}
+
+.now .subhead:first-child {
   margin-top: 3rem;
 }
 
@@ -353,16 +360,21 @@ main {
 }
 
 .entries strong {
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .entries span {
   color: var(--ink-soft);
 }
 
-/* The past is a little quieter than the present. */
-.entries--past strong {
-  font-weight: 500;
+/* Links in these lists stay quiet, so the rows read as one calm list; the
+   underline comes back on hover (and keyboard focus gets the usual outline). */
+.entries a {
+  text-decoration: none;
+}
+
+.entries a:hover {
+  text-decoration: underline;
 }
 
 .work h2,
@@ -622,9 +634,17 @@ a.work-row:hover .work-title::after {
   }
 }
 
+/* The date sits on the same baseline as the title's first line. (Centring
+   their boxes looks off: the eye centres a title on its lowercase letters,
+   and an all-digit date sharing its baseline lands right in their middle.) */
 .post-list time {
-  font: 0.8rem/1.9 var(--mono);
+  align-self: first baseline;
+  font: 0.8rem/1.6 var(--mono);
   color: var(--muted);
+}
+
+.post-list li > :nth-child(2) {
+  align-self: first baseline;
 }
 
 .post-list--long li {
@@ -732,8 +752,15 @@ a.work-row:hover .work-title::after {
   gap: 1rem;
 }
 
+/* Each label sits on the same baseline as the first line of its value, like
+   the dates beside post titles. */
+.facts dt,
+.facts dd {
+  align-self: first baseline;
+}
+
 .facts dt {
-  font: 500 0.75rem/1.9 var(--mono);
+  font: 500 0.75rem/1.6 var(--mono);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);

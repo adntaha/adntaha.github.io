@@ -1,15 +1,9 @@
 import { html, raw } from '../lib/html.js';
 
 // Prerender same-site pages when a link is hovered, so clicking one feels
-// instant (Chromium browsers; others simply ignore this). Links that open in
-// the homepage aside are skipped: aside.js fetches those itself.
+// instant (Chromium browsers; others simply ignore this).
 const speculationRules = JSON.stringify({
-  prerender: [
-    {
-      where: { and: [{ href_matches: '/*' }, { not: { selector_matches: '[data-aside]' } }] },
-      eagerness: 'moderate',
-    },
-  ],
+  prerender: [{ where: { href_matches: '/*' }, eagerness: 'moderate' }],
 });
 
 // Every page goes through this. `page` describes the page itself;
@@ -46,12 +40,6 @@ export function layout(site, page, content) {
 ${page.hasMath ? html`<link rel="stylesheet" href="/katex/katex.min.css">` : ''}
 <script type="speculationrules">${raw(speculationRules)}</script>
 ${page.scripts?.map((src) => html`<script type="module" src="${site.assets[src]}"></script>`)}
-${page.url === '/' ? '' : html`<script>
-  // If this page was reached by reloading inside the homepage's project panel, Back
-  // only changes the URL; nothing would re-render. Load the page it now points to.
-  const here = location.pathname;
-  addEventListener('popstate', () => location.pathname !== here && location.reload());
-</script>`}
 ${site.production && site.analytics
   ? html`<script defer src="${site.analytics.src}" data-website-id="${site.analytics.websiteId}"></script>`
   : ''}

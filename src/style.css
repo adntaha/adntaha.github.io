@@ -4,7 +4,7 @@
   handwritten notes in the margin for people who like to wander.
 
   Contents: fonts · colours · base · layout · margin notes · homepage ·
-  lists · project pages · prose · the aside · small utilities
+  lists · project pages · prose · small utilities
 */
 
 /* --- Fonts: self-hosted, Latin subset only. Body text uses the system font: zero bytes. */
@@ -200,6 +200,34 @@ main {
   text-decoration-color: currentColor;
 }
 
+/* A note can hang in the left margin instead, tilted the other way. */
+.mn--left {
+  float: left;
+  clear: left;
+  margin-right: 0;
+  margin-left: calc(-1 * (var(--margin) + var(--gutter)));
+  rotate: 1.5deg;
+}
+
+/* A picture in the margin is a print taped into the notebook: a white border,
+   a hair of shadow, and the note's own slight tilt. Any note text sits under it. */
+.print {
+  display: block;
+  width: 10rem; /* small enough to stay level with its row */
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  margin-bottom: 0.3rem;
+  padding: 0.3rem;
+  background: var(--print);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.12);
+}
+
+/* Alternate the tilt, so a column of prints looks pasted in by hand. */
+.work-item:nth-child(even) > .mn:has(.print) {
+  rotate: 1.25deg;
+}
+
 .mn-toggle,
 .mn-toggle-input {
   display: none;
@@ -240,6 +268,10 @@ main {
     width: auto;
     margin: 0.5rem 0 0.75rem;
     rotate: none;
+  }
+
+  .mn-toggle-input:checked + .mn .print {
+    max-width: 16rem;
   }
 }
 
@@ -342,7 +374,7 @@ main {
     align-items: flex-start;
   }
 
-  .work-item > a {
+  .work-item > .work-row {
     order: 1;
     align-self: stretch;
   }
@@ -357,7 +389,7 @@ main {
   }
 }
 
-.work-item > a {
+.work-row {
   display: grid;
   gap: 0.15rem;
   padding: 1rem 0;
@@ -371,11 +403,11 @@ main {
   line-height: 1.2;
 }
 
-.work-item > a:hover .work-title {
+a.work-row:hover .work-title {
   color: var(--accent);
 }
 
-.work-item > a:hover .work-title::after {
+a.work-row:hover .work-title::after {
   content: ' →';
 }
 
@@ -471,125 +503,11 @@ main {
   padding: 0.4rem 0;
 }
 
-/* --- Picture cards on /projects/, which gets a wider column than reading pages. */
-
-.is-wide .site-header,
-.is-wide main,
-.is-wide .site-footer {
-  max-width: calc(64rem + 2 * var(--pad));
-}
-
-.cards {
-  display: grid;
-  gap: 1.5rem;
-  list-style: none;
-  margin: 1.5rem 0 1rem;
-  padding: 0;
-}
-
-/* Rows alternate wide-narrow, narrow-wide, so the grid doesn't look like a spreadsheet. */
-@media (min-width: 48rem) {
-  .cards {
-    grid-template-columns: repeat(5, 1fr);
-  }
-
-  .card:nth-child(4n + 1),
-  .card:nth-child(4n) {
-    grid-column: span 3;
-  }
-
-  .card:nth-child(4n + 2),
-  .card:nth-child(4n + 3) {
-    grid-column: span 2;
-  }
-
-  /* A lone last card takes the whole row. */
-  .card:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-  }
-}
-
-.card > a {
-  display: block;
-  height: 100%;
-  text-decoration: none;
-}
-
-.card-art {
-  position: relative;
-  display: block;
-  height: 15rem;
-  overflow: hidden;
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  background: #fff;
-}
-
-.card-art img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: scale 0.2s ease-out;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .card > a:hover .card-art img {
-    scale: 1.03;
-  }
-}
-
-/* No picture: the title itself is the picture, on a page of graph paper. */
-.card-art--text {
-  background-color: var(--paper);
-  background-image:
-    linear-gradient(var(--rule) 1px, transparent 1px),
-    linear-gradient(90deg, var(--rule) 1px, transparent 1px);
-  background-size: 1.25rem 1.25rem;
-}
-
-.card-date,
-.card-title {
-  position: absolute;
-  left: 0.6rem;
-  padding: 0.15rem 0.45rem;
-  border-radius: 4px;
-  background: var(--paper);
-  color: var(--ink);
-}
-
-.card-date {
-  top: 0.6rem;
-  font: 0.75rem/1.5 var(--mono);
-}
-
-.card-title {
-  bottom: 0.6rem;
-  max-width: calc(100% - 1.2rem);
-  font: 600 1.35rem/1.2 var(--serif);
-}
-
-.card-art--text .card-title {
-  font-size: 1.9rem;
-  background: none;
-}
-
-.card > a:hover .card-title {
-  color: var(--accent);
-}
-
-.card-text {
-  display: block;
-  margin-top: 0.6rem;
-  font-size: 0.95rem;
-  color: var(--ink-soft);
-  text-wrap: pretty;
-}
-
 .quiet {
   color: var(--muted);
 }
 
-/* --- Project pages (and the aside, which shows the same <article>) */
+/* --- Project pages */
 
 .project-asset {
   margin: 1rem 0 0;
@@ -600,7 +518,6 @@ main {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 6px;
   border: 1px solid var(--rule);
   background: var(--rule);
 }
@@ -665,23 +582,11 @@ main {
 .project-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.5rem 1.5rem;
   list-style: none;
   margin: 2rem 0 0;
-  padding: 0;
-}
-
-.project-links a {
-  display: inline-block;
-  padding: 0.4rem 0.8rem;
-  border: 1px solid var(--rule);
-  border-radius: 6px;
-  font-size: 0.95rem;
-  text-decoration: none;
-}
-
-.project-links a:hover {
-  border-color: currentColor;
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--rule);
 }
 
 /* --- Long-form writing */
@@ -717,7 +622,6 @@ main {
   height: auto;
   max-height: 34rem;
   margin: 1.5rem auto;
-  border-radius: 6px;
 }
 
 .prose blockquote {
@@ -764,105 +668,6 @@ main {
   border-top: 1px solid var(--rule);
   font-size: 0.9rem;
   color: var(--ink-soft);
-}
-
-/* --- The aside: project details opened from the homepage without leaving it.
-   It's a native <dialog>, so focus handling and Esc come from the browser. */
-
-.aside {
-  position: fixed;
-  inset: 0 0 0 auto;
-  width: min(44rem, 100vw);
-  height: 100dvh;
-  max-width: none;
-  max-height: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-left: 1px solid var(--rule);
-  background: var(--paper);
-  color: var(--ink);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}
-
-.aside::backdrop {
-  background: rgb(0 0 0 / 0.3);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .aside[open] {
-    animation: aside-in 0.16s ease-out;
-  }
-}
-
-@keyframes aside-in {
-  from {
-    translate: 1.5rem 0;
-    opacity: 0;
-  }
-}
-
-html:has(.aside[open]) {
-  overflow: hidden;
-}
-
-.aside-bar {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.6rem 1.25rem;
-  background: color-mix(in srgb, var(--paper) 92%, transparent);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--rule);
-  font-size: 0.9rem;
-}
-
-.aside-close {
-  font: inherit;
-  font-size: 1rem;
-  padding: 0.25rem 0.5rem;
-  border: 0;
-  border-radius: 4px;
-  background: none;
-  color: var(--ink);
-  cursor: pointer;
-}
-
-.aside-close:hover {
-  background: var(--rule);
-}
-
-.aside-body {
-  padding: 0.5rem clamp(1.25rem, 5vw, 2.5rem) 3rem;
-}
-
-/* No margin to write in inside the aside, so notes always use the ✎ toggle. */
-.aside .mn {
-  display: none;
-}
-
-.aside .mn-toggle {
-  display: inline;
-  color: var(--accent);
-  cursor: pointer;
-}
-
-.aside .mn-toggle-input:checked + .mn {
-  display: block;
-  float: none;
-  width: auto;
-  margin: 0.5rem 0;
-  rotate: none;
-}
-
-@media (max-width: 40rem) {
-  .aside {
-    border-left: 0;
-  }
 }
 
 /* --- Utilities */

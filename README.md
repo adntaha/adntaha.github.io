@@ -13,7 +13,7 @@ npm run build   # writes the finished site to dist/
 | Path | What it is |
 | --- | --- |
 | `content/home.yml` | Homepage words: intro, Now, Previously, margin notes |
-| `content/projects/*.md` | One file per project page. `featured: 1` puts it on the homepage, `half: true` makes it a smaller entry |
+| `content/projects/*.md` | One file per project page. `featured: 1` puts it on the homepage, `half: true` makes it a smaller entry, `thumb` is the picture pasted in the margin on `/projects/` |
 | `content/archive.yml` | The quieter list of hackathon builds and small experiments on `/projects/` |
 | `content/writing/*.md` | Blog posts, served at `/blog/<file-name>/` (same URLs as the old Jekyll blog) |
 | `content/pages/*.md` | Standalone pages such as `/colophon/` and the 404 page |

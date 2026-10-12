@@ -27,12 +27,10 @@ const facts = (project) =>
     ['Built with', project.stack],
   ].filter(([, value]) => value);
 
-// The same <article> is the full project page and, fetched by src/aside.js,
-// the content of the homepage aside: picture on top, story in the middle,
-// links at the end.
+// A project page: picture on top, story in the middle, links at the end.
 export function project(site, project) {
   return html`
-<article class="project" data-aside-content>
+<article class="project">
   ${asset(project.asset)}
   <header class="project-header">
     <p class="label">${project.period}</p>

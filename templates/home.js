@@ -1,7 +1,8 @@
 import { html, raw } from '../lib/html.js';
-import { renderInline, marginNote } from '../lib/markdown.js';
+import { renderInline, marginNote, readNote } from '../lib/markdown.js';
 import { formatDate, isoDate } from '../lib/dates.js';
 import { mediaSize } from '../lib/media.js';
+import { projectRow } from './work.js';
 
 const md = (text) => raw(renderInline(text));
 
@@ -12,20 +13,27 @@ function portrait({ src, alt }) {
   const size = mediaSize(`public${src}`);
   return html`<img class="portrait" src="${src}" alt="${alt}"${size ? html` width="${size.width}" height="${size.height}"` : ''}>`;
 }
-const note = (text, id) => (text ? raw(marginNote(renderInline(text), id)) : '');
+const note = (value, id) => {
+  const { text, side } = readNote(value);
+  return text ? raw(marginNote(renderInline(text), id, side)) : '';
+};
 
-// One project in "Selected work". Clicking opens the aside (see src/aside.js);
-// without JS, or with a modifier key, it's an ordinary link to the project page.
-// The margin note comes first so it floats level with the title; on phones,
-// CSS moves its ✎ below the summary.
-const workItem = (project) => html`
-<li class="work-item">${note(project.note, `mn-home-${project.slug}`)}
-  <a href="${project.url}" data-aside>
-    <span class="work-title">${project.title}</span>
-    <span class="work-meta">${project.period}${project.outcome ? html` · ${project.outcome}` : ''}</span>
-    <span class="work-summary">${md(project.summary)}</span>
-  </a>
-</li>`;
+// A note in the right margin beside a post in "Writing" comes with a doodled
+// arrow from the note back to the post's title. The arrow stretches to fill
+// the gap, so it's in two parts: the shaft stretches, the head keeps its
+// shape. The post's file name seeds the wobble, so each arrow is a little
+// different. (A note in the left margin sits right by the date; no arrow.)
+function postNote(post, value) {
+  const { text, side } = readNote(value);
+  if (!text) return '';
+  if (side === 'left') return note(value, `mn-home-${post.slug}`);
+  const seed = [...post.slug].reduce((sum, c) => sum * 31 + c.charCodeAt(0), 7) | 0;
+  const { head, shaft } = messyArrow(seed);
+  return html`<span class="post-arrow" aria-hidden="true">
+    <svg class="doodle post-arrow-shaft" viewBox="0 0 100 24" preserveAspectRatio="none" focusable="false"><path d="${shaft}"/></svg>
+    <svg class="doodle post-arrow-head" viewBox="0 0 14 24" focusable="false"><path d="${head}"/></svg>
+  </span>${note(text, `mn-home-${post.slug}`)}`;
+}
 
 export function home(site, { home, featured, posts }) {
   const full = featured.filter((p) => !p.half);
@@ -52,8 +60,8 @@ export function home(site, { home, featured, posts }) {
 
   <section class="work" aria-labelledby="work-heading">
     <h2 id="work-heading">Selected work</h2>
-    <ul class="work-list">${full.map(workItem)}</ul>
-    ${half.length ? html`<ul class="work-list work-list--pair">${half.map(workItem)}</ul>` : ''}
+    <ul class="work-list">${full.map((p) => projectRow(p))}</ul>
+    ${half.length ? html`<ul class="work-list work-list--pair">${half.map((p) => projectRow(p))}</ul>` : ''}
     <p class="more"><a href="/projects/">Everything else, including small experiments →</a></p>
   </section>
 
@@ -63,13 +71,5 @@ export function home(site, { home, featured, posts }) {
       ${posts.map((post) => html`<li><time datetime="${isoDate(post.date)}">${formatDate(post.date)}</time> <a href="${post.url}">${post.title}</a></li>`)}
     </ul>
   </section>
-</article>
-
-<dialog class="aside" id="aside" aria-label="Project details">
-  <div class="aside-bar">
-    <a class="aside-full" href="#">Open as page ↗</a>
-    <button type="button" class="aside-close" aria-label="Close">✕</button>
-  </div>
-  <div class="aside-body"></div>
-</dialog>`;
+</article>`;
 }

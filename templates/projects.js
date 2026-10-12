@@ -1,49 +1,26 @@
 import { html, raw } from '../lib/html.js';
 import { renderInline } from '../lib/markdown.js';
-import { mediaSize } from '../lib/media.js';
+import { workItem, projectRow } from './work.js';
 
 const md = (text) => raw(renderInline(text));
+const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-// A whole card is one link, and links can't nest, so [text](url) in a card keeps only its text.
-const withoutLinks = (markdown) => String(markdown ?? '').replace(/\[([^\]]*)\]\([^)]*\)/g, '$1');
-
-// One picture card: image on top with the date and title laid over it, a
-// sentence underneath. Without an image, the title gets the whole tile.
-// The image is decorative (alt=""): the title right on top of it is the link text.
-function card({ url, title, date, text, image }) {
-  const size = image && mediaSize(`public${image}`);
-  return html`<li class="card">
-    <a href="${url}">
-      <span class="card-art${image ? '' : ' card-art--text'}">
-        ${image
-          ? html`<img src="${image}" alt=""${size ? html` width="${size.width}" height="${size.height}"` : ''} loading="lazy" decoding="async">`
-          : ''}
-        ${date ? html`<span class="card-date">${date}</span>` : ''}
-        <span class="card-title">${title}</span>
-      </span>
-      <span class="card-text">${md(withoutLinks(text))}</span>
-    </a>
-  </li>`;
-}
-
-// A project page's card picture: its `thumb`, or its top image if it has one.
-const projectImage = (p) => p.thumb ?? (p.asset?.type === 'image' ? p.asset.src : null);
-
-// /projects/: a grid of everything with a page, then the archive
-// (content/archive.yml): grid groups as cards, the rest as a plain list.
+// /projects/: everything with a page, then the archive (content/archive.yml).
+// All of it is rows in the column, the same as on the homepage; pictures
+// hang in the margin. Groups with `rows: true` get full rows, the rest a plain list.
 export function projectsIndex(site, projects, archive) {
   return html`
 <article class="listing">
   <h1>Projects</h1>
-  <ul class="cards">
-    ${projects.map((p) => card({ url: p.url, title: p.title, date: p.period, text: p.summary, image: projectImage(p) }))}
-  </ul>
+  <ul class="work-list">${projects.map((p) => projectRow(p, { withImage: true }))}</ul>
   ${archive.map((group) =>
-    group.grid
+    group.rows
       ? html`
   <h2 class="label">${group.heading}</h2>
-  <ul class="cards">
-    ${group.items.map((item) => card({ url: item.url, title: item.name, date: item.year, text: item.blurb, image: item.image }))}
+  <ul class="work-list">
+    ${group.items.map((item) =>
+      workItem({ url: item.url, title: item.name, meta: item.year, summary: item.blurb, image: item.image, note: item.note, id: `mn-${slugify(item.name)}` }),
+    )}
   </ul>`
       : html`
   <h2 class="label">${group.heading}</h2>

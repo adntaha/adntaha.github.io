@@ -1,46 +1,64 @@
 # The quieter list on /projects/. Projects with their own page live in content/projects/.
-# Inline Markdown works in `blurb` and `intro`. Groups with `grid: true` show as picture cards
-# (`image` is optional); the others are a plain list.
+# Inline Markdown works in `blurb`, `intro` and `note` (a handwritten margin note; write it as
+# `{ text: …, side: left }` to put it in the left margin). Groups with `rows: true` show as full rows, with `image`
+# (optional) pasted in the margin; the others are a plain list.
 
-- heading: Hackathons and school projects
-  grid: true
+- heading: Other hackathon and school projects
+  rows: true
   items:
+    - name: Slidex
+      year: 2026 · HackMIT
+      url: https://plume.hackmit.org/project/lvlxw-lursq-ipext-xxjqw
+      blurb: builds a slide deck live while you talk. Speech streams to a realtime model that adds and edits slides as you go, illustrated automatically from Wikimedia Commons.
+    - name: Cortesol
+      year: 2026 · Hack the 6ix finalist
+      url: https://devpost.com/software/cortesol
+      blurb: memory with critical thinking for research agents. A knowledge graph that stores facts, and when it changes its mind, can show why.
     - name: Fracture detection (MYP personal project)
       year: 2023-24
       url: https://github.com/adntaha/pp-detection-fracture-recherche
-      blurb: compared seven models across five datasets for spotting bone fractures in X-rays, and shipped a Flutter demo app. It's also [how I first got into AI safety](/blog/my-path-to-ai-safety/).
-    - name: Rollz
+      blurb: compared seven models across five datasets for spotting bone fractures in X-rays, and shipped a Flutter demo app.
+      note: "this one is also [how i got into AI safety](/blog/my-path-to-ai-safety/)"
+    - name: Robotics team, CRC MØ-DUEL 2026
       year: "2026"
-      url: https://devpost.com/software/thirdplace
-      image: /media/archive/rollz.jpg
-      blurb: navigation that takes mobility needs into account when choosing a route
-    - name: EasyAppoint
-      year: "2025"
-      url: https://devpost.com/software/easyappoint
-      image: /media/archive/easyappoint.jpg
-      blurb: a healthcare appointment-booking prototype
-    - name: Arborescent
-      year: "2025"
-      url: https://devpost.com/software/arborescent
-      image: /media/archive/arborescent.jpg
-      blurb: forest-health risk in Québec from satellite data and machine learning
-    - name: Tracks
-      year: "2025"
-      url: https://devpost.com/software/tracks-vb3u0l
-      image: /media/archive/tracks.jpg
-      blurb: computer-vision exercise tracking with music that follows your workout's intensity
+      blurb: I programmed the robot arm for my CEGEP's team. We won 3rd place for the game itself, with Rookie of the Year, Never Say Die and Outstanding Participation awards.
+      note: "in french, never say die is \"didn't drop the potato\""
+    # - name: Rollz
+    #   year: "2026"
+    #   url: https://devpost.com/software/thirdplace
+    #   image: /media/archive/rollz.jpg
+    #   blurb: navigation that takes mobility needs into account when choosing a route
+    # - name: EasyAppoint
+    #   year: "2025"
+    #   url: https://devpost.com/software/easyappoint
+    #   image: /media/archive/easyappoint.jpg
+    #   blurb: a healthcare appointment-booking prototype
+    # - name: Arborescent
+    #   year: "2025"
+    #   url: https://devpost.com/software/arborescent
+    #   image: /media/archive/arborescent.jpg
+    #   blurb: forest-health risk in Québec from satellite data and machine learning
+    # - name: Tracks
+    #   year: "2025"
+    #   url: https://devpost.com/software/tracks-vb3u0l
+    #   image: /media/archive/tracks.jpg
+    #   blurb: computer-vision exercise tracking with music that follows your workout's intensity
 
-- heading: Small experiments
-  intro: Allowed to stay small.
+- heading: One-off experiments
+  intro: If not for this section, they would've been forgotten, to be remembered by naught but the void.
   items:
     - name: telos
       year: ""
       url: https://github.com/adntaha/telos
-      blurb: the smallest agent harness I could make. The model gets one tool, Python, and can spawn copies of itself and restart to load its own changes.
+      blurb: cool experiment in harness engineering and model ecology. It's the smallest agent harness I could make. The model gets one tool, Python, and can spawn copies of itself and restart to load its own changes.
     - name: discord-markov
       year: ""
       url: https://github.com/adntaha/discord-markov
-      blurb: a Markov chain built from your own Discord data package. About twenty lines.
+      blurb: a Markov chain built from your own Discord data package, made to speak like you.
+    - name: morse beeper
+      year: ""
+      url: https://blackbox.hackclub.com/editor/?code=888254
+      blurb: Morse beeper for those who don't know morse code. Made for Hack Club's [Blackbox](https://blackbox.hackclub.com).
     - name: biblio-generator
       year: ""
       url: https://github.com/adntaha/biblio-generator
@@ -48,7 +66,7 @@
     - name: httpcat-bot
       year: ""
       url: https://github.com/adntaha/httpcat-bot
-      blurb: an unofficial Discord bot for HTTP status code cat images ([http.cat](https://http.cat)).
+      blurb: an unofficial Discord bot for [HTTP cat](https://http.cat) status code images.
     - name: sillycat-worker
       year: ""
       url: https://github.com/adntaha/sillycat-worker

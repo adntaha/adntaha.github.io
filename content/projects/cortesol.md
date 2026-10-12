@@ -1,6 +1,6 @@
 ---
 title: Cortesol
-featured: 1
+featured: 2
 period: "2026"
 summary: Critical thinking over a knowledge graph. A memory for research agents that can change its mind, and show why.
 outcome: Hack the 6ix finalist

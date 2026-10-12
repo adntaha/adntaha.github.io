@@ -1,6 +1,7 @@
 ---
 title: McGill Course Assistant
-featured: 2
+featured: 3
+half: true
 period: May 2026 – now
 summary: Ask questions about McGill courses in plain language, and explore every prerequisite as one big interactive graph.
 stack: Cohere (Embed, Rerank, Command A+), Cloudflare Workers, Vectorize, D1 and AI Gateway, plain HTML/CSS/JS on GitHub Pages

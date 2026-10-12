@@ -1,7 +1,5 @@
 ---
 title: ChatGPT in Discord
-featured: 5
-half: true
 period: Dec 2022
 summary: One of the first publicly demonstrated ChatGPT integrations. I built it less than five days after ChatGPT launched.
 note: "fun fact: i was 15 when i built this!"

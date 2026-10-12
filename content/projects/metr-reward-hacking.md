@@ -4,6 +4,7 @@ featured: 4
 half: true
 period: Mar 2025
 summary: Placed in the top four globally in METR's reward-hacking challenge, and responsibly disclosed two security issues in the platform.
+stack: browser devtools, mostly
 ---
 
 The main task of this challenge was to optimize a GPU kernel, and the subtask was to try and bypass the evaluator to do it. If you're familiar with Gandalf-style challenges, this was it.

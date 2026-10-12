@@ -5,11 +5,11 @@ period: "2026"
 summary: Critical thinking over a knowledge graph. A memory for research agents that can change its mind, and show why.
 outcome: Hack the 6ix finalist
 team: Kuan Yi Wang, Bill Xu, David Liang, and me
-thumb: /media/cortesol/thumb.jpg
+stack: Python (FastAPI, NetworkX), Gemini, a small Freesolo-trained model for belief updates, plain HTML
 asset:
   type: image
-  src: /media/cortesol/demo.jpg
-  alt: The Cortesol belief graph, with claims coloured by confidence from refuted to established.
+  src: /media/cortesol/screenshot.jpg
+  alt: The Cortesol belief graph, with claims coloured by confidence from refuted to established, beside a reasoning log of refused and committed updates.
 links:
   - label: Live demo
     url: https://cortesol.onrender.com/

@@ -2,6 +2,7 @@
 title: ChatGPT in Discord
 period: Dec 2022
 summary: One of the first publicly demonstrated ChatGPT integrations. I built it less than five days after ChatGPT launched.
+stack: Cloudflare Workers (with Workers KV and a scheduled refresh), Discord's interactions API, ChatGPT's private web API
 note: "fun fact: i was 15 when i built this!"
 thumb: /media/chatgpt-discord/poster.jpg
 asset:

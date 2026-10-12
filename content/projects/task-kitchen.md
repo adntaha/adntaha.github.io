@@ -2,7 +2,7 @@
 title: Task Kitchen
 period: Dec 2023 – Jan 2025
 summary: A time-blocking app that turns a student's to-do list into a schedule they can actually follow.
-outcome: "#13 Product of the Day on Product Hunt"
+outcome: "500+ downloads"
 stack: Flutter, Firebase (Auth, Firestore, Cloud Functions)
 asset:
   type: video

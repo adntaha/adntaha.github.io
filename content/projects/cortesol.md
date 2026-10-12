@@ -31,8 +31,6 @@ The key design choice is a split of responsibilities. The language model never e
 - red flags like possible fraud or a missing control shrink a report's weight toward zero;
 - and no single report can move a claim past a hard limit.
 
-Confidence is stored as log-odds, so each update is a simple addition (Bayes' rule in log form). Every step of that arithmetic is shown in the app's reasoning log, so you can open any update and see exactly why a claim moved as much as it did.
+Confidence is stored as logprob odds, so each update is a simple addition (Bayes' rule in log form). Every step of that arithmetic is shown in the app's reasoning log, so you can open any update and see exactly why a claim moved as much as it did.
 
 My part was the assistant that works with the graph, which calls the model with the right tools and shows its thinking traces in the interface, and a lot of the frontend.
-
-<!-- TODO: the engine paragraphs and the "My part" sentence are Claude's draft. Approve or rewrite. -->

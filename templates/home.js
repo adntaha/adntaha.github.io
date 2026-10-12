@@ -5,6 +5,8 @@ import { mediaSize } from '../lib/media.js';
 import { projectRow } from './work.js';
 import { messyStar, messyArrow } from './doodles.js';
 
+const LATEST_POSTS = 5; // how many posts "Writing" shows; the rest are on /blog/
+
 const md = (text) => raw(renderInline(text));
 
 // One line of "Now" or "Previously": where, then what.
@@ -75,8 +77,9 @@ export function home(site, { home, featured, posts }) {
   <section class="writing" aria-labelledby="writing-heading">${star(3)}
     <h2 id="writing-heading">Writing</h2>
     <ul class="post-list">
-      ${posts.map((post) => html`<li><time datetime="${isoDate(post.date)}">${formatDate(post.date)}</time> <a href="${post.url}">${post.title}</a></li>`)}
+      ${posts.slice(0, LATEST_POSTS).map((post) => html`<li><time datetime="${isoDate(post.date)}">${formatDate(post.date)}</time> <span><a href="${post.url}">${post.title}</a>${postNote(post, home.notes?.posts?.[post.slug])}</span></li>`)}
     </ul>
+    <p class="more"><a href="/blog/">More writing →</a></p>
   </section>
 </article>`;
 }

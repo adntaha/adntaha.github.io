@@ -1,0 +1,471 @@
+<!doctype html>
+<!--
+  Experiment: the homepage if everything were visual. Not part of the build
+  and never deployed; open this file directly in a browser. It borrows fonts
+  and pictures from ../public/, and links out to the real site.
+
+  The one rule here is the opposite of the main site's: everything is a tile.
+  Text, pictures, numbers and lists all get the same box, the same corner
+  radius, the same hover. Tiles are placed by CSS grid's dense packing, so
+  their order in the markup is roughly their importance.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aidan Taha · visual experiment</title>
+<meta name="color-scheme" content="light dark">
+<style>
+  @font-face {
+    font-family: 'Fraunces';
+    src: url('../public/fonts/fraunces-latin.woff2') format('woff2');
+    font-weight: 300 800;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Caveat';
+    src: url('../public/fonts/caveat-latin.woff2') format('woff2');
+    font-weight: 400 700;
+    font-display: swap;
+  }
+
+  /* Same paper and ink as the main site, so the two read as siblings. */
+  :root {
+    --paper: #f8f6f1;
+    --tile: #efebe3;
+    --ink: #1f1d1a;
+    --ink-soft: #46423b;
+    --muted: #7a746a;
+    --rule: rgb(31 29 26 / 0.12);
+    --accent: #2c4a7a;
+    --on-accent: #f8f6f1;
+
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
+    --hand: 'Caveat', 'Segoe Print', cursive;
+
+    --gap: 0.75rem;
+    --row: 10.5rem;
+    --radius: 14px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #171614;
+      --tile: #22201d;
+      --ink: #ebe7df;
+      --ink-soft: #c9c3b8;
+      --muted: #938c81;
+      --rule: rgb(235 231 223 / 0.14);
+      --accent: #9fbaea;
+      --on-accent: #171614;
+    }
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 1rem/1.5 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  /* --- The board: four columns of rows, packed densely. Rows have a minimum
+     height and grow when a tile's words need more room (mostly on phones). */
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(var(--row), auto);
+    grid-auto-flow: dense;
+    gap: var(--gap);
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: clamp(1rem, 4vw, 3rem) 1rem;
+  }
+
+  .w2 { grid-column: span 2; }
+  .h2 { grid-row: span 2; }
+
+  @media (max-width: 48rem) {
+    .board {
+      grid-template-columns: repeat(2, 1fr);
+      --row: 9rem;
+    }
+  }
+
+  /* --- Tiles. Every tile is the same object: a rounded box. Some are links. */
+
+  .tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 1.1rem 1.2rem;
+    border-radius: var(--radius);
+    background: var(--tile);
+    text-decoration: none;
+    transition: translate 0.15s ease-out, box-shadow 0.15s ease-out;
+  }
+
+  a.tile:hover {
+    translate: 0 -2px;
+    box-shadow: 0 6px 20px rgb(0 0 0 / 0.08);
+  }
+
+  a.tile:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile,
+    .tile img {
+      transition: none !important;
+    }
+  }
+
+  .kicker {
+    font: 500 0.7rem/1.4 var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .title {
+    margin: 0;
+    font: 600 1.25rem/1.15 var(--serif);
+    letter-spacing: -0.01em;
+  }
+
+  .blurb {
+    margin: 0.35rem 0 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+  }
+
+  /* Push the last block of a text tile to the bottom edge. */
+  .tile > :last-child {
+    margin-top: auto;
+  }
+
+  .tile > .kicker:first-child + * {
+    margin-top: 0.4rem;
+  }
+
+  /* --- Picture tiles: the picture fills the tile, the words sit on a fade. */
+
+  .pic {
+    padding: 0;
+    color: #fff;
+  }
+
+  .pic img,
+  .pic video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale 0.3s ease-out;
+  }
+
+  .pic:hover img,
+  .pic:hover video {
+    scale: 1.04;
+  }
+
+  .pic .caption {
+    position: relative;
+    margin-top: auto;
+    padding: 2.5rem 1.2rem 1rem;
+    background: linear-gradient(transparent, rgb(0 0 0 / 0.72));
+  }
+
+  .pic .kicker {
+    color: rgb(255 255 255 / 0.75);
+  }
+
+  .pic .blurb {
+    color: rgb(255 255 255 / 0.85);
+  }
+
+  /* --- Particular tiles */
+
+  .intro h1 {
+    margin: 0;
+    font: 650 clamp(2.6rem, 6vw, 4rem)/0.95 var(--serif);
+    letter-spacing: -0.02em;
+  }
+
+  .intro .lede {
+    margin: 0.75rem 0 0;
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+  }
+
+  .intro .contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .chip {
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+
+  .chip:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .list {
+    margin: 0.6rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.9rem;
+  }
+
+  .list li + li {
+    margin-top: 0.45rem;
+  }
+
+  .list strong {
+    display: block;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .list span {
+    color: var(--ink-soft);
+  }
+
+  .stat {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  .stat .kicker,
+  .stat .blurb {
+    color: inherit;
+    opacity: 0.8;
+  }
+
+  .stat .number {
+    font: 700 3.25rem/1 var(--serif);
+    letter-spacing: -0.03em;
+  }
+
+  .post .title {
+    font-size: 1.1rem;
+  }
+
+  .post .scribble {
+    font: 400 1.25rem/1.1 var(--hand);
+    color: var(--accent);
+    rotate: -2deg;
+  }
+
+  .ink {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .ink .kicker {
+    color: inherit;
+    opacity: 0.6;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .links a {
+    text-underline-offset: 0.2em;
+  }
+
+  .mono-list {
+    margin: 0.6rem 0 0;
+    padding: 0;
+    list-style: none;
+    font: 0.85rem/1.8 var(--mono);
+  }
+</style>
+</head>
+<body>
+<main class="board">
+
+  <section class="tile intro w2 h2">
+    <span class="kicker">Montréal</span>
+    <h1>Aidan Taha</h1>
+    <p class="lede">AI safety researcher, builder, writer, learner. CS and Stats at McGill.</p>
+    <div class="contact">
+      <a class="chip" href="mailto:adnanaidantaha@gmail.com">adnanaidantaha@gmail.com</a>
+      <a class="chip" href="../public/resume.pdf">résumé</a>
+    </div>
+  </section>
+
+  <a class="tile pic w2 h2" href="https://adntaha.github.io/projects/cortesol/">
+    <img src="../public/media/cortesol/screenshot.jpg" alt="" width="1600" height="968">
+    <span class="caption">
+      <span class="kicker">2026 · Hack the 6ix finalist</span>
+      <h2 class="title">Cortesol</h2>
+      <p class="blurb">A memory for research agents that can change its mind, and show why.</p>
+    </span>
+  </a>
+
+  <section class="tile h2">
+    <span class="kicker">Now</span>
+    <ul class="list">
+      <li><strong>Harvard MADSys Lab</strong> <span>LLM evaluations for sovereign models</span></li>
+      <li><strong>AI Alignment McGill</strong> <span>co-director; revived the club</span></li>
+      <li><strong>McGill</strong> <span>Joint Honours CS &amp; Statistics</span></li>
+    </ul>
+  </section>
+
+  <a class="tile pic w2" href="https://adntaha.github.io/projects/course-assistant/">
+    <img src="../public/media/course-assistant/graph.jpg" alt="" width="1440" height="900" loading="lazy">
+    <span class="caption">
+      <span class="kicker">May 2026 – now</span>
+      <h2 class="title">McGill Course Assistant</h2>
+    </span>
+  </a>
+
+  <a class="tile stat" href="https://horizonomega.substack.com/p/ai-control-hackathon-2026-retrospective">
+    <span class="kicker">Organized</span>
+    <span class="number">90+</span>
+    <p class="blurb">people at the AI Control Hackathon</p>
+  </a>
+
+  <a class="tile pic w2 h2" href="https://adntaha.github.io/projects/task-kitchen/">
+    <video src="../public/media/task-kitchen/demo.mp4" poster="../public/media/task-kitchen/schedule.png" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+    <span class="caption">
+      <span class="kicker">#13 Product of the Day</span>
+      <h2 class="title">Task Kitchen</h2>
+      <p class="blurb">Turns a student's to-do list into a schedule they can follow.</p>
+    </span>
+  </a>
+
+  <a class="tile post" href="https://adntaha.github.io/blog/cd-player-kidnapping-saga/">
+    <span class="kicker">Sep 2025</span>
+    <h2 class="title">CD Player Kidnapping Saga</h2>
+    <span class="scribble">start here. there's a kidnapping (sort of)</span>
+  </a>
+
+  <a class="tile pic w2" href="https://adntaha.github.io/projects/chatgpt-discord/">
+    <img src="../public/media/chatgpt-discord/poster.jpg" alt="" width="1280" height="720" loading="lazy">
+    <span class="caption">
+      <span class="kicker">Dec 2022 · age 15</span>
+      <h2 class="title">ChatGPT in Discord</h2>
+    </span>
+  </a>
+
+  <a class="tile stat" href="https://adntaha.github.io/projects/metr-reward-hacking/">
+    <span class="kicker">METR reward hacking</span>
+    <span class="number">Top 4</span>
+    <p class="blurb">globally, plus two security issues disclosed</p>
+  </a>
+
+  <section class="tile h2">
+    <span class="kicker">Previously</span>
+    <ul class="list">
+      <li><strong>MIT AI Alignment</strong> <span>AISF fellow</span></li>
+      <li><strong>University of Basel</strong> <span>medical image segmentation</span></li>
+      <li><strong>Holopin</strong> <span>integrations lead</span></li>
+      <li><strong>BrébeufHx</strong> <span>co-president</span></li>
+    </ul>
+  </section>
+
+  <a class="tile post" href="https://adntaha.github.io/blog/on-deriving-discrete-random-variables/">
+    <span class="kicker">Apr 2026</span>
+    <h2 class="title">On deriving discrete random variables (hear me out)</h2>
+  </a>
+
+  <a class="tile pic" href="https://devpost.com/software/tracks-vb3u0l">
+    <img src="../public/media/archive/tracks.jpg" style="object-position: top" alt="" width="1200" height="800" loading="lazy">
+    <span class="caption"><span class="kicker">2025</span><h2 class="title">Tracks</h2></span>
+  </a>
+
+  <a class="tile pic" href="https://devpost.com/software/thirdplace">
+    <img src="../public/media/archive/rollz.jpg" alt="" width="1200" height="570" loading="lazy">
+    <span class="caption"><span class="kicker">2026</span><h2 class="title">Rollz</h2></span>
+  </a>
+
+  <a class="tile post" href="https://adntaha.github.io/blog/whats-ai-safety-even-about/">
+    <span class="kicker">Aug 2025</span>
+    <h2 class="title">What's AI Safety even about?</h2>
+  </a>
+
+  <a class="tile pic" href="https://devpost.com/software/arborescent">
+    <img src="../public/media/archive/arborescent.jpg" alt="" width="1200" height="800" loading="lazy">
+    <span class="caption"><span class="kicker">2025</span><h2 class="title">Arborescent</h2></span>
+  </a>
+
+  <a class="tile" href="https://github.com/adntaha/pp-detection-fracture-recherche">
+    <span class="kicker">2023–24 · MYP</span>
+    <h2 class="title">Fracture detection</h2>
+    <p class="blurb">Seven models, five X-ray datasets, one Flutter app.</p>
+  </a>
+
+  <a class="tile pic" href="https://devpost.com/software/easyappoint">
+    <img src="../public/media/archive/easyappoint.jpg" alt="" width="1200" height="690" loading="lazy">
+    <span class="caption"><span class="kicker">2025</span><h2 class="title">EasyAppoint</h2></span>
+  </a>
+
+  <a class="tile post w2" href="https://adntaha.github.io/blog/my-path-to-ai-safety/">
+    <span class="kicker">Jun 2025</span>
+    <h2 class="title">My Path to AI Safety</h2>
+  </a>
+
+  <section class="tile w2">
+    <span class="kicker">Small experiments</span>
+    <ul class="mono-list">
+      <li><a href="https://github.com/adntaha/telos">telos</a> · <a href="https://github.com/adntaha/discord-markov">discord-markov</a> · <a href="https://github.com/adntaha/biblio-generator">biblio-generator</a></li>
+      <li><a href="https://github.com/adntaha/httpcat-bot">httpcat-bot</a> · <a href="https://github.com/adntaha/sillycat-worker">sillycat-worker</a></li>
+    </ul>
+  </section>
+
+  <section class="tile ink w2">
+    <span class="kicker">Elsewhere</span>
+    <div class="links">
+      <a href="https://github.com/adntaha">GitHub</a>
+      <a href="https://x.com/adntaha_ai">X</a>
+      <a href="https://www.linkedin.com/in/adntaha">LinkedIn</a>
+      <a href="https://devpost.com/adntaha">Devpost</a>
+      <a href="https://adntaha.github.io/feed.xml">RSS</a>
+    </div>
+  </section>
+
+</main>
+<script>
+  // The one moving tile shouldn't move for people who've asked for less motion.
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('video[autoplay]').forEach((video) => {
+      video.removeAttribute('autoplay');
+      video.pause();
+    });
+  }
+</script>
+</body>
+</html>

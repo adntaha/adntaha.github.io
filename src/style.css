@@ -1,7 +1,13 @@
 /*
-  One stylesheet for the whole site. The idea is a well-kept notebook: a crisp
-  column of ink on warm paper for people who came for something specific, and
-  handwritten notes in the margin for people who like to wander.
+  One stylesheet for the whole site. The idea is a board: a crisp column of
+  typed text for people who came for something specific, and handwritten notes
+  in the margin for people who like to wander. In light mode it's a whiteboard
+  and the notes are in blue marker; in dark mode it's a blackboard and they're
+  in chalk. Visitors can pick up a marker and write on it too (src/board.js).
+
+  Everything obeys that: text sits in the column, and anything extra (notes,
+  pictures) is stuck in the margin. Nothing floats over the page except the
+  little marker tray in the corner.
 
   Contents: fonts · colours · base · layout · margin notes · homepage ·
   lists · project pages · prose · small utilities
@@ -23,15 +29,18 @@
   font-display: swap;
 }
 
-/* --- Colours. Light by default; dark follows the operating system. */
+/* --- Colours. Light (whiteboard) by default; dark (blackboard) follows the
+   operating system. --paper is the board itself; --note is the handwriting. */
 
 :root {
-  --paper: #f8f6f1;
-  --ink: #1f1d1a;
-  --ink-soft: #46423b;
-  --muted: #7a746a;
-  --rule: rgb(31 29 26 / 0.12);
-  --accent: #2c4a7a; /* fountain-pen blue */
+  --paper: #f9fafa; /* whiteboard: a cool, slightly glossy white */
+  --ink: #1b1d20;
+  --ink-soft: #40444a;
+  --muted: #73787f;
+  --rule: rgb(27 29 32 / 0.12);
+  --note: #1d4fc4; /* blue whiteboard marker */
+  --accent: #1d4fc4;
+  --print: #ffffff; /* the white border of a photo print */
 
   --serif: 'Fraunces', Georgia, serif;
   --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -48,12 +57,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #171614;
-    --ink: #ebe7df;
-    --ink-soft: #c9c3b8;
-    --muted: #938c81;
-    --rule: rgb(235 231 223 / 0.14);
-    --accent: #9fbaea;
+    --paper: #232625; /* blackboard: charcoal with a little slate in it */
+    --ink: #ecebe6;
+    --ink-soft: #c6c7c2;
+    --muted: #8e918d;
+    --rule: rgb(236 235 230 / 0.14);
+    --note: #f3f2ec; /* white chalk */
+    --accent: #f2d675; /* yellow chalk, for links and focus */
+    --print: #303432;
   }
 }
 
@@ -191,9 +202,21 @@ main {
   margin-right: calc(-1 * (var(--margin) + var(--gutter)));
   font: 400 1.3rem/1.1 var(--hand);
   letter-spacing: 0;
-  color: var(--accent);
+  color: var(--note);
   rotate: -1.5deg;
   text-wrap: pretty;
+}
+
+/* On the blackboard, handwriting (and the doodles) is chalk: the #chalk filter
+   (defined in templates/layout.js) lets it show through a grain of tiny gaps.
+   When a note also holds a picture, its text is in .mn-text and gets the
+   grain on its own, so the picture stays solid. */
+@media (prefers-color-scheme: dark) {
+  .mn:not(:has(.mn-text, .print)),
+  .mn-text,
+  .doodle {
+    filter: url(#chalk);
+  }
 }
 
 .mn a {
@@ -243,7 +266,7 @@ main {
     margin-left: 0.2em;
     /* Fonts with a plain ✎, so it doesn't turn into a colour emoji. */
     font: 400 1rem 'Segoe UI Symbol', 'Apple Symbols', 'DejaVu Sans', var(--sans);
-    color: var(--accent);
+    color: var(--note);
     cursor: pointer;
     user-select: none;
   }
@@ -670,6 +693,136 @@ a.work-row:hover .work-title::after {
   color: var(--ink-soft);
 }
 
+/* --- The board: the drawing layer and the tray of markers in the corner
+   (src/board.js). Without JavaScript, neither appears.
+
+   The tray, closed, shows the tool in hand. Hovered or focused, it opens into
+   a row of markers or chalks, an eraser, and the plain cursor. */
+
+.tray {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 20;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  gap: 0.1rem;
+  padding: 0 0.5rem;
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--paper) 86%, var(--ink));
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.2);
+}
+
+/* Each tool is a stick poking up out of the tray; its bottom half is hidden
+   inside. The one in hand stands a little taller, like in Apple Notes. */
+.tray button {
+  display: block;
+  width: 1.75rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.tray svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: translate 0.12s ease-out;
+}
+
+.tray button:hover svg,
+.tray button[aria-pressed='true'] svg {
+  translate: 0 -0.35rem;
+}
+
+.tray button:not(.tray-current) {
+  display: none;
+}
+
+/* Open, every tool is in the row already; the one in hand just stands taller.
+   (Keyboard users keep the first button, since it may be the one focused.) */
+/* :has(:focus-visible), not :focus-within, so a mouse click on a tool closes the tray. */
+.tray:hover button,
+.tray:has(:focus-visible) button,
+.tray.is-open button {
+  display: block;
+}
+
+.tray:hover:not(:has(:focus-visible)) .tray-current,
+.tray.is-open .tray-current {
+  display: none;
+}
+
+.tray button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tray svg {
+    transition: none;
+  }
+}
+
+/* The drawing covers the whole page and scrolls with it. It sits on the board
+   itself: behind the typed text and pictures in the column, but over the
+   handwritten notes in the margin (which go one layer further back), so the
+   eraser can rub them out. */
+.board {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@media (min-width: 70rem) {
+  .mn {
+    position: relative;
+    z-index: -2;
+  }
+}
+
+/* That far back, the notes are behind <body> itself, which would swallow
+   clicks on links in them. So the body lets the pointer through, and only
+   what's in it responds. */
+body {
+  pointer-events: none;
+}
+
+body > * {
+  pointer-events: auto;
+}
+
+/* With a marker in hand, the whole page is the board: nothing under the
+   pointer reacts (no link hovers, no clicks, no text selection) except the tray. */
+html.is-drawing {
+  cursor: var(--pen);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html.is-drawing body > * {
+  pointer-events: none;
+}
+
+html.is-drawing .tray {
+  pointer-events: auto;
+}
+
+@media print {
+  .tray,
+  .board {
+    display: none;
+  }
+}
+
 /* --- Utilities */
 
 .skip-link {
@@ -684,6 +837,13 @@ a.work-row:hover .work-title::after {
 
 .skip-link:focus {
   top: 1rem;
+}
+
+/* The SVG that only holds filter definitions takes up no space. */
+.filters {
+  position: absolute;
+  width: 0;
+  height: 0;
 }
 
 .visually-hidden {

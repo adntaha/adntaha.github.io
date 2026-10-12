@@ -39,12 +39,23 @@ export function layout(site, page, content) {
 <link rel="stylesheet" href="${site.assets['style.css']}">
 ${page.hasMath ? html`<link rel="stylesheet" href="/katex/katex.min.css">` : ''}
 <script type="speculationrules">${raw(speculationRules)}</script>
+<script type="module" src="${site.assets['board.js']}"></script>
 ${page.scripts?.map((src) => html`<script type="module" src="${site.assets[src]}"></script>`)}
 ${site.production && site.analytics
   ? html`<script defer src="${site.analytics.src}" data-website-id="${site.analytics.websiteId}"></script>`
   : ''}
 </head>
 <body class="${page.bodyClass ?? ''}">
+<!-- Chalk, for the blackboard (dark mode): fractal noise turned into a grain of
+     tiny gaps, then used to let only part of what's drawn show through.
+     style.css applies it to handwriting; src/board.js to chalk you draw. -->
+<svg class="filters" aria-hidden="true" focusable="false">
+  <filter id="chalk" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" stitchTiles="stitch"/>
+    <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 2.1" result="grain"/>
+    <feComposite in="SourceGraphic" in2="grain" operator="in"/>
+  </filter>
+</svg>
 <a class="skip-link" href="#main">Skip to content</a>
 ${page.url === '/' ? '' : html`<header class="site-header"><a href="/" class="site-name">${site.title}</a>
 <nav><a href="/projects/">Projects</a> <a href="/blog/">Writing</a></nav></header>`}

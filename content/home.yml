@@ -4,7 +4,7 @@
 intro: AI safety researcher, builder, writer, learner. CS and Stats at McGill.
 
 now:
-  - where: Harvard MADSys Lab
+  - where: Harvard SEAS
     what: research assistant, LLM evaluations for sovereign models
   - where: AI Alignment McGill
     what: co-director; revived the club and facilitate its reading groups
@@ -16,13 +16,15 @@ previously:
     what: AISF fellow
   - where: University of Basel
     what: medical image segmentation research
-  - where: "[Holopin](https://holopin.io)"
-    what: integrations lead
   - where: "[AI Control Hackathon](https://horizonomega.substack.com/p/ai-control-hackathon-2026-retrospective)"
     what: organizer
-  - where: "[BrébeufHx](https://web.archive.org/web/20251031061601/https://brebeufhackathon.com/)"
-    what: co-president
+  - where: "[Holopin](https://holopin.io)"
+    what: integrations lead
+  # - where: "[BrébeufHx](https://web.archive.org/web/20251031061601/https://brebeufhackathon.com/)"
+  #   what: co-president
 
 # Margin notes shown beside sections on wide screens (behind a ✎ on phones).
 notes:
-  writing: start with the CD player one. there's a kidnapping (sort of)
+  # Beside particular posts in "Writing", keyed by their file name in content/writing/.
+  posts:
+    cd-player-kidnapping-saga: start with this one! it's my favourite

@@ -3,7 +3,7 @@
   typed text for people who came for something specific, and handwritten notes
   in the margin for people who like to wander. In light mode it's a whiteboard
   and the notes are in blue marker; in dark mode it's a blackboard and they're
-  in chalk. Visitors can pick up a marker and write on it too (src/board.js).
+  in chalk. Visitors can pick up a marker and write on it too (src/board/).
 
   Everything obeys that: text sits in the column, and anything extra (notes,
   pictures) is stuck in the margin. Nothing floats over the page except the
@@ -392,7 +392,7 @@ main {
    margins that draw themselves as they scroll into view, and an arrow from
    each note beside a post in "Writing" to that post. They're handwriting on the board, like
    the margin notes: same colour, same chalk grain, same layer. Once someone
-   picks up a marker, src/board.js turns them into strokes on its canvas (so
+   picks up a marker, src/board/ turns them into strokes on its canvas (so
    they can be erased) and hides these. Only on screens wide enough to have
    margins. */
 
@@ -862,7 +862,7 @@ a.work-row:hover .work-title::after {
 }
 
 /* --- The board: the drawing layer and the tray of markers in the corner
-   (src/board.js). Without JavaScript, neither appears.
+   (src/board/). Without JavaScript, neither appears.
 
    The tray, closed, shows the tool in hand. Hovered or focused, it opens into
    a row of markers or chalks, an eraser, and the plain cursor. */

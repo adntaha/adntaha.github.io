@@ -27,14 +27,29 @@ const production = !process.argv.includes('--dev');
 fs.rmSync(OUT, { recursive: true, force: true, maxRetries: 5 });
 fs.cpSync('public', OUT, { recursive: true });
 
-// --- Assets: src/style.css → /style.3f9a1c2b.css, so browsers can cache it forever.
+// --- Assets, renamed with a hash of their contents so browsers can cache them
+// forever: src/style.css → /style.3f9a1c2b.css. A folder of JavaScript modules
+// keeps its files' names and gets the hash on the folder, so the modules can
+// still import each other: src/board/main.js → /board.5e1d04aa/main.js.
 const assets = {};
-for (const file of fs.readdirSync('src')) {
-  const contents = fs.readFileSync(path.join('src', file));
-  const hash = crypto.createHash('sha256').update(contents).digest('hex').slice(0, 8);
-  const name = file.replace(/\.(\w+)$/, `.${hash}.$1`);
-  fs.writeFileSync(path.join(OUT, name), contents);
-  assets[file] = `/${name}`;
+const fingerprint = (...contents) => {
+  const hash = crypto.createHash('sha256');
+  contents.forEach((c) => hash.update(c));
+  return hash.digest('hex').slice(0, 8);
+};
+for (const entry of fs.readdirSync('src', { withFileTypes: true })) {
+  const from = path.join('src', entry.name);
+  if (entry.isDirectory()) {
+    const files = fs.readdirSync(from).sort();
+    const folder = `${entry.name}.${fingerprint(...files.flatMap((f) => [f, fs.readFileSync(path.join(from, f))]))}`;
+    fs.cpSync(from, path.join(OUT, folder), { recursive: true });
+    for (const file of files) assets[`${entry.name}/${file}`] = `/${folder}/${file}`;
+  } else {
+    const contents = fs.readFileSync(from);
+    const name = entry.name.replace(/\.(\w+)$/, `.${fingerprint(contents)}.$1`);
+    fs.writeFileSync(path.join(OUT, name), contents);
+    assets[entry.name] = `/${name}`;
+  }
 }
 const site = { ...config, assets, production };
 

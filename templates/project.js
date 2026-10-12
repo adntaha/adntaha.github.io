@@ -13,9 +13,11 @@ function asset(media) {
   // `loop: true` is for short silent demos that used to be GIFs: they play by
   // themselves, but keep controls so anyone can pause the motion.
   const playback = media.loop ? html` autoplay muted loop` : '';
+  // A still to show before the video plays (and while it loads).
+  const poster = media.poster ? html` poster="${media.poster}"` : '';
   const element =
     media.type === 'video'
-      ? html`<video src="${media.src}"${dims}${playback} controls playsinline preload="metadata" aria-label="${media.alt}"></video>`
+      ? html`<video src="${media.src}"${dims}${poster}${playback} controls playsinline preload="metadata" aria-label="${media.alt}"></video>`
       : html`<img src="${media.src}" alt="${media.alt}"${dims} decoding="async">`;
   return html`<figure class="project-asset">${element}${media.caption ? html`<figcaption>${md(media.caption)}</figcaption>` : ''}</figure>`;
 }

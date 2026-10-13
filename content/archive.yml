@@ -10,10 +10,10 @@
       year: 2026 · HackMIT
       url: https://plume.hackmit.org/project/lvlxw-lursq-ipext-xxjqw
       blurb: builds a slide deck live while you talk. Speech streams to a realtime model that adds and edits slides as you go, illustrated automatically from Wikimedia Commons.
-    - name: Cortesol
-      year: 2026 · Hack the 6ix finalist
-      url: https://devpost.com/software/cortesol
-      blurb: memory with critical thinking for research agents. A knowledge graph that stores facts, and when it changes its mind, can show why.
+    # - name: Cortesol
+    #   year: 2026 · Hack the 6ix finalist
+    #   url: https://devpost.com/software/cortesol
+    #   blurb: memory with critical thinking for research agents. A knowledge graph that stores facts, and when it changes its mind, can show why.
     - name: Fracture detection (MYP personal project)
       year: 2023-24
       url: https://github.com/adntaha/pp-detection-fracture-recherche
@@ -22,7 +22,7 @@
     - name: Robotics team, CRC MØ-DUEL 2026
       year: "2026"
       blurb: I programmed the robot arm for my CEGEP's team. We won 3rd place for the game itself, with Rookie of the Year, Never Say Die and Outstanding Participation awards.
-      note: "in french, never say die is \"didn't drop the potato\""
+      note: "in french, never say die is \"didn't drop the potato.\" lol"
     # - name: Rollz
     #   year: "2026"
     #   url: https://devpost.com/software/thirdplace

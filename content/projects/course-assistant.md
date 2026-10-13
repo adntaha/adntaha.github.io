@@ -18,10 +18,9 @@ links:
 
 Two tools that answer the same question from different directions: *what should I take, and what do I need first?*
 
-**The assistant** is retrieval-augmented. A question gets embedded with Cohere Embed, matched against course descriptions stored in Cloudflare Vectorize. Then, on query, it cheaply gets the ~10 nearest elements in vector space (using cosine distance), then uses Cohere Rerank to find the most relevant out of them. These courses are then passed to Command A+, which answers the original query. The backend runs on Cloudflare Workers and D1, with AI Gateway in front of the model to cache repeated questions and rate-limit the rest.
+**The assistant** is retrieval-augmented. A question is embedded with Cohere Embed and compared against course descriptions in Cloudflare Vectorize. The ~10 nearest (by cosine distance) are cheap to find, then Cohere Rerank picks the most relevant, and Command A+ answers using them. The backend runs on Cloudflare Workers and D1, with AI Gateway in front of the model to cache repeated questions and rate-limit the rest.
 
 **The graph** draws McGill's prerequisites as a force-directed layout of about 5,800 nodes. The first version was painfully slow, even on a fairly powerful laptop: every node pushes on every other node, so the work grows with the square of the number of courses. A Barnes-Hut quadtree, which treats far-away clusters of nodes as a single estimated mass, made the simulation 109× faster. After also sorting out some memory and animation problems, it became properly snappy, and it works on phones too, with touch controls.
 
 The graph uses no libraries: the simulation, the quadtree, the rendering and the controls are all written from scratch. (Some of the assistant's tools were written with AI help.)
 
-<!-- TODO: the graph paragraphs above are Claude's draft from your notes, now with the 109× figure. Approve or rewrite. -->

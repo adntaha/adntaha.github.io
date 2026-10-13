@@ -18,8 +18,6 @@ links:
     url: https://devpost.com/software/task-kitchen
 ---
 
-<!-- TODO: the first paragraph is still Claude's draft, and the second is Claude's rewording of yours. Approve or rewrite. -->
-
 A to-do list tells you *what*, never *when*, and the gap between the two is where procrastination lives. In Task Kitchen you add tasks with a rough duration, and the app lays them out as blocks of time across your day, fitted around what's already in your calendar. No dragging things into slots by hand.
 
 ![Two phone screens: a to-do list with a duration for each task, and an arrow to the same tasks laid out as a timed schedule for the day](/media/task-kitchen/schedule.png)

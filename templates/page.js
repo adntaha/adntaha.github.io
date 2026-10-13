@@ -1,5 +1,8 @@
 import { html, raw } from '../lib/html.js';
 
+// Its pieces of the stylesheet, in src/css/ (build.js joins them).
+export const styles = ['writing.css'];
+
 // Plain pages from content/pages/: the colophon, the 404 page.
 export function page(site, page) {
   return html`

@@ -28,7 +28,7 @@ fs.rmSync(OUT, { recursive: true, force: true, maxRetries: 5 });
 fs.cpSync('public', OUT, { recursive: true });
 
 // --- Assets, renamed with a hash of their contents so browsers can cache them
-// forever: src/style.css → /style.3f9a1c2b.css. A folder of JavaScript modules
+// forever: src/stars.js → /stars.3f9a1c2b.js. A folder of JavaScript modules
 // keeps its files' names and gets the hash on the folder, so the modules can
 // still import each other: src/board/main.js → /board.5e1d04aa/main.js.
 const assets = {};
@@ -39,6 +39,7 @@ const fingerprint = (...contents) => {
 };
 for (const entry of fs.readdirSync('src', { withFileTypes: true })) {
   const from = path.join('src', entry.name);
+  if (entry.name === 'css') continue; // joined into one stylesheet, below
   if (entry.isDirectory()) {
     const files = fs.readdirSync(from).sort();
     const folder = `${entry.name}.${fingerprint(...files.flatMap((f) => [f, fs.readFileSync(path.join(from, f))]))}`;
@@ -51,6 +52,19 @@ for (const entry of fs.readdirSync('src', { withFileTypes: true })) {
     assets[entry.name] = `/${name}`;
   }
 }
+
+// The stylesheet: the pieces in src/css/ that the templates say they use
+// (their `styles` exports), joined in the order listed here, which is the
+// order the cascade needs: the page first, then what's on it.
+const stylesheetOrder = ['layout', 'home', 'doodles', 'work', 'projects', 'project', 'writing', 'page'];
+const pieces = [...new Set((await Promise.all(stylesheetOrder.map((t) => import(`./templates/${t}.js`)))).flatMap((t) => t.styles))];
+const unused = fs.readdirSync('src/css').filter((f) => !pieces.includes(f));
+if (unused.length) console.warn(`No template uses ${unused.join(', ')} (src/css/).`);
+const css = pieces.map((f) => fs.readFileSync(path.join('src/css', f), 'utf8')).join('\n');
+const cssName = `style.${fingerprint(css)}.css`;
+fs.writeFileSync(path.join(OUT, cssName), css);
+assets['style.css'] = `/${cssName}`;
+
 const site = { ...config, assets, production };
 
 // --- Content
@@ -74,7 +88,7 @@ function write(url, contents, { inSitemap = true } = {}) {
 
 write(
   '/',
-  layout(site, { url: '/', bodyClass: 'is-home', scripts: ['stars.js'] },
+  layout(site, { url: '/', bodyClass: 'is-home', scripts: ['stars.js', 'say.js'] },
     home(site, { home: homeData, featured: projects.filter((p) => p.featured), posts })),
 );
 

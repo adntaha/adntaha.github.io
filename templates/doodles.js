@@ -1,9 +1,11 @@
+// Its pieces of the stylesheet, in src/css/ (build.js joins them).
+export const styles = ['doodles.css'];
 // Hand-drawn doodles for the homepage margins, as SVG path data: the stars
 // and the arrows from notes to posts. They're generated rather than drawn,
 // but traced the way you'd dash them off with a mouse: lines that bow to one
 // side and are never quite straight. Each takes a seed (any number), so a
 // doodle comes out the same on every build while different seeds differ.
-// Styled by "Doodles" in style.css.
+// Styled by src/css/doodles.css.
 
 // mulberry32: a tiny repeatable random number generator. Returns a function
 // giving a random number between -amount and amount.

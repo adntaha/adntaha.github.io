@@ -1,10 +1,27 @@
 import { html, raw } from '../lib/html.js';
 
+// Its pieces of the stylesheet, in src/css/ (build.js joins them): the page itself, margin notes (they appear on every kind of page), and the drawing board.
+export const styles = ['base.css', 'layout.css', 'notes.css', 'board.css'];
+
 // Prerender same-site pages when a link is hovered, so clicking one feels
 // instant (Chromium browsers; others simply ignore this).
 const speculationRules = JSON.stringify({
   prerender: [{ where: { href_matches: '/*' }, eagerness: 'moderate' }],
 });
+
+// Analytics, loaded only once the page is actually shown. A page prerendered
+// because someone hovered a link to it (see above) isn't a visit until they
+// click; the analytics script can't tell, so it waits for that here.
+const analytics = ({ src, websiteId }) => `
+const count = () => {
+  const s = document.createElement('script');
+  s.defer = true;
+  s.src = ${JSON.stringify(src)};
+  s.dataset.websiteId = ${JSON.stringify(websiteId)};
+  document.head.append(s);
+};
+if (document.prerendering) document.addEventListener('prerenderingchange', count, { once: true });
+else count();`;
 
 // Every page goes through this. `page` describes the page itself;
 // `site` is site.config.js plus a few things the build adds (like asset URLs).
@@ -36,20 +53,18 @@ export function layout(site, page, content) {
 <link rel="icon" href="/favicon.png" type="image/png" sizes="64x64">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="alternate" type="application/atom+xml" title="${site.title}" href="/feed.xml">
-<link rel="preload" href="/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${site.assets['style.css']}">
 ${page.hasMath ? html`<link rel="stylesheet" href="/katex/katex.min.css">` : ''}
 <script type="speculationrules">${raw(speculationRules)}</script>
 <script type="module" src="${site.assets['board/main.js']}"></script>
 ${page.scripts?.map((src) => html`<script type="module" src="${site.assets[src]}"></script>`)}
-${site.production && site.analytics
-  ? html`<script defer src="${site.analytics.src}" data-website-id="${site.analytics.websiteId}"></script>`
-  : ''}
+${site.production && site.analytics ? html`<script>${raw(analytics(site.analytics))}</script>` : ''}
 </head>
 <body class="${page.bodyClass ?? ''}">
 <!-- Chalk, for the blackboard (dark mode): fractal noise turned into a grain of
      tiny gaps, then used to let only part of what's drawn show through.
-     style.css applies it to handwriting; src/board/paint.js to chalk you draw. -->
+     src/css/layout.css applies it to handwriting; src/board/paint.js to chalk you draw. -->
 <svg class="filters" aria-hidden="true" focusable="false">
   <filter id="chalk" x="0" y="0" width="100%" height="100%">
     <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" stitchTiles="stitch"/>
@@ -64,8 +79,7 @@ ${page.url === '/' ? '' : html`<header class="site-header"><a href="/" class="si
 ${content}
 </main>
 <footer class="site-footer">
-<p>${site.elsewhere.map((link, i) => html`${i ? ' · ' : ''}<a href="${link.url}">${link.label}</a>`)} · <a href="/feed.xml">RSS</a></p>
-<p class="quiet">${site.location} · <a href="/colophon/">How this site is made</a></p>
+<p>${site.location} · <a href="/colophon">how this site is made</a> · <a href="/feed.xml">rss</a></p>
 </footer>
 </body>
 </html>

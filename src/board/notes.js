@@ -36,7 +36,7 @@ function measureLetters() {
     if (!note.getBoundingClientRect().width) continue;
     const style = getComputedStyle(note);
     const font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-    const walker = document.createTreeWalker(note.querySelector('.mn-text') ?? note, NodeFilter.SHOW_TEXT);
+    const walker = document.createTreeWalker(note, NodeFilter.SHOW_TEXT);
     for (let text = walker.nextNode(); text; text = walker.nextNode()) {
       for (let i = 0; i < text.length; i++) {
         if (/\s/.test(text.data[i])) continue;

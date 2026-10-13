@@ -5,12 +5,27 @@ import { mediaSize } from '../lib/media.js';
 import { projectRow } from './work.js';
 import { messyStar, messyArrow } from './doodles.js';
 
+// Its pieces of the stylesheet, in src/css/ (build.js joins them).
+export const styles = ['home.css'];
+
 const LATEST_POSTS = 5; // how many posts "Writing" shows; the rest are on /blog/
 
 const md = (text) => raw(renderInline(text));
 
 // One line of "Now" or "Previously": where, then what.
 const entry = (item) => html`<li><strong>${md(item.where)}</strong> <span>${md(item.what)}</span>${note(item.note)}</li>`;
+
+// The intro, with a speaker button that plays a clip (src/say.js) for the
+// words before `{sound}`. It hangs in the margin just left of them, and shows
+// up when you hover over them. Without a clip, the marker just disappears.
+// Lucide's volume-2 icon (ISC licence).
+const SPEAKER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>';
+const intro = (text, sound) => {
+  const html = renderInline(text);
+  if (!sound) return raw(html.replace('{sound}', ''));
+  const button = `<button type="button" class="say" data-sound="${sound}" title="Play" aria-label="Play “Hello there”">${SPEAKER}</button>`;
+  return raw(html.replace(/^(.*?)\{sound\}/, `<span class="greeting">${button}$1</span>`));
+};
 
 function portrait({ src, alt }) {
   const size = mediaSize(`public${src}`);
@@ -53,10 +68,9 @@ export function home(site, { home, featured, posts }) {
   <header class="intro">${star(1)}
     ${site.portrait ? portrait(site.portrait) : ''}
     <h1>${site.title}</h1>
-    <p class="lede">${md(home.intro)}</p>
+    <p class="lede">${intro(home.intro, home.sound)}</p>
     <p class="contact">
-      <a href="mailto:${site.email}">${site.email}</a>
-      ${site.resume ? html` · <a href="${site.resume}">résumé</a>` : ''}
+      ${site.links.map((link, i) => html`${i ? html`<span> · </span>` : ''}<a href="${link.url}">${link.label}</a>`)}
     </p>
   </header>
 

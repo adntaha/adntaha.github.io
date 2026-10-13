@@ -2,6 +2,9 @@ import { html, raw } from '../lib/html.js';
 import { renderInline } from '../lib/markdown.js';
 import { workItem, projectRow } from './work.js';
 
+// Its pieces of the stylesheet, in src/css/ (build.js joins them).
+export const styles = ['lists.css'];
+
 const md = (text) => raw(renderInline(text));
 const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
@@ -16,14 +19,14 @@ export function projectsIndex(site, projects, archive) {
   ${archive.map((group) =>
     group.rows
       ? html`
-  <h2 class="label">${group.heading}</h2>
+  <h2 class="group-heading">${group.heading}</h2>
   <ul class="work-list">
     ${group.items.map((item) =>
       workItem({ url: item.url, title: item.name, meta: item.year, summary: item.blurb, image: item.image, note: item.note, id: `mn-${slugify(item.name)}` }),
     )}
   </ul>`
       : html`
-  <h2 class="label">${group.heading}</h2>
+  <h2 class="group-heading">${group.heading}</h2>
   ${group.intro ? html`<p class="quiet">${md(group.intro)}</p>` : ''}
   <ul class="archive">
     ${group.items.map(

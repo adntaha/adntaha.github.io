@@ -1,0 +1,88 @@
+/* --- Project pages */
+
+.project-asset {
+  margin: 1rem 0 0;
+}
+
+.project-asset img,
+.project-asset video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  background: var(--rule);
+}
+
+/* Tall media (phone recordings, square demos) shouldn't take over the screen. */
+.project-asset video {
+  width: auto;
+  max-width: 100%;
+  max-height: min(32rem, 70vh);
+  margin-inline: auto;
+}
+
+.project-asset figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.project-header h1 {
+  margin: 0 0 0.5rem;
+  font-size: 2.25rem;
+}
+
+.project-header .label {
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.summary {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.facts {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1.5rem 0 0;
+  padding: 1rem 0;
+  border-block: 1px solid var(--rule);
+}
+
+.facts div {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 1rem;
+}
+
+/* Each label sits on the same baseline as the first line of its value, like
+   the dates beside post titles. */
+.facts dt,
+.facts dd {
+  align-self: first baseline;
+}
+
+.facts dt {
+  font: 500 0.75rem/1.6 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.facts dd {
+  margin: 0;
+}
+
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--rule);
+}

@@ -38,7 +38,7 @@ function use(next) {
 const setPointer = (pressed = false) => document.documentElement.style.setProperty('--pen', cursorFor(tool, pressed));
 
 // --- The pointer. While a tool is in hand the page ignores it (no link
-// hovers, no clicks; see html.is-drawing in style.css), and these get it instead.
+// hovers, no clicks; see html.is-drawing in src/css/board.css), and these get it instead.
 
 function start(event) {
   if (tool.kind === 'cursor' || event.composedPath().includes(tray) || event.button > 0) return;

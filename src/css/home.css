@@ -1,0 +1,146 @@
+/* --- Homepage */
+
+.intro {
+  padding-top: clamp(2rem, 8vh, 5rem);
+}
+
+.portrait {
+  display: block;
+  width: 7rem;
+  height: 7rem;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 1.25rem;
+}
+
+.intro h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2.5rem, 7vw, 3.25rem);
+}
+
+.lede {
+  margin: 0 0 1rem;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* The speaker for "Hello there" (src/say.js). It hangs in the margin left of
+   the greeting, hidden until you hover over it: then it slides in from the
+   left, and back out after. */
+.greeting {
+  position: relative;
+}
+.say {
+  position: absolute;
+  top: 0;
+  right: 100%;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 0.3em 0 0; /* also bridges the gap, so moving onto it keeps it open */
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--muted);
+  cursor: pointer;
+  opacity: 0;
+  translate: -0.5em 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, translate 0.25s ease;
+}
+.say svg {
+  width: 0.9em;
+  height: 0.9em;
+}
+.greeting:hover .say,
+.say:focus-visible,
+.say.is-playing {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+}
+.say:hover,
+.say.is-playing {
+  color: var(--accent);
+}
+/* Touch screens: no hover, and no room in the margin, so it sits in the line. */
+@media (hover: none) {
+  .say {
+    position: static;
+    display: inline-flex;
+    vertical-align: -0.1em;
+    opacity: 1;
+    translate: none;
+    pointer-events: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .say {
+    transition: none;
+  }
+}
+
+.contact {
+  margin: 0;
+}
+
+.label {
+  margin: 2.5rem 0 0.75rem;
+  font: 500 0.75rem/1.4 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* "Now" and "Previously": small headings in the serif, one step below
+   "Selected work" and "Writing". */
+.subhead {
+  margin: 2.25rem 0 0.5rem;
+  font-size: 1.15rem;
+}
+
+.now .subhead:first-child {
+  margin-top: 3rem;
+}
+
+.entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.entries li {
+  margin-bottom: 0.35rem;
+}
+
+.entries strong {
+  font-weight: 500;
+}
+
+.entries span {
+  color: var(--ink-soft);
+}
+
+/* Links in these lists stay quiet, so the rows read as one calm list; the
+   underline comes back on hover (and keyboard focus gets the usual outline). */
+.entries a {
+  text-decoration: none;
+}
+
+.entries a:hover {
+  text-decoration: underline;
+}
+
+.work h2,
+.writing h2,
+.group-heading {
+  margin: 3.5rem 0 0.5rem;
+  font-size: 1.6rem;
+}
+
+.more {
+  margin-top: 1.25rem;
+  font-size: 0.95rem;
+}

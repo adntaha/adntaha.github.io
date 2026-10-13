@@ -1,0 +1,207 @@
+/* --- Lists of work and posts */
+
+.work-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.work-item {
+  border-top: 1px solid var(--rule);
+}
+
+/* On wide screens, a work item's margin notes (a picture on the left,
+   handwriting on the right) are centred on the row, not hung from its top.
+   They're short, so they never reach past it. */
+@media (min-width: 70rem) {
+  .work-item {
+    position: relative;
+  }
+
+  .work-item > .mn {
+    position: absolute;
+    top: 50%;
+    right: calc(-1 * (var(--margin) + var(--gutter)));
+    margin: 0;
+    translate: 0 -50%;
+  }
+
+  .work-item > .mn--left {
+    right: auto;
+    left: calc(-1 * (var(--margin) + var(--gutter)));
+  }
+
+  .work-item > .mn--left:has(.print) {
+    left: calc(-1 * (10rem + var(--gutter)));
+  }
+}
+
+/* On phones, a work item's margin note (which comes first in the markup, so
+   it can float level with the title on wide screens) moves below the summary. */
+@media (max-width: 69.99rem) {
+  .work-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .work-item > .work-row {
+    order: 1;
+    align-self: stretch;
+  }
+
+  .work-item > .mn-toggle {
+    order: 2;
+    margin: -0.75rem 0 0.75rem;
+  }
+
+  .work-item > .mn {
+    order: 3;
+  }
+}
+
+.work-row {
+  display: grid;
+  gap: 0.15rem;
+  padding: 1rem 0;
+  text-decoration: none;
+}
+
+.work-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1.2;
+}
+
+a.work-row:hover .work-title {
+  color: var(--accent);
+}
+
+a.work-row:hover .work-title::after {
+  content: ' →';
+}
+
+.work-meta {
+  font: 0.75rem/1.5 var(--mono);
+  color: var(--muted);
+}
+
+.work-summary {
+  color: var(--ink-soft);
+}
+
+/* The two smaller entries share a row: notable, but a step below the three above. */
+.work-list--pair {
+  border-top: 1px solid var(--rule);
+}
+
+.work-list--pair .work-item {
+  border-top: 0;
+}
+
+.work-list--pair .work-title {
+  font-size: 1.1rem;
+}
+
+.work-list--pair .work-summary {
+  font-size: 0.95rem;
+}
+
+@media (min-width: 40rem) {
+  .work-list--pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2rem;
+  }
+}
+
+.post-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post-list li {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 0 1rem;
+  padding: 0.45rem 0;
+}
+
+/* A note beside a post hangs in the margin from that row, without making the
+   row taller (a float would stretch it, since a grid cell contains its floats). */
+@media (min-width: 70rem) {
+  .post-list li {
+    position: relative;
+  }
+
+  .post-list .mn {
+    position: absolute;
+    top: calc(0.45rem - 0.16em); /* the row's padding, less a little: the handwriting sits low in its line, and this puts its first line's middle level with the arrow */
+    right: calc(-1 * (var(--margin) + var(--gutter)));
+    margin: 0;
+  }
+
+  .post-list .mn--left {
+    right: auto;
+    left: calc(-1 * (var(--margin) + var(--gutter)));
+  }
+}
+
+/* The date sits on the same baseline as the title's first line. (Centring
+   their boxes looks off: the eye centres a title on its lowercase letters,
+   and an all-digit date sharing its baseline lands right in their middle.) */
+.post-list time {
+  align-self: first baseline;
+  font: 0.8rem/1.6 var(--mono);
+  color: var(--muted);
+}
+
+.post-list li > :nth-child(2) {
+  align-self: first baseline;
+}
+
+.post-list--long li {
+  padding: 0.75rem 0;
+}
+
+.post-list--long p {
+  grid-column: 2;
+  margin: 0.2rem 0 0;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 30rem) {
+  .post-list li {
+    grid-template-columns: 1fr;
+  }
+
+  .post-list--long p {
+    grid-column: 1;
+  }
+}
+
+.listing h1 {
+  margin: 1rem 0 0.5rem;
+  font-size: 2.25rem;
+}
+
+.listing .lede {
+  margin-bottom: 1.5rem;
+}
+
+.archive {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.archive li {
+  padding: 0.4rem 0;
+}
+
+.quiet {
+  color: var(--muted);
+}

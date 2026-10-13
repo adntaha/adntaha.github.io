@@ -1,0 +1,150 @@
+/*
+  The site's styles, in pieces. Each template says which pieces it uses (its
+  `styles` export), and build.js joins them, in the order the templates come
+  in, into one stylesheet: one small file, downloaded once and cached for
+  every page.
+
+  The idea is a board: a crisp column of typed text for people who came for
+  something specific, and handwritten notes in the margin for people who like
+  to wander. In light mode it's a whiteboard and the notes are in blue marker;
+  in dark mode it's a blackboard and they're in chalk. Visitors can pick up a
+  marker and write on it too (src/board/).
+
+  Everything obeys that: text sits in the column, and anything extra (notes,
+  pictures) is stuck in the margin. Nothing floats over the page except the
+  little marker tray in the corner.
+
+  This piece: fonts, colours, and the base every page starts from.
+*/
+
+/* --- Fonts: self-hosted, Latin subset only. Body text uses the system font: zero bytes. */
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces.woff2') format('woff2');
+  font-weight: 300 800;
+  font-display: swap;
+}
+
+/* My handwriting, made into a font from a scan. */
+@font-face {
+  font-family: 'Aidan Hand';
+  src: url('/fonts/aidan-hand.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* --- Colours. Light (whiteboard) by default; dark (blackboard) follows the
+   operating system. --paper is the board itself; --note is the handwriting. */
+
+:root {
+  --paper: #f9fafa; /* whiteboard: a cool, slightly glossy white */
+  --ink: #1b1d20;
+  --ink-soft: #40444a;
+  --muted: #73787f;
+  --rule: rgb(27 29 32 / 0.12);
+  --note: #1d4fc4; /* blue whiteboard marker */
+  --accent: #1d4fc4;
+  --print: #ffffff; /* the white border of a photo print */
+
+  --serif: 'Fraunces', Georgia, serif;
+  --soft: 100; /* Fraunces' rounded ends, 0 to 100 (try values in experiments/fraunces.html) */
+  --wonk: 0; /* its leaning, wonky letters, 0 or 1 */
+  --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
+  --hand: 'Aidan Hand', 'Segoe Print', cursive;
+
+  --column: 38rem;
+  --margin: 13rem; /* width of the margin-note column on wide screens */
+  --gutter: 2.5rem;
+  --pad: 1.25rem;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #232625; /* blackboard: charcoal with a little slate in it */
+    --ink: #ecebe6;
+    --ink-soft: #c6c7c2;
+    --muted: #8e918d;
+    --rule: rgb(236 235 230 / 0.14);
+    --note: #f3f2ec; /* white chalk */
+    --accent: #f2d675; /* yellow chalk, for links and focus */
+    --print: #303432;
+  }
+}
+
+/* --- Base */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 1.0625rem/1.6 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Everything set in Fraunces gets its soft, wonky letters (see --soft, --wonk). */
+h1,
+h2,
+h3,
+.site-name,
+.work-title {
+  font-variation-settings: 'SOFT' var(--soft), 'WONK' var(--wonk);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--serif);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+/* Page-to-page navigation crossfades instead of flashing white. Kept short:
+   the site should feel decisive, never like it's waiting on an animation. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.12s;
+}

@@ -1,6 +1,6 @@
 // The board itself: one canvas the size of the whole page, so it scrolls with
 // the page for free, and the strokes on it. The canvas sits under the typed
-// text but over the margin notes (see "The board" in style.css), so the eraser
+// text but over the margin notes (see src/css/board.css), so the eraser
 // can rub the notes out by painting board colour over them.
 //
 // Repainting a rectangle means clearing it and replaying every stroke that
@@ -273,7 +273,7 @@ function footprint(picked, path, width, [left, top, right, bottom], which) {
 }
 
 // --- Chalk: drawn with a tile of grain made by the same #chalk filter that
-// style.css gives the handwriting (it's defined in templates/layout.js), so
+// src/css/layout.css gives the handwriting (it's defined in templates/layout.js), so
 // chalk you draw looks like chalk that was already there. (Filtering each
 // stroke directly would be slow, and patchy when only part of it repaints.)
 

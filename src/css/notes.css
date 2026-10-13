@@ -1,0 +1,106 @@
+/* --- Margin notes. Beside the text on wide screens; behind a ✎ toggle on
+   narrow ones (a checkbox does the toggling, so no JavaScript). */
+
+.mn {
+  display: block;
+  float: right;
+  clear: right;
+  width: var(--margin);
+  margin-right: calc(-1 * (var(--margin) + var(--gutter)));
+  font: 400 1.9rem/1.1 var(--hand);
+  letter-spacing: 0;
+  color: var(--note);
+  rotate: -1.5deg;
+  text-wrap: pretty;
+}
+
+.mn a {
+  text-decoration-color: currentColor;
+}
+
+/* A note can hang in the left margin instead, tilted the other way. */
+.mn--left {
+  float: left;
+  clear: left;
+  margin-right: 0;
+  margin-left: calc(-1 * (var(--margin) + var(--gutter)));
+  rotate: 1.5deg;
+}
+
+/* A picture in the margin is a print taped into the notebook: a white border,
+   a hair of shadow, and the note's own slight tilt. */
+.print {
+  display: block;
+  width: 10rem; /* small enough to stay level with its row */
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  margin-bottom: 0.3rem;
+  padding: 0.3rem;
+  background: var(--print);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.12);
+}
+
+/* Prints hang in the left margin (templates/work.js), so they sit by the
+   text, not out at the margin's far edge: the note is only as wide as the
+   print. */
+.mn--left:has(.print) {
+  width: 10rem;
+  margin-left: calc(-1 * (10rem + var(--gutter)));
+}
+
+/* Alternate the tilt, so a column of prints looks pasted in by hand. */
+.work-item:nth-child(even) > .mn:has(.print) {
+  rotate: -1.25deg;
+}
+
+.mn-toggle,
+.mn-toggle-input {
+  display: none;
+}
+
+@media (max-width: 69.99rem) {
+  .mn {
+    display: none;
+  }
+
+  .mn-toggle {
+    display: inline;
+    margin-left: 0.2em;
+    /* Fonts with a plain ✎, so it doesn't turn into a colour emoji. */
+    font: 400 1rem 'Segoe UI Symbol', 'Apple Symbols', 'DejaVu Sans', var(--sans);
+    color: var(--note);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* Visually hidden but still focusable, so keyboard users can open notes. */
+  .mn-toggle-input {
+    display: inline;
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+
+  .mn-toggle-input:focus-visible + .mn,
+  .work-item > .mn-toggle-input:focus-visible ~ .mn,
+  .mn-toggle:has(+ .mn-toggle-input:focus-visible) {
+    outline: 2px solid var(--accent);
+  }
+
+  /* (A work item's picture and note share its one toggle.) */
+  .mn-toggle-input:checked + .mn,
+  .work-item > .mn-toggle-input:checked ~ .mn {
+    display: block;
+    float: none;
+    width: auto;
+    margin: 0.5rem 0 0.75rem;
+    rotate: none;
+  }
+
+  .work-item > .mn-toggle-input:checked ~ .mn .print,
+  .mn-toggle-input:checked + .mn .print {
+    max-width: 16rem;
+  }
+}

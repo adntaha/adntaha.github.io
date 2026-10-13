@@ -1,6 +1,9 @@
 import { html, raw } from '../lib/html.js';
 import { formatDate, isoDate } from '../lib/dates.js';
 
+// Its pieces of the stylesheet, in src/css/ (build.js joins them).
+export const styles = ['lists.css', 'writing.css'];
+
 export function post(site, post) {
   return html`
 <article class="post">

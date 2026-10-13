@@ -1,4 +1,4 @@
-// The margin stars on the homepage (see home.js and "Doodles" in style.css)
+// The margin stars on the homepage (see home.js and src/css/doodles.css)
 // draw themselves as you scroll down, and stay drawn when you scroll back up.
 // The first is already in view when the page opens; CSS draws that one.
 

@@ -19,7 +19,7 @@ npm run build   # writes the finished site to dist/
 | `content/pages/*.md` | Standalone pages such as `/colophon/` and the 404 page |
 | `site.config.js` | Name, email, links, base URL, analytics, redirects |
 | `templates/` | Functions that turn content into HTML |
-| `src/` | `style.css`, `board/` (the marker/chalk tray, a few small modules; start at `main.js`) and `stars.js`, fingerprinted on build so they cache well |
+| `src/` | `css/` (the stylesheet in pieces; each template lists the ones it uses, and the build joins them into one file), `board/` (the marker/chalk tray, a few small modules; start at `main.js`) and `stars.js`, fingerprinted on build so they cache well |
 | `public/` | Copied as-is: fonts, images, video |
 
 ## Writing

@@ -2,6 +2,9 @@ import { html, raw } from '../lib/html.js';
 import { renderInline } from '../lib/markdown.js';
 import { mediaSize } from '../lib/media.js';
 
+// Its pieces of the stylesheet, in src/css/ (build.js joins them).
+export const styles = ['project.css', 'writing.css'];
+
 const md = (text) => raw(renderInline(text));
 
 // The project's picture or video. Its size is read from the file so the

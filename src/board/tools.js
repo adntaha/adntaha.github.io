@@ -20,7 +20,7 @@ const PALETTES = {
   ],
 };
 
-export const LINE = 2.75; // the same thickness as the doodles' stroke (.doodle in style.css)
+export const LINE = 2.75; // the same thickness as the doodles' stroke (.doodle in src/css/doodles.css)
 export const ERASER = 28;
 
 // The blackboard's eraser is your hand: pointing while you hover, flat while

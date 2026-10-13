@@ -1,0 +1,98 @@
+/* --- Layout: one centred column. Margin notes hang outside it, in the empty
+   space on the right; below 70rem there isn't room, so they fold away. */
+
+.site-header,
+main,
+.site-footer {
+  max-width: calc(var(--column) + 2 * var(--pad));
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 1.5rem;
+}
+
+.site-name {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.15rem;
+  text-decoration: none;
+}
+
+.site-header nav {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.site-header nav a {
+  text-decoration: none;
+  color: var(--ink-soft);
+}
+
+.site-header nav a:hover {
+  color: var(--accent);
+}
+
+main {
+  padding-block: 1rem 2rem;
+}
+
+.site-footer {
+  margin-top: 3rem;
+  padding-block: 1.5rem 3rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.site-footer p {
+  margin: 0.25rem 0;
+}
+
+/* On the blackboard, handwriting (and the doodles) is chalk: the #chalk filter
+   (defined in templates/layout.js) lets it show through a grain of tiny gaps.
+   Pictures in the margin stay solid. */
+@media (prefers-color-scheme: dark) {
+  .mn:not(:has(.print)),
+  .doodle {
+    filter: url(#chalk);
+  }
+}
+
+/* --- Utilities */
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  padding: 0.5rem 1rem;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 4px;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* The SVG that only holds filter definitions takes up no space. */
+.filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

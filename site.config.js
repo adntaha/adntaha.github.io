@@ -1,39 +1,43 @@
 // Everything that identifies the site lives here, so moving to a new domain
 // or changing a link is a one-line edit.
 
+import fs from 'node:fs';
+import YAML from 'yaml';
+
+// make the description a copy of the intro
+const { intro } = YAML.parse(fs.readFileSync(new URL('./content/home.yml', import.meta.url), 'utf8'));
+const plain = (markdown) =>
+  markdown
+    .replace(/\{\w+\}/g, '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\*+/g, '');
+
 export default {
-  // Absolute URL, used only where relative links aren't allowed (feed, sitemap, social cards).
-  url: 'https://adntaha.github.io',
+  url: 'https://adntaha.github.io', // absolute url, used for the rss feed, sitemap, social cards, etc.
   title: 'Aidan Taha',
-  description: 'AI safety researcher, builder, writer, learner. CS and Stats at McGill.',
+  description: plain(intro),
   author: 'Aidan Taha',
   locale: 'en-CA',
-  location: 'Montréal',
+  location: 'montréal',
 
-  // Taken from the old Jekyll _config.yml, where it was already public.
-  email: 'adnanaidantaha@gmail.com',
-
-  // Quieter links, shown under the intro and in the footer.
-  elsewhere: [
-    { label: 'GitHub', url: 'https://github.com/adntaha' },
-    { label: 'X', url: 'https://x.com/adntaha_ai' },
-    { label: 'LinkedIn', url: 'https://www.linkedin.com/in/adntaha' },
-    { label: 'Devpost', url: 'https://devpost.com/adntaha' },
+  // shown in the intro
+  links: [
+    { label: 'github', url: 'https://github.com/adntaha' },
+    { label: 'twitter', url: 'https://x.com/adntaha_ai' },
+    { label: 'email', url: 'mailto:adnanaidantaha@gmail.com' },
+    { label: 'résumé', url: '/resume.pdf' }
   ],
 
-  // Optional. Drop an image in public/images/ and set e.g. { src: '/images/portrait.jpg', alt: '…' }.
+  // e.g. { src: '/images/portrait.jpg', alt: '…' }.
   portrait: null,
 
-  // The public résumé, public/resume.pdf (chosen 2026-10-08: coolest_resume_ever.pdf).
-  resume: '/resume.pdf',
-
-  // Loaded only in production builds, so local development doesn't count as visits.
+  // loaded only in production builds
   analytics: {
     src: 'https://shy-wildflower-2799.botato.workers.dev/seeds.js',
     websiteId: '2ccfe685-560d-4989-9c47-e09bd0f6bccb',
   },
 
-  // Old Jekyll pages that no longer exist, pointed somewhere useful.
+  // old jekyll pages
   redirects: {
     '/posts/': '/blog/',
     '/categories/': '/blog/',

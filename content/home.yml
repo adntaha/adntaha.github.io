@@ -1,7 +1,10 @@
 # The homepage's words. Inline Markdown works in every text field,
 # and `note` fields become handwritten-style margin notes.
 
-intro: AI safety researcher, builder, writer, learner. CS and Stats at McGill.
+# Hovering over the words before `{sound}` shows a little speaker beside them
+# that plays `sound`.
+intro: Hello there{sound}, I like working out interesting problems. I also happen to be a Stats & CS student at McGill.
+sound: /media/hello-there.mp3 # Obi-Wan, the first 9.75 seconds of youtu.be/rEq1Z0bjdwc
 
 now:
   - where: Harvard SEAS

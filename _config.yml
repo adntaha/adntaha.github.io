@@ -63,7 +63,7 @@ plugins:
 author:
   name   : "Aidan Taha"
   avatar : "/assets/images/bio-photo.jpg"
-  bio    : "I'm a builder and aspiring AI safety researcher. I write to deconstruct black boxes in AI and elsewhere, to simplify complicated ideas."
+  bio    : "I'm a builder and AI safety researcher. I write to deconstruct black boxes in AI and elsewhere, to simplify complicated ideas."
   links:
     - label: "Website"
       icon: "fas fa-fw fa-link"

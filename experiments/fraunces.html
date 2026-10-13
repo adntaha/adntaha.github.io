@@ -1,0 +1,189 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fraunces dials</title>
+<!--
+  An experiment, never deployed: open this file directly in a browser. Drag
+  Fraunces' settings and see the homepage's headings change on the whiteboard
+  and the blackboard. "Copy" gives the two lines to paste into the top of
+  src/style.css (--soft and --wonk).
+-->
+<style>
+  @font-face {
+    font-family: 'Fraunces';
+    src: url('../public/fonts/fraunces.woff2') format('woff2');
+    font-weight: 300 800;
+  }
+  @font-face {
+    font-family: 'Aidan Hand';
+    src: url('../public/fonts/aidan-hand.woff2') format('woff2');
+  }
+
+  :root {
+    --soft: 100;
+    --wonk: 1;
+    --weight: 600;
+    --opsz: auto;
+
+    --page: #eef0f0;
+    --ink: #1b1d20;
+    --muted: #6b7077;
+    --line: rgb(27 29 32 / 0.14);
+    --accent: #1d4fc4;
+    --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --page: #1a1c1b; --ink: #ecebe6; --muted: #969994; --line: rgb(236 235 230 / 0.14); --accent: #f2d675; color-scheme: dark; }
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--ink); font: 15px/1.5 var(--sans); }
+  .wrap { max-width: 78rem; margin: 0 auto; padding-inline: 16px; padding-block: 1.5rem 3rem; }
+  h1.title { margin: 0 0 1rem; font: 650 1.25rem var(--sans); }
+
+  .dials {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.75rem 1.5rem;
+    padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: 10px;
+  }
+  .dial { display: grid; gap: 0.3rem; }
+  .dial label { display: flex; justify-content: space-between; font: 600 0.72rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+  .dial output { font-weight: 400; color: var(--muted); }
+  .dial small { color: var(--muted); font-size: 0.8rem; }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  .auto { display: flex; gap: 0.4rem; align-items: center; font-size: 0.8rem; color: var(--muted); }
+
+  .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem; margin: 1rem 0; }
+  .bar code { flex: 1 1 22rem; min-width: 0; font: 0.85rem var(--mono); overflow-wrap: anywhere; }
+  .bar button { font: 600 0.85rem var(--sans); padding: 0.4rem 0.8rem; border-radius: 7px; border: 1px solid var(--line); background: none; color: var(--ink); cursor: pointer; }
+  .bar button.primary { background: var(--ink); color: var(--page); border-color: var(--ink); }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .boards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr)); gap: 1rem; }
+  .board { border-radius: 12px; padding: 1.75rem clamp(1rem, 3vw, 2.25rem) 2rem; font: 1.0625rem/1.6 var(--sans); }
+  .wb { background: #f9fafa; color: #1b1d20; --soft-ink: #40444a; --muted-ink: #73787f; --rule: rgb(27 29 32 / 0.12); --note: #1d4fc4; border: 1px solid rgb(27 29 32 / 0.1); }
+  .bb { background: #232625; color: #ecebe6; --soft-ink: #c6c7c2; --muted-ink: #8e918d; --rule: rgb(236 235 230 / 0.14); --note: #f3f2ec; }
+  .tag { margin: -0.75rem 0 1rem; font: 0.68rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-ink); }
+
+  .serif {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: var(--weight);
+    font-optical-sizing: auto;
+    font-variation-settings: 'SOFT' var(--soft), 'WONK' var(--wonk);
+    letter-spacing: -0.01em;
+  }
+  .manual-opsz .serif { font-variation-settings: 'SOFT' var(--soft), 'WONK' var(--wonk), 'opsz' var(--opsz); }
+
+  .name { margin: 0 0 0.5rem; font-size: clamp(2.4rem, 5vw, 3.25rem); line-height: 1.05; }
+  .lede { margin: 0 0 1.25rem; font-size: 1.15rem; color: var(--soft-ink); }
+  .sub { margin: 1.25rem 0 0.25rem; font-size: 1rem; }
+  .entries { list-style: none; margin: 0; padding: 0; }
+  .entries span { color: var(--soft-ink); }
+  .h2 { margin: 2rem 0 0.4rem; font-size: 1.6rem; line-height: 1.15; padding-bottom: 0.35rem; border-bottom: 1px solid var(--rule); }
+  .row { padding: 0.7rem 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 1rem; align-items: center; }
+  .row .t { font-size: 1.3rem; line-height: 1.2; }
+  .row .m { grid-column: 1; font: 0.75rem/1.6 var(--mono); color: var(--muted-ink); }
+  .row .n { grid-row: 1 / 3; grid-column: 2; font: 1.6rem/1.1 'Aidan Hand', cursive; color: var(--note); }
+  .glyphs { margin-top: 1.5rem; font-size: 2rem; line-height: 1.25; word-break: break-word; }
+</style>
+
+<div class="wrap">
+  <h1 class="title">Fraunces dials</h1>
+
+  <div class="dials">
+    <div class="dial">
+      <label for="soft">Soft <output id="soft-out"></output></label>
+      <input type="range" id="soft" min="0" max="100" step="1" value="100">
+      <small>Rounds off the ends of strokes and serifs.</small>
+    </div>
+    <div class="dial">
+      <label for="wonk">Wonk <output id="wonk-out"></output></label>
+      <input type="range" id="wonk" min="0" max="1" step="1" value="1">
+      <small>Leaning h, m, n and friends. It flips at the halfway point, so it's on or off.</small>
+    </div>
+    <div class="dial">
+      <label for="weight">Weight <output id="weight-out"></output></label>
+      <input type="range" id="weight" min="300" max="800" step="10" value="600">
+      <small>The site uses 600.</small>
+    </div>
+    <div class="dial">
+      <label for="opsz">Optical size <output id="opsz-out"></output></label>
+      <input type="range" id="opsz" min="9" max="144" step="1" value="72" disabled>
+      <span class="auto"><input type="checkbox" id="opsz-auto" checked><label for="opsz-auto" style="all:unset;cursor:pointer">automatic, from the text size (as on the site)</label></span>
+    </div>
+  </div>
+
+  <div class="bar">
+    <code id="css"></code>
+    <button type="button" id="reset">Regular Fraunces</button>
+    <button type="button" id="soft-preset">Soft and wonky</button>
+    <button type="button" class="primary" id="copy">Copy</button>
+  </div>
+
+  <div class="boards" id="boards"></div>
+</div>
+
+<template id="sample">
+  <p class="tag"></p>
+  <h2 class="serif name">Aidan Taha</h2>
+  <p class="lede">Hello there. I like working out interesting problems. Right now, that’s AI safety.</p>
+  <h3 class="serif sub">Now</h3>
+  <ul class="entries"><li><strong>Harvard SEAS</strong> <span>research assistant, LLM evaluations</span></li></ul>
+  <h3 class="serif h2">Selected work</h3>
+  <div class="row"><span class="serif t">WeBWrite</span><span class="m">Oct 2026 · Best Use of Gemma</span></div>
+  <div class="row"><span class="serif t">ChatGPT in Discord</span><span class="m">Dec 2022</span><span class="n">fun fact!</span></div>
+  <h3 class="serif h2">Writing</h3>
+  <p class="serif glyphs">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789 &amp;?!</p>
+</template>
+
+<script>
+  const boards = document.getElementById('boards');
+  for (const [cls, tag] of [['wb', 'Whiteboard · light mode'], ['bb', 'Blackboard · dark mode']]) {
+    const b = document.createElement('section');
+    b.className = `board ${cls}`;
+    b.append(document.getElementById('sample').content.cloneNode(true));
+    b.querySelector('.tag').textContent = tag;
+    boards.append(b);
+  }
+
+  const $ = (id) => document.getElementById(id);
+  const root = document.documentElement.style;
+
+  function update() {
+    const soft = $('soft').value, wonk = $('wonk').value, weight = $('weight').value, opsz = $('opsz').value, auto = $('opsz-auto').checked;
+    root.setProperty('--soft', soft);
+    root.setProperty('--wonk', wonk);
+    root.setProperty('--weight', weight);
+    root.setProperty('--opsz', opsz);
+    document.body.classList.toggle('manual-opsz', !auto);
+    $('opsz').disabled = auto;
+    $('soft-out').textContent = soft;
+    $('wonk-out').textContent = wonk === '1' ? 'on' : 'off';
+    $('weight-out').textContent = weight;
+    $('opsz-out').textContent = auto ? 'auto' : opsz;
+    const lines = [`--soft: ${soft};`, `--wonk: ${wonk};`];
+    if (weight !== '600') lines.push(`/* weight ${weight} (the site uses 600) */`);
+    if (!auto) lines.push(`/* optical size ${opsz} (the site sets it automatically) */`);
+    $('css').textContent = lines.join(' ');
+  }
+
+  for (const id of ['soft', 'wonk', 'weight', 'opsz', 'opsz-auto']) $(id).addEventListener('input', update);
+  function set(soft, wonk) {
+    $('soft').value = soft; $('wonk').value = wonk; $('weight').value = 600; $('opsz-auto').checked = true;
+    update();
+  }
+  $('reset').addEventListener('click', () => set(0, 0));
+  $('soft-preset').addEventListener('click', () => set(100, 1));
+  $('copy').addEventListener('click', async (e) => {
+    const button = e.currentTarget;
+    try {
+      await navigator.clipboard.writeText($('css').textContent);
+      button.textContent = 'Copied';
+    } catch {
+      getSelection().selectAllChildren($('css'));
+      button.textContent = 'Selected: press Ctrl+C';
+    }
+    setTimeout(() => (button.textContent = 'Copy'), 1800);
+  });
+  update();
+</script>

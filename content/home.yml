@@ -8,8 +8,8 @@ sound: /media/hello-there.mp3 # Obi-Wan, the first 9.75 seconds of youtu.be/rEq1
 
 now:
   # Hidden until I've presented my work there and asked whether I can list it.
-  # - where: Harvard SEAS
-  #   what: research assistant, LLM evaluations for sovereign models
+  - where: Harvard
+    what: student researcher, LLM evaluations for sovereign models
   - where: AI Alignment McGill
     what: co-director; revived the club and facilitate its reading groups
   # - where: McGill University
@@ -19,7 +19,7 @@ previously:
   - where: "[MIT AI Alignment](https://mitaialignment.org/aisf/summer-2026/fellows/)"
     what: AISF fellow
   - where: University of Basel
-    what: medical image segmentation research
+    what: research assistant, medical image segmentation research
   - where: "[AI Control Hackathon](https://horizonomega.substack.com/p/ai-control-hackathon-2026-retrospective)"
     what: organizer
   - where: "[Holopin](https://holopin.io)"

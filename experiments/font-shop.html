@@ -1,0 +1,375 @@
+<title>adntaha Font Shop</title>
+<style>
+/* Layout: three shelves of fonts (headings, handwriting, body) above the real
+   homepage, set on the whiteboard and the blackboard side by side. Chrome
+   borrows the site's own tokens; the two boards keep their own fixed colours. */
+:root {
+  --bg: #f9fafa;
+  --fg: #1b1d20;
+  --soft: #40444a;
+  --muted: #6b7077;
+  --line: rgb(27 29 32 / 0.13);
+  --chip: #ffffff;
+  --accent: #1d4fc4;
+  --accent-wash: rgb(29 79 196 / 0.09);
+
+  --ui: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
+
+  /* the boards, as on the site */
+  --wb-paper: #f9fafa; --wb-ink: #1b1d20; --wb-soft: #40444a; --wb-muted: #73787f; --wb-rule: rgb(27 29 32 / 0.12); --wb-note: #1d4fc4; --wb-accent: #1d4fc4;
+  --bb-paper: #232625; --bb-ink: #ecebe6; --bb-soft: #c6c7c2; --bb-muted: #8e918d; --bb-rule: rgb(236 235 230 / 0.14); --bb-note: #f3f2ec; --bb-accent: #f2d675;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1c1f1e; --fg: #ecebe6; --soft: #c6c7c2; --muted: #969994; --line: rgb(236 235 230 / 0.14);
+    --chip: #262a28; --accent: #f2d675; --accent-wash: rgb(242 214 117 / 0.1); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1c1f1e; --fg: #ecebe6; --soft: #c6c7c2; --muted: #969994; --line: rgb(236 235 230 / 0.14);
+  --chip: #262a28; --accent: #f2d675; --accent-wash: rgb(242 214 117 / 0.1); color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.5 var(--ui); }
+.wrap { max-width: 82rem; margin: 0 auto; padding-inline: 16px; padding-block: 1.75rem 3rem; }
+
+header.top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.5rem 1.5rem; margin-bottom: 1.25rem; }
+header.top h1 { margin: 0; font-size: 1.35rem; font-weight: 650; letter-spacing: -0.01em; }
+header.top p { margin: 0; color: var(--muted); max-width: 46rem; }
+
+.shelves { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+@media (max-width: 52rem) { .shelves { grid-template-columns: 1fr; } }
+.shelf { min-width: 0; border-top: 2px solid var(--fg); padding-top: 0.6rem; }
+.shelf-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.5rem; }
+.shelf h2 { margin: 0; font: 600 0.72rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; }
+.shelf .now { font: 0.75rem var(--mono); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.picks { display: flex; flex-wrap: wrap; gap: 0.35rem; max-height: 11.5rem; overflow-y: auto; padding: 2px; }
+.pick {
+  display: inline-flex; align-items: baseline; gap: 0.4em;
+  padding: 0.3rem 0.65rem; border: 1px solid var(--line); border-radius: 999px;
+  background: var(--chip); color: var(--fg); font-size: 1.05rem; line-height: 1.3; cursor: pointer;
+}
+.pick:hover { border-color: var(--muted); }
+.pick[aria-checked="true"] { border-color: var(--accent); background: var(--accent-wash); box-shadow: inset 0 0 0 1px var(--accent); }
+.pick:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pick small { font: 0.62rem/1 var(--mono); letter-spacing: 0.04em; color: var(--muted); text-transform: uppercase; }
+
+.bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem; margin: 1.4rem 0 1rem; padding: 0.7rem 0.9rem; border: 1px solid var(--line); border-radius: 10px; }
+.bar code { font: 0.82rem var(--mono); color: var(--soft); flex: 1 1 20rem; min-width: 0; overflow-wrap: anywhere; }
+.bar button { font: 600 0.85rem var(--ui); padding: 0.4rem 0.8rem; border-radius: 7px; border: 1px solid var(--line); background: var(--chip); color: var(--fg); cursor: pointer; }
+.bar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bar button.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.view { display: inline-flex; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
+.view button { border: 0; border-radius: 0; background: none; font-weight: 500; }
+.view button[aria-pressed="true"] { background: var(--accent-wash); color: var(--fg); box-shadow: inset 0 -2px 0 var(--accent); }
+
+/* --- The boards: a slice of the real homepage */
+.boards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.boards[data-view="whiteboard"] .board.bb, .boards[data-view="blackboard"] .board.wb { display: none; }
+.boards[data-view="whiteboard"], .boards[data-view="blackboard"] { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 64rem) { .boards { grid-template-columns: minmax(0, 1fr); } }
+
+.board {
+  --heading: 'Fraunces', Georgia, serif; --hand: 'Caveat', 'Segoe Print', cursive; --body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --hand-size: 1.55rem; --heading-weight: 600;
+  min-width: 0; border-radius: 12px; padding: 2rem clamp(1rem, 3vw, 2.25rem) 2.25rem;
+  background: var(--paper); color: var(--ink); font: 1.0625rem/1.6 var(--body);
+  border: 1px solid var(--line);
+}
+.board.wb { --paper: var(--wb-paper); --ink: var(--wb-ink); --soft: var(--wb-soft); --muted: var(--wb-muted); --rule: var(--wb-rule); --note: var(--wb-note); --accent: var(--wb-accent); }
+.board.bb { --paper: var(--bb-paper); --ink: var(--bb-ink); --soft: var(--bb-soft); --muted: var(--bb-muted); --rule: var(--bb-rule); --note: var(--bb-note); --accent: var(--bb-accent); }
+.board-label { margin: -1rem 0 1.25rem; font: 0.68rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+/* The text column and its right margin, like the site's 38rem + 13rem. */
+.sheet { display: grid; grid-template-columns: minmax(0, 1fr) 11rem; column-gap: 1.75rem; }
+.sheet > * { grid-column: 1; }
+.sheet > .mn { grid-column: 2; }
+@media (max-width: 34rem) { .sheet { grid-template-columns: minmax(0, 1fr); } .sheet > .mn { grid-column: 1; margin: 0 0 0.75rem; } }
+.boards:not([data-view="both"]) .sheet { grid-template-columns: minmax(0, 38rem) 13rem; column-gap: 2.5rem; justify-content: center; }
+@media (max-width: 40rem) { .boards:not([data-view="both"]) .sheet { grid-template-columns: minmax(0, 1fr); } }
+
+.board h3, .board h4 { font-family: var(--heading); font-weight: var(--heading-weight); letter-spacing: -0.01em; text-wrap: balance; }
+.board h3 { margin: 0 0 0.6rem; font-size: calc(clamp(2.1rem, 4.5vw, 3rem) * var(--heading-scale, 1)); line-height: 1.05; }
+.board h4 { margin: 2rem 0 0.4rem; font-size: calc(1.5rem * var(--heading-scale, 1)); line-height: 1.2; padding-bottom: 0.35rem; border-bottom: 1px solid var(--rule); }
+.board h4.sub { font-size: 1rem; border: 0; margin: 1.5rem 0 0.3rem; padding: 0; }
+.lede { margin: 0 0 0.8rem; font-size: 1.2rem; line-height: 1.5; color: var(--soft); text-wrap: pretty; }
+.contact { margin: 0; color: var(--soft); }
+.board a { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent); text-underline-offset: 0.18em; }
+.entries { list-style: none; margin: 0; padding: 0; }
+.entries li { padding: 0.15rem 0; }
+.entries strong { font-weight: 600; }
+.entries span { color: var(--soft); }
+.row { padding: 0.9rem 0; border-bottom: 1px solid var(--rule); align-self: center; }
+.row .t { display: block; font-family: var(--heading); font-weight: var(--heading-weight); font-size: 1.3rem; line-height: 1.2; }
+.row .m { display: block; font: 0.75rem/1.6 var(--mono); color: var(--muted); }
+.row .s { display: block; color: var(--soft); }
+.posts { list-style: none; margin: 0; padding: 0; }
+.posts li { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 0 1rem; padding: 0.35rem 0; }
+.posts time { font: 0.8rem/1.9 var(--mono); color: var(--muted); }
+@media (max-width: 26rem) { .posts li { grid-template-columns: 1fr; } }
+.mn { align-self: center; font-family: var(--hand); font-size: var(--hand-size); line-height: 1.1; color: var(--note); rotate: -1.5deg; text-wrap: pretty; }
+.mn.top { align-self: start; margin-top: 0.4rem; }
+
+.foot { margin-top: 1.25rem; color: var(--muted); font-size: 0.85rem; }
+@media (prefers-reduced-motion: no-preference) { .board * { transition: font-size 0.15s ease; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Font shop</h1>
+    <p>Pick a face on each shelf and the homepage below changes to match, on the whiteboard and the blackboard. “On site” marks what adntaha.github.io uses today. The headings shelf starts with soft, inky serifs like Averia.</p>
+  </header>
+
+  <div class="shelves">
+    <section class="shelf" aria-labelledby="h-heading">
+      <div class="shelf-head"><h2 id="h-heading">Headings</h2><span class="now" id="now-heading"></span></div>
+      <div class="picks" role="radiogroup" aria-labelledby="h-heading" id="picks-heading"></div>
+    </section>
+    <section class="shelf" aria-labelledby="h-hand">
+      <div class="shelf-head"><h2 id="h-hand">Handwriting</h2><span class="now" id="now-hand"></span></div>
+      <div class="picks" role="radiogroup" aria-labelledby="h-hand" id="picks-hand"></div>
+    </section>
+    <section class="shelf" aria-labelledby="h-body">
+      <div class="shelf-head"><h2 id="h-body">Body text</h2><span class="now" id="now-body"></span></div>
+      <div class="picks" role="radiogroup" aria-labelledby="h-body" id="picks-body"></div>
+    </section>
+  </div>
+
+  <div class="bar">
+    <code id="summary"></code>
+    <div class="view" role="group" aria-label="Which board">
+      <button type="button" id="view-both" data-view="both" aria-pressed="true">Both</button>
+      <button type="button" id="view-wb" data-view="whiteboard" aria-pressed="false">Whiteboard</button>
+      <button type="button" id="view-bb" data-view="blackboard" aria-pressed="false">Blackboard</button>
+    </div>
+    <button type="button" id="reset">Back to the site’s fonts</button>
+    <button type="button" class="primary" id="copy">Copy my picks</button>
+  </div>
+
+  <div class="boards" id="boards" data-view="both"></div>
+  <p class="foot">Fonts load from Google Fonts as you pick them. On the real blackboard the handwriting also gets a chalk grain, which this preview leaves out.</p>
+</div>
+
+<template id="page">
+  <div class="sheet">
+    <h3>Aidan Taha</h3>
+    <p class="lede">Hello there. I like working out interesting problems. Right now, that’s AI safety. I’m a Computer Science &amp; Statistics student at McGill.</p>
+    <p class="contact"><a href="#">github</a> · <a href="#">twitter</a> · <a href="#">email</a> · <a href="#">résumé</a></p>
+
+    <h4 class="sub">Now</h4>
+    <ul class="entries">
+      <li><strong>Harvard SEAS</strong> <span>research assistant, LLM evaluations for sovereign models</span></li>
+      <li><strong>AI Alignment McGill</strong> <span>co-director; revived the club and facilitate its reading groups</span></li>
+    </ul>
+
+    <h4>Selected work</h4>
+    <div class="row"><span class="t">WeBWrite</span><span class="m">Oct 2026 · Best Use of Gemma (Google DeepMind)</span><span class="s">Homework where students answer in their own words, and Gemma checks each answer against the teacher’s key ideas as they type.</span></div>
+    <div class="row"><span class="t">ChatGPT in Discord</span><span class="m">Dec 2022</span><span class="s">One of the first publicly demonstrated ChatGPT integrations. I built it less than five days after ChatGPT launched.</span></div>
+    <small class="mn">fun fact: i was 15 when i built this!</small>
+
+    <h4>Writing</h4>
+    <ul class="posts">
+      <li><time>Sep 21, 2025</time><span><a href="#">CD Player Kidnapping Saga</a></span></li>
+      <li><time>Jun 2, 2025</time><span><a href="#">What’s AI safety even about?</a></span></li>
+    </ul>
+    <small class="mn">start with this one! it’s my favourite</small>
+  </div>
+</template>
+
+<script>
+// [name, weight(s) to load, size factor (handwriting only), category]
+const SHELVES = {
+  heading: [
+    ['Fraunces', '600', 1, 'serif', true],
+    // Soft, inky, hand-made serifs, in the vein of Averia.
+    ['Averia Serif Libre', '700', 1, 'soft'],
+    ['Averia Gruesa Libre', '400', 1, 'soft'],
+    ['Averia Libre', '700', 1, 'soft sans'],
+    ['Fraunces Soft', '600', 1, 'soft + wonky'],
+    ['Corben', '700', 0.95, 'soft'],
+    ['Kurale', '400', 1, 'soft'],
+    ['Crete Round', '400', 1, 'soft slab'],
+    ['Solway', '700', 1, 'soft slab'],
+    ['Trocchi', '400', 0.95, 'soft slab'],
+    ['Coustard', '400', 0.95, 'soft slab'],
+    ['Copse', '400', 1, 'rough slab'],
+    ['Amarante', '400', 1.05, 'hand-cut'],
+    ['Inknut Antiqua', '600', 0.88, 'inky'],
+    ['IM Fell English', '400', 1.08, 'letterpress'],
+    // The rest.
+    ['Newsreader', '600', 1, 'serif'],
+    ['Literata', '600', 1, 'serif'],
+    ['Source Serif 4', '600', 1, 'serif'],
+    ['Spectral', '600', 1, 'serif'],
+    ['Besley', '600', 1, 'serif'],
+    ['Crimson Pro', '600', 1.08, 'serif'],
+    ['EB Garamond', '600', 1.08, 'old style'],
+    ['Libre Caslon Text', '700', 0.95, 'old style'],
+    ['Young Serif', '400', 1, 'display'],
+    ['Instrument Serif', '400', 1.1, 'display'],
+    ['DM Serif Display', '400', 1, 'display'],
+    ['Gloock', '400', 1, 'display'],
+    ['Bricolage Grotesque', '600', 1, 'sans'],
+    ['Schibsted Grotesk', '600', 1, 'sans'],
+    ['Hanken Grotesk', '600', 1, 'sans'],
+  ],
+  hand: [
+    ['Aidan Hand', 'local', 1.23, 'yours'],
+    ['Caveat', '500', 1, 'quick pen', true],
+    ['Kalam', '400', 0.78, 'felt pen'],
+    ['Patrick Hand', '400', 0.85, 'neat print'],
+    ['Gochi Hand', '400', 0.85, 'marker'],
+    ['Permanent Marker', '400', 0.7, 'marker'],
+    ['Delicious Handrawn', '400', 1, 'marker'],
+    ['Shadows Into Light', '400', 0.9, 'pen'],
+    ['Covered By Your Grace', '400', 1, 'pen'],
+    ['Nanum Pen Script', '400', 1.15, 'brush pen'],
+    ['Gaegu', '400', 0.95, 'crayon'],
+    ['Architects Daughter', '400', 0.74, 'neat print'],
+    ['Indie Flower', '400', 0.8, 'round'],
+    ['Reenie Beanie', '400', 1.15, 'scrawl'],
+    ['Just Another Hand', '400', 1.15, 'tall'],
+    ['Schoolbell', '400', 0.8, 'chalk'],
+    ['Coming Soon', '400', 0.72, 'pencil'],
+  ],
+  body: [
+    ['System UI', null, 1, 'no download', true],
+    ['Source Sans 3', '400;600', 1, 'sans'],
+    ['IBM Plex Sans', '400;600', 1, 'sans'],
+    ['Atkinson Hyperlegible', '400;700', 1, 'sans'],
+    ['Public Sans', '400;600', 1, 'sans'],
+    ['Figtree', '400;600', 1, 'sans'],
+    ['Instrument Sans', '400;600', 1, 'sans'],
+    ['Libre Franklin', '400;600', 1, 'sans'],
+    ['Work Sans', '400;600', 1, 'sans'],
+    ['Literata', '400;600', 1, 'serif'],
+    ['Source Serif 4', '400;600', 1, 'serif'],
+    ['Newsreader', '400;600', 1, 'serif'],
+  ],
+};
+const FALLBACK = { heading: 'Georgia, serif', hand: "'Segoe Print', cursive", body: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" };
+const SYSTEM = "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
+const SHOWN = { heading: 'Headings', hand: 'Handwriting', body: 'Body' };
+
+const fam = (name, weights) => `family=${name.replaceAll(' ', '+')}${weights ? `:wght@${weights}` : ''}`;
+// Your own handwriting, from the site's fonts folder rather than Google Fonts.
+const LOCAL = { 'Aidan Hand': '../public/fonts/aidan-hand.woff2' };
+for (const [name, src] of Object.entries(LOCAL)) {
+  document.head.insertAdjacentHTML('beforeend', `<style>@font-face { font-family: '${name}'; src: url('${src}') format('woff2'); }</style>`);
+}
+// Versions of a Google font with its own settings (Fraunces' soft, wonky
+// letters). Google serves them under the font's usual name, so they're renamed
+// here to sit beside the regular one.
+const VARIANTS = { 'Fraunces Soft': ['Fraunces', 'family=Fraunces:opsz,wght,SOFT,WONK@9..144,600,100,1'] };
+for (const [name, [original, query]] of Object.entries(VARIANTS)) {
+  fetch(`https://fonts.googleapis.com/css2?${query}&display=swap`)
+    .then((r) => r.text())
+    .then((css) => document.head.insertAdjacentHTML('beforeend', `<style>${css.replaceAll(`'${original}'`, `'${name}'`)}</style>`))
+    .catch(() => {});
+}
+const loaded = new Set();
+function load(name, weights) {
+  if (!weights || weights === 'local' || name in VARIANTS || loaded.has(name + weights)) return;
+  loaded.add(name + weights);
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = `https://fonts.googleapis.com/css2?${fam(name, weights)}&display=swap`;
+  document.head.append(link);
+}
+
+// Each shelf's labels are set in their own face. Only the letters of the names
+// are downloaded for that (Google Fonts' text= option), so the shelves stay light.
+for (const [role, fonts] of Object.entries(SHELVES)) {
+  const families = fonts.filter(([n, w]) => w && w !== 'local' && !(n in VARIANTS)).map(([n, w]) => fam(n, w.split(';').pop()));
+  const letters = [...new Set(fonts.map(([n]) => n).join(''))].join('');
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = `https://fonts.googleapis.com/css2?${families.join('&')}&text=${encodeURIComponent(letters)}&display=swap`;
+  document.head.append(link);
+}
+
+const boards = document.getElementById('boards');
+for (const [cls, label] of [['wb', 'Whiteboard · light mode'], ['bb', 'Blackboard · dark mode']]) {
+  const board = document.createElement('section');
+  board.className = `board ${cls}`;
+  board.setAttribute('aria-label', label);
+  board.innerHTML = `<p class="board-label">${label}</p>`;
+  board.append(document.getElementById('page').content.cloneNode(true));
+  boards.append(board);
+}
+
+const site = Object.fromEntries(Object.entries(SHELVES).map(([role, fonts]) => [role, fonts.find((f) => f[4])[0]]));
+let picks = { ...site };
+try { Object.assign(picks, JSON.parse(localStorage.getItem('font-shop-picks') || '{}')); } catch {}
+
+function apply() {
+  for (const [role, name] of Object.entries(picks)) {
+    const font = SHELVES[role].find((f) => f[0] === name) ?? SHELVES[role][0];
+    const [n, weights, scale] = font;
+    load(n, weights);
+    const stack = weights ? `'${n}', ${FALLBACK[role]}` : SYSTEM;
+    for (const board of boards.children) {
+      if (role === 'heading') {
+        board.style.setProperty('--heading', stack);
+        board.style.setProperty('--heading-weight', weights === 'local' ? 400 : weights);
+        board.style.setProperty('--heading-scale', scale);
+      }
+      if (role === 'hand') {
+        board.style.setProperty('--hand', stack);
+        board.style.setProperty('--hand-size', `${(1.55 * scale).toFixed(3)}rem`);
+      }
+      if (role === 'body') board.style.setProperty('--body', stack);
+    }
+    document.getElementById(`now-${role}`).textContent = n === site[role] ? `${n} · on site` : n;
+    for (const b of document.querySelectorAll(`#picks-${role} .pick`)) b.setAttribute('aria-checked', String(b.dataset.name === n));
+  }
+  const changed = Object.keys(picks).filter((r) => picks[r] !== site[r]);
+  document.getElementById('summary').textContent = Object.entries(picks).map(([r, n]) => `${SHOWN[r]}: ${n}`).join(' · ') + (changed.length ? '' : '  (the site as it is)');
+  try { localStorage.setItem('font-shop-picks', JSON.stringify(picks)); } catch {}
+}
+
+for (const [role, fonts] of Object.entries(SHELVES)) {
+  const shelf = document.getElementById(`picks-${role}`);
+  for (const [name, weights, , kind, onSite] of fonts) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'pick';
+    b.id = `pick-${role}-${name.replaceAll(' ', '-').toLowerCase()}`;
+    b.setAttribute('role', 'radio');
+    b.dataset.name = name;
+    b.innerHTML = `<span></span><small>${onSite ? 'on site' : kind}</small>`;
+    b.firstChild.textContent = name;
+    b.firstChild.style.fontFamily = weights ? `'${name}', ${FALLBACK[role]}` : SYSTEM;
+    if (weights && weights !== 'local') b.firstChild.style.fontWeight = role === 'body' ? 400 : weights.split(';').pop();
+    b.addEventListener('click', () => { picks[role] = name; apply(); });
+    shelf.append(b);
+  }
+}
+
+document.getElementById('reset').addEventListener('click', () => { picks = { ...site }; apply(); });
+for (const b of document.querySelectorAll('.view button')) {
+  b.addEventListener('click', () => {
+    boards.dataset.view = b.dataset.view;
+    for (const o of document.querySelectorAll('.view button')) o.setAttribute('aria-pressed', String(o === b));
+  });
+}
+document.getElementById('copy').addEventListener('click', async (event) => {
+  const text = document.getElementById('summary').textContent;
+  const button = event.currentTarget;
+  try {
+    await navigator.clipboard.writeText(text);
+    button.textContent = 'Copied';
+  } catch {
+    const range = document.createRange();
+    range.selectNodeContents(document.getElementById('summary'));
+    getSelection().removeAllRanges();
+    getSelection().addRange(range);
+    button.textContent = 'Selected: press Ctrl+C';
+  }
+  setTimeout(() => (button.textContent = 'Copy my picks'), 1800);
+});
+
+apply();
+</script>

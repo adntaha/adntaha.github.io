@@ -1,0 +1,34 @@
+# The homepage's words. Inline Markdown works in every text field,
+# and `note` fields become handwritten-style margin notes.
+
+# Hovering over the words before `{sound}` shows a little speaker beside them
+# that plays `sound`.
+intro: Hello there{sound}, I like working out interesting problems. I also happen to be a Stats & CS student at McGill.
+sound: /media/hello-there.mp3 # Obi-Wan, the first 9.75 seconds of youtu.be/rEq1Z0bjdwc
+
+now:
+  # Hidden until I've presented my work there and asked whether I can list it.
+  - where: Harvard
+    what: student researcher, LLM evaluations for sovereign models
+  - where: AI Alignment McGill
+    what: co-director; revived the club and facilitate its reading groups
+  # - where: McGill University
+  #   what: Joint Honours B.Sc., Computer Science & Statistics
+
+previously:
+  - where: "[MIT AI Alignment](https://mitaialignment.org/aisf/summer-2026/fellows/)"
+    what: AISF fellow
+  - where: University of Basel
+    what: research assistant, medical image segmentation research
+  - where: "[AI Control Hackathon](https://horizonomega.substack.com/p/ai-control-hackathon-2026-retrospective)"
+    what: organizer
+  - where: "[Holopin](https://holopin.io)"
+    what: integrations lead
+  # - where: "[BrébeufHx](https://web.archive.org/web/20251031061601/https://brebeufhackathon.com/)"
+  #   what: co-president
+
+# Margin notes shown beside sections on wide screens (behind a ✎ on phones).
+notes:
+  # Beside particular posts in "Writing", keyed by their file name in content/writing/.
+  posts:
+    cd-player-kidnapping-saga: start with this one! it's my favourite

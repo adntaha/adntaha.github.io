@@ -55,6 +55,7 @@ export function layout(site, page, content) {
 <link rel="alternate" type="application/atom+xml" title="${site.title}" href="/feed.xml">
 <link rel="preload" href="/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${site.assets['style.css']}">
+<script>document.documentElement.classList.add('js')</script>
 ${page.hasMath ? html`<link rel="stylesheet" href="/katex/katex.min.css">` : ''}
 <script type="speculationrules">${raw(speculationRules)}</script>
 <script type="module" src="${site.assets['board/main.js']}"></script>

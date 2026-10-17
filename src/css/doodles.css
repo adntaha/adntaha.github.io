@@ -1,5 +1,5 @@
 /* --- Doodles (templates/doodles.js): three one-stroke stars in the homepage
-   margins that draw themselves as they scroll into view, and an arrow from
+   margins that draw themselves once scrolled into view, and an arrow from
    each note beside a post in "Writing" to that post. They're handwriting on the board, like
    the margin notes: same colour, same chalk grain, same layer. Once someone
    picks up a marker, src/board/ turns them into strokes on its canvas (so
@@ -101,12 +101,21 @@
 
 /* Drawn in: the line is a dash as long as the whole star, slid into place.
    The first star is already in view when the page opens, so it draws itself
-   just after you arrive; src/stars.js draws the others as you scroll. With
+   just after you arrive; src/stars.js draws the others once you scroll to them. With
    reduced motion (or no JavaScript), they're simply already there. */
 @media (prefers-reduced-motion: no-preference) {
   .doodle.star-1 path {
     stroke-dasharray: 1;
     animation: draw-star 0.9s 0.4s ease-in-out both;
+  }
+
+  /* Undrawn from the start, so they don't show for a moment before
+     src/stars.js (a deferred module) gets going. Only with JavaScript: the
+     `js` class comes from an inline script in the head. */
+  .js .doodle.star-2 path,
+  .js .doodle.star-3 path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
   }
 }
 

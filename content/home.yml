@@ -8,7 +8,7 @@ sound: /media/hello-there.mp3 # Obi-Wan, the first 9.75 seconds of youtu.be/rEq1
 
 now:
   # Hidden until I've presented my work there and asked whether I can list it.
-  - where: Harvard
+  - where: Harvard University
     what: student researcher, LLM evaluations for sovereign models
   - where: AI Alignment McGill
     what: co-director; revived the club and facilitate its reading groups

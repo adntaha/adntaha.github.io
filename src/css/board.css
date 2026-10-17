@@ -40,9 +40,16 @@
   transition: translate 0.12s ease-out;
 }
 
-.tray button:hover svg,
 .tray button[aria-pressed='true'] svg {
   translate: 0 -0.35rem;
+}
+
+/* Bigger for fingers. */
+@media (pointer: coarse) {
+  .tray button {
+    width: 2.75rem;
+    height: 3.25rem;
+  }
 }
 
 .tray button:not(.tray-current) {
@@ -52,15 +59,30 @@
 /* Open, every tool is in the row already; the one in hand just stands taller.
    (Keyboard users keep the first button, since it may be the one focused.) */
 /* :has(:focus-visible), not :focus-within, so a mouse click on a tool closes the tray. */
-.tray:hover button,
 .tray:has(:focus-visible) button,
 .tray.is-open button {
   display: block;
 }
 
-.tray:hover:not(:has(:focus-visible)) .tray-current,
 .tray.is-open .tray-current {
   display: none;
+}
+
+/* Only where there's a real hover: a phone keeps :hover on whatever was last
+   tapped, which would hold the tray open after picking a tool. There, tapping
+   the tool in hand opens it. */
+@media (hover: hover) {
+  .tray button:hover svg {
+    translate: 0 -0.35rem;
+  }
+
+  .tray:hover button {
+    display: block;
+  }
+
+  .tray:hover:not(:has(:focus-visible)) .tray-current {
+    display: none;
+  }
 }
 
 .tray button:focus-visible {
@@ -112,7 +134,8 @@ body > * {
 }
 
 /* With a marker in hand, the whole page is the board: nothing under the
-   pointer reacts (no link hovers, no clicks, no text selection) except the tray. */
+   pointer reacts (no link hovers, no clicks, no text selection) except the tray.
+   Touch doesn't scroll either; src/board/main.js scrolls for two fingers. */
 html.is-drawing {
   cursor: var(--pen);
   touch-action: none;

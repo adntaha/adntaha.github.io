@@ -40,18 +40,47 @@ const setPointer = (pressed = false) => document.documentElement.style.setProper
 // --- The pointer. While a tool is in hand the page ignores it (no link
 // hovers, no clicks; see html.is-drawing in src/css/board.css), and these get it instead.
 
+// One finger draws; two scroll the page, like in Apple Notes. (With a tool in
+// hand the browser doesn't scroll for you: see touch-action in src/css/board.css.)
+const fingers = new Map(); // pointerId → [x, y] in the window, for each touch down
+let pan = null; // where two fingers were midway between, while they scroll
+let drawingWith = null; // the pointerId the stroke being drawn follows
+let firstOfGesture = 0; // where this gesture's strokes start in `strokes`
+
 function start(event) {
   if (tool.kind === 'cursor' || event.composedPath().includes(tray) || event.button > 0) return;
   event.preventDefault(); // no text selection, no focus
+  if (event.pointerType === 'touch') {
+    fingers.set(event.pointerId, [event.clientX, event.clientY]);
+    if (fingers.size === 2) return startPan();
+    if (fingers.size > 2 || pan) return;
+  }
   try {
     document.documentElement.setPointerCapture(event.pointerId); // keep drawing even off the window's edge
   } catch {}
   setPointer(true);
   remeasure();
   takeDoodles();
+  drawingWith = event.pointerId;
+  firstOfGesture = strokes.length;
   const frame = frameAt(event.pageY);
   begin(frame, ...frame.fromPage(event.pageX, event.pageY));
   queueRepaint(frame.rectToPage(around(current.box, current.width)));
+}
+
+// A second finger came down: whatever the first had started drawing in the
+// moment before was the start of a scroll, so it goes.
+function startPan() {
+  for (const s of strokes.splice(firstOfGesture)) repaint(s.frame.rectToPage(around(s.box, s.width)));
+  current = null;
+  drawingWith = null;
+  setPointer();
+  pan = midpoint(fingers);
+}
+
+function midpoint(fingers) {
+  const [[ax, ay], [bx, by]] = fingers.values();
+  return [(ax + bx) / 2, (ay + by) / 2];
 }
 
 // A new stroke at (x, y), in its frame's coordinates.
@@ -65,7 +94,14 @@ function begin(frame, x, y) {
 }
 
 function move(event) {
-  if (!current) return;
+  if (fingers.has(event.pointerId)) fingers.set(event.pointerId, [event.clientX, event.clientY]);
+  if (pan && fingers.size === 2) {
+    const [x, y] = midpoint(fingers);
+    scrollBy(pan[0] - x, pan[1] - y);
+    pan = [x, y];
+    return;
+  }
+  if (!current || event.pointerId !== drawingWith) return;
   for (const e of event.getCoalescedEvents?.() ?? [event]) {
     const [px, py] = current.points.slice(-2);
     const [x, y] = current.frame.fromPage(e.pageX, e.pageY);
@@ -83,8 +119,12 @@ function move(event) {
   }
 }
 
-function end() {
+function end(event) {
+  fingers.delete(event.pointerId);
+  if (fingers.size === 0) pan = null; // lifting one of two fingers doesn't start a stroke
+  if (event.pointerId !== drawingWith) return;
   current = null;
+  drawingWith = null;
   setPointer();
 }
 

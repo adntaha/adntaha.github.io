@@ -106,7 +106,7 @@ function icon({ kind, color }) {
         <rect x="8" y="17" width="12" height="3" fill="#fff" opacity=".5"/></g></svg>`;
 }
 
-// The pointer for a tool: a dot of the marker's colour, your hand on the
+// The pointer for a tool: a stick of chalk, a dot of the marker's colour, your hand on the
 // blackboard (a pointing finger, then a flat palm while `pressed`), or the
 // tissue's outline on the whiteboard.
 export function cursorFor({ kind, color }, pressed = false) {
@@ -115,6 +115,18 @@ export function cursorFor({ kind, color }, pressed = false) {
     const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><text x='16' y='26' font-size='24' text-anchor='middle' font-family="${EMOJI_FONTS}">${pressed ? PALM : FINGER}</text></svg>`;
     const hotspot = pressed ? '16 16' : '16 3'; // the palm's middle, or the fingertip
     return `url("data:image/svg+xml,${encodeURIComponent(svg)}") ${hotspot}, crosshair`;
+  }
+  if (kind === 'ink' && dark.matches) {
+    // a stick of chalk held at an angle, worn round at the tip, which is where it draws
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><defs>
+      <linearGradient id='r' gradientUnits='userSpaceOnUse' x1='-2.5' x2='2.5'><stop offset='0' stop-color='#000' stop-opacity='.3'/>
+      <stop offset='.35' stop-color='#fff' stop-opacity='.4'/><stop offset='.6' stop-color='#fff' stop-opacity='0'/>
+      <stop offset='1' stop-color='#000' stop-opacity='.32'/></linearGradient></defs>
+      <g transform='translate(4 28) rotate(35) scale(1.3)'>
+      <path d='M-2.5 -19V-2.5Q-2.5 0 0 0Q2.5 0 2.5 -2.5V-19Z' fill='${color}' stroke='#000' stroke-opacity='.5' stroke-width='.75'/>
+      <path d='M-2.5 -19V-2.5Q-2.5 0 0 0Q2.5 0 2.5 -2.5V-19Z' fill='url(#r)'/>
+      <ellipse cy='-19' rx='2.5' ry='1' fill='${color}' stroke='#000' stroke-opacity='.5' stroke-width='.75'/></g></svg>`;
+    return `url("data:image/svg+xml,${encodeURIComponent(svg)}") 4 28, crosshair`;
   }
   const r = kind === 'eraser' ? ERASER / 2 : 3;
   const fill = kind === 'eraser' ? 'none' : encodeURIComponent(color);

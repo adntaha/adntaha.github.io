@@ -1,8 +1,7 @@
 // The board: pick up a marker (or chalk) from the tray in the corner and draw
-// anywhere on the page. The drawing goes on the board itself, behind the typed
-// text and pictures; the eraser rubs out your drawing, and the handwritten
-// notes and doodles in the margin too. Nothing is saved: refresh, and the
-// board is clean again. Until someone picks up a tool, none of it exists.
+// anywhere on the page, over the typed text and pictures too; the eraser rubs
+// out your drawing, and the handwritten notes and doodles in the margin too.
+// Nothing is saved: refresh, and the board is clean again. Until someone picks up a tool, none of it exists.
 //
 //   main.js    this: the tool in hand, and the pointer
 //   tools.js   the tools, the tray and the cursors
@@ -11,8 +10,8 @@
 //   notes.js   where the margin notes and their letters are
 
 import { dark, tray, renderTray, cursorFor, available, LINE, ERASER } from './tools.js';
-import { Frame, frameAt, remeasure } from './frames.js';
-import { strokes, stroke, addPoint, around, smudges, createBoard, hasBoard, resize, repaint, queueRepaint, pickUp } from './paint.js';
+import { Frame, frameAt } from './frames.js';
+import { strokes, stroke, addPoint, around, createBoard, hasBoard, rebuild, measure, repaint, paintFrom } from './paint.js';
 
 const SCRUB = -0.5; // doubling back by more than ~120° starts a new eraser pass
 
@@ -59,13 +58,12 @@ function start(event) {
     document.documentElement.setPointerCapture(event.pointerId); // keep drawing even off the window's edge
   } catch {}
   setPointer(true);
-  remeasure();
+  measure(); // the layout's only read now, not on every move
   takeDoodles();
   drawingWith = event.pointerId;
   firstOfGesture = strokes.length;
   const frame = frameAt(event.pageY);
   begin(frame, ...frame.fromPage(event.pageX, event.pageY));
-  queueRepaint(frame.rectToPage(around(current.box, current.width)));
 }
 
 // A second finger came down: whatever the first had started drawing in the
@@ -87,10 +85,8 @@ function midpoint(fingers) {
 function begin(frame, x, y) {
   const erase = tool.kind === 'eraser';
   current = stroke({ erase, chalk: dark.matches, color: tool.color, width: erase ? ERASER : LINE, frame, points: [x, y] });
-  // A chalk eraser smears whatever was under it before this pass. That never
-  // changes, so it's picked up once, now, rather than on every move.
-  if (smudges(current)) current.smear = pickUp(frame);
   strokes.push(current);
+  paintFrom(current, 0);
 }
 
 function move(event) {
@@ -114,8 +110,7 @@ function move(event) {
     }
     current.heading = heading;
     addPoint(current, x, y);
-    const segment = [Math.min(px, x), Math.min(py, y), Math.max(px, x), Math.max(py, y)];
-    queueRepaint(current.frame.rectToPage(around(segment, current.width)));
+    paintFrom(current, current.points.length / 2 - 1); // just the new piece, right away
   }
 }
 
@@ -166,7 +161,7 @@ addEventListener('keydown', (event) => {
 
 dark.addEventListener('change', () => {
   use(tool); // puts down a colour the other board doesn't have, and redraws the tray
-  if (hasBoard()) resize();
+  if (hasBoard()) rebuild();
 });
 
 renderTray(tool, use);

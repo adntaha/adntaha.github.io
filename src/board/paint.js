@@ -1,32 +1,44 @@
 // The board itself: one canvas the size of the whole page, so it scrolls with
-// the page for free, and the strokes on it. The canvas sits under the typed
-// text but over the margin notes (see src/css/board.css), so the eraser
-// can rub the notes out by painting board colour over them.
+// the page for free, and the strokes on it. The canvas sits over everything
+// on the page (see src/css/board.css), so the eraser can rub the margin notes
+// out by painting board colour over them.
 //
-// Repainting a rectangle means clearing it and replaying every stroke that
-// crosses it, in order. Strokes keep their points in frame coordinates (see
-// frames.js), and are turned into page coordinates as they're painted.
+// Drawing is incremental, like on a real board: each move of the pointer
+// paints just the new piece of the stroke onto what's already there, so it
+// costs the same however much has been drawn. The strokes are kept too, in
+// frame coordinates (see frames.js), and replayed in order only when part of
+// the board has to be rebuilt: when the layout moves (a resize, zoom, fonts
+// loading), the theme changes, or something is taken back off it.
 
 import { remeasure } from './frames.js';
-import { noteArea, noteLetters, forgetLetters } from './notes.js';
-import { ERASER } from './tools.js';
+import { noteGeometry, drawNoteLetters, forgetNotes } from './notes.js';
 
-// One pass of the eraser wipes a whiteboard clean. Chalk smudges instead: each
-// pass smears what's under the eraser into a haze about a third as strong, so
-// the first pass leaves a smudge and the second a faint ghost.
-const SMUDGE = 0.3;
-const SMEAR = 6; // how far chalk dust spreads when smeared, in px
-const NOTE_DUST = 0.5; // how much of a note's chalk survives being smeared
-// A smear of the drawing is kept at a quarter of the resolution; drawn back up
-// with smooth scaling, that's the blur (much cheaper than a blur filter).
-const SNAPSHOT_SCALE = 0.25;
+// One pass of the eraser wipes a whiteboard clean. Chalk smudges instead: as
+// your hand reaches new ground it picks up what's there and puts some of it
+// back down, smeared, so one pass leaves a haze (about 30%) and the second a
+// faint ghost. (Some of what each step puts down is picked up again by the
+// next, so this is more than the 30% it ends up as.)
+const SMUDGE = 0.4;
+const SMEAR = 6; // how far past the hand it picks up from, in px
 // Big canvases are memory-hungry (and Safari refuses ones over ~16 million
 // pixels), so very long pages get a slightly softer drawing instead.
 const MAX_PIXELS = 12e6;
 
 export const strokes = []; // oldest first; see stroke()
 let board = null; // the canvas, once someone picks up a tool
+let ctx = null;
 let ratio = 1; // canvas pixels per CSS pixel
+
+// The board again, at a quarter of the size, for the chalk eraser to pick up
+// from: every stroke goes on both. (Reading from the board itself would be
+// slow: the browser copies the whole board before the next change to it, to
+// keep what was read intact. Reading a few pixels from a small canvas kept
+// in memory, not on the GPU, costs nothing.) It also has the notes'
+// handwriting on it, so that's picked up and smeared like everything else.
+// Shrunk this much, and drawn back up with smooth scaling, what's picked up is
+// already the smear: no blur filter needed.
+const SHADOW = 0.25;
+let shadow = null;
 
 // erase: is this an eraser pass? chalk: was it made on the blackboard (chalk
 // drawing, smudgy erasing) or the whiteboard? frame: what its points are
@@ -34,7 +46,7 @@ let ratio = 1; // canvas pixels per CSS pixel
 export function stroke({ erase = false, chalk, color, width, frame, points }) {
   const box = [Infinity, Infinity, -Infinity, -Infinity];
   for (let i = 0; i < points.length; i += 2) grow(box, points[i], points[i + 1]);
-  return { erase, chalk, color, width, frame, points, box, heading: null, smear: null };
+  return { erase, chalk, color, width, frame, points, box, heading: null };
 }
 
 export function addPoint(s, x, y) {
@@ -55,7 +67,7 @@ export const around = ([l, t, r, b], width) => {
   return [l - pad, t - pad, r + pad, b + pad];
 };
 
-export const smudges = (s) => s.erase && s.chalk;
+const overlaps = (a, b) => a[0] < b[2] && a[2] > b[0] && a[1] < b[3] && a[3] > b[1];
 
 // --- The canvas
 
@@ -65,211 +77,253 @@ export function createBoard() {
   board.className = 'board';
   board.setAttribute('aria-hidden', 'true');
   document.body.append(board);
-  resize();
-  new ResizeObserver(resize).observe(document.body);
+  ctx = board.getContext('2d');
+  shadow = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
+  rebuild();
+  new ResizeObserver(relayout).observe(document.body);
+  document.fonts?.addEventListener('loadingdone', relayout); // the notes' handwriting may have moved
 }
 
 export const hasBoard = () => board !== null;
 
-// The canvas covers the whole page; when the page changes size, so does it.
-export function resize() {
+// What the board's drawing depends on: the page's size, where the text
+// column is, and where the notes are. Rebuilding is slow, so it's only done
+// when one of these has actually moved.
+let layout = '';
+const layoutNow = () =>
+  JSON.stringify([
+    document.documentElement.clientWidth,
+    document.documentElement.scrollHeight,
+    document.querySelector('main')?.getBoundingClientRect().left,
+    noteGeometry().rects,
+  ]);
+
+// Something may have moved (the page changed size, or a font loaded).
+function relayout() {
+  if (layoutNow() !== layout) rebuild();
+}
+
+// Draw everything on the board again, from the strokes: after the layout
+// moves, or the theme changes. The canvas covers the whole page, so when the
+// page changes size, so does it.
+export function rebuild() {
+  layout = layoutNow();
   const width = document.documentElement.clientWidth;
   const height = document.documentElement.scrollHeight;
   ratio = Math.min(devicePixelRatio, 2, Math.sqrt(MAX_PIXELS / (width * height)));
-  board.width = Math.round(width * ratio);
-  board.height = Math.round(height * ratio);
-  board.style.width = `${width}px`;
-  board.style.height = `${height}px`;
-  forgetLetters(); // the notes may have moved
+  // (Setting a canvas's size reallocates it, even to the same size.)
+  if (board.width !== Math.round(width * ratio) || board.height !== Math.round(height * ratio)) {
+    board.width = Math.round(width * ratio);
+    board.height = Math.round(height * ratio);
+    board.style.width = `${width}px`;
+    board.style.height = `${height}px`;
+    shadow.canvas.width = Math.ceil(width * SHADOW);
+    shadow.canvas.height = Math.ceil(height * SHADOW);
+  }
+  forgetNotes();
+  measure();
   repaint([0, 0, width, height]);
 }
 
-// Pointer events can come several times a frame; gather the rectangles (in
-// page coordinates) that need repainting and do them once, before the next frame.
-let dirty = null;
-export function queueRepaint(area) {
-  if (dirty) {
-    dirty = [Math.min(dirty[0], area[0]), Math.min(dirty[1], area[1]), Math.max(dirty[2], area[2]), Math.max(dirty[3], area[3])];
-    return;
-  }
-  dirty = area;
-  requestAnimationFrame(() => {
-    const area = dirty;
-    dirty = null;
-    repaint(area);
-  });
+// Where the margin notes are, and the board's colour: read from the page as a
+// stroke starts (and after a resize), never while one's being drawn.
+let paper = '';
+let notes = { path: new Path2D(), rects: [] };
+let elsewhere = new Path2D(); // everywhere but the handwriting (pictures count as "everywhere"), for 'evenodd'
+
+export function measure() {
+  remeasure();
+  paper = getComputedStyle(document.documentElement).getPropertyValue('--paper').trim();
+  notes = noteGeometry();
+  // Around a rectangle far bigger than the page: its edges have to be well
+  // away from the notes, or where one crossed a note, the softening along it
+  // would let a little wiping through onto the handwriting.
+  elsewhere = new Path2D();
+  elsewhere.rect(-1e5, -1e5, 2e5, 2e5);
+  elsewhere.addPath(notes.path);
 }
 
-// Redraw one rectangle of the page (in page coordinates).
+// Rebuild one rectangle of the board (in page coordinates): clear it and
+// replay, in order, every stroke that reaches it.
 export function repaint(area) {
-  remeasure();
-  // Snap outwards to whole canvas pixels: a patch with fractional edges would
-  // half-clear the pixels along them and leave hairline seams.
-  const snap = (v, round) => round(v * ratio) / ratio;
-  area = [snap(area[0], Math.floor), snap(area[1], Math.floor), snap(area[2], Math.ceil), snap(area[3], Math.ceil)];
-  const [left, top, right, bottom] = area;
-  const paper = getComputedStyle(document.documentElement).getPropertyValue('--paper').trim();
-  const notes = noteArea();
-  // Everywhere except the notes' handwriting (pictures count as "everywhere").
-  const elsewhere = new Path2D();
-  elsewhere.rect(left, top, right - left, bottom - top);
-  elsewhere.addPath(notes);
-
-  const ctx = board.getContext('2d');
-  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  ctx.save();
-  ctx.beginPath();
-  ctx.rect(left, top, right - left, bottom - top);
-  ctx.clip();
-  ctx.clearRect(left, top, right - left, bottom - top);
-  ctx.lineCap = ctx.lineJoin = 'round';
-
+  // Snap outwards to whole pixels of both canvases: a patch with fractional
+  // edges would half-clear the pixels along them and leave hairline seams.
+  const unit = 1 / SHADOW;
+  const [left, top, right, bottom] = [
+    Math.floor(area[0] / unit) * unit,
+    Math.floor(area[1] / unit) * unit,
+    Math.ceil(area[2] / unit) * unit,
+    Math.ceil(area[3] / unit) * unit,
+  ];
+  for (const [c, scale] of [[ctx, ratio], [shadow, SHADOW]]) {
+    c.setTransform(scale, 0, 0, scale, 0, 0);
+    c.save();
+    c.beginPath();
+    c.rect(left, top, right - left, bottom - top);
+    c.clip();
+    c.clearRect(left, top, right - left, bottom - top);
+  }
+  drawNoteLetters(shadow);
   for (const s of strokes) {
-    const [l, t, r, b] = s.frame.rectToPage(around(s.box, s.width + 2 * SMEAR));
-    if (r < left || l > right || b < top || t > bottom) continue;
-    const path = pathOnPage(s);
-    ctx.lineWidth = s.width;
-    if (!s.erase) {
-      ctx.strokeStyle = s.chalk ? chalk(ctx, s.color) : s.color;
-      ctx.stroke(path);
-      continue;
-    }
-    // On the bare board, rubbing out removes the drawing...
-    ctx.save();
-    ctx.clip(elsewhere, 'evenodd');
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.strokeStyle = '#000';
-    ctx.stroke(path);
-    ctx.restore();
-    // ...and on the notes, it paints board colour over the handwriting.
-    ctx.save();
-    ctx.clip(notes, 'evenodd');
-    ctx.strokeStyle = paper;
-    ctx.stroke(path);
-    ctx.restore();
-    // Chalk: then what the eraser picked up goes back down along its path,
-    // fainter: smeared drawing on the board, smeared handwriting on the notes.
-    if (s.smear) {
-      const drawing = footprint(s.smear.drawing, path, s.width, area, 0);
-      const handwriting = footprint(s.smear.handwriting, path, s.width, area, 1);
-      ctx.save();
-      ctx.clip(elsewhere, 'evenodd');
-      ctx.globalAlpha = SMUDGE;
-      ctx.drawImage(drawing, left, top, right - left, bottom - top);
-      ctx.restore();
-      if (handwriting) {
-        ctx.save();
-        ctx.clip(notes, 'evenodd');
-        ctx.drawImage(handwriting, left, top, right - left, bottom - top);
-        ctx.restore();
-      }
-    }
+    if (overlaps(s.frame.rectToPage(around(s.box, s.width + 2 * SMEAR)), [left, top, right, bottom])) paintFrom(s, 0);
   }
   ctx.restore();
+  shadow.restore();
 }
 
-// A stroke as a path in page coordinates.
-function pathOnPage(s) {
+// Paint stroke s from its nth point to its end: each piece from one point to
+// the next (the first point alone is a dot).
+export function paintFrom(s, n) {
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  shadow.setTransform(SHADOW, 0, 0, SHADOW, 0, 0);
   const [ox, oy] = s.frame.origin();
-  const { points } = s;
+  const p = s.points;
+  for (let i = n; i < p.length / 2; i++) {
+    const x1 = p[2 * i] + ox;
+    const y1 = p[2 * i + 1] + oy;
+    const x0 = i ? p[2 * i - 2] + ox : x1;
+    const y0 = i ? p[2 * i - 1] + oy : y1;
+    if (!s.erase) ink(s, x0, y0, x1, y1, i === 0);
+    else if (s.chalk) smudge(s, x0, y0, x1, y1, i === 0);
+    else wipe(s, x0, y0, x1, y1);
+  }
+}
+
+// A straight piece of line, with round ends; a dot if it has no length.
+function piece(x0, y0, x1, y1, first) {
   const path = new Path2D();
-  path.moveTo(points[0] + ox, points[1] + oy);
-  // A single click still leaves a dot.
-  if (points.length === 2) path.lineTo(points[0] + ox + 0.1, points[1] + oy);
-  for (let i = 2; i < points.length; i += 2) path.lineTo(points[i] + ox, points[i + 1] + oy);
+  path.moveTo(x0, y0);
+  path.lineTo(first ? x0 + 0.1 : x1, y1);
   return path;
 }
 
-// --- Smudging
-
-// What a chalk eraser picks up as a pass starts, smeared. Each part is
-// { source: a canvas, rect: what it covers, frame }, with the rectangle in the
-// eraser stroke's frame, so it stays put like the stroke does:
-//   drawing: the chalk on the visible part of the board, at low resolution;
-//   handwriting: whatever handwriting still shows in the notes there, blurred.
-//     Letters need full resolution to smudge believably, but the notes are
-//     small, so this only covers them (and is null if none are in view).
-export function pickUp(frame) {
-  const pad = ERASER + SMEAR; // an eraser's width and its smear, past the window's edges
-  const view = [
-    Math.max(0, scrollX - pad),
-    Math.max(0, scrollY - pad),
-    Math.min(board.width / ratio, scrollX + innerWidth + pad),
-    Math.min(board.height / ratio, scrollY + innerHeight + pad),
-  ];
-  const kept = (picked) => picked && { source: picked.source, rect: frame.rectFromPage(picked.rect), frame };
-  return {
-    drawing: kept(shrunkenDrawing(view)),
-    handwriting: kept(smearedLetters(noteLetters(view))),
-  };
+// The ground a round brush of radius r covers going from (x0, y0) to (x1, y1):
+// a capsule, drawn as one outline. (Built from overlapping circles and a band
+// instead, the edges inside it get smoothed too, leaving faint seams.)
+function reach(x0, y0, x1, y1, r) {
+  const path = new Path2D();
+  const a = Math.atan2(y1 - y0, x1 - x0);
+  path.arc(x1, y1, r, a - Math.PI / 2, a + Math.PI / 2); // round the far end...
+  path.arc(x0, y0, r, a + Math.PI / 2, a + (3 * Math.PI) / 2); // ...and back round the near one
+  path.closePath();
+  return path;
 }
 
-function shrunkenDrawing([l, t, r, b]) {
-  const drawing = canvasOfSize(Math.ceil((r - l) * SNAPSHOT_SCALE), Math.ceil((b - t) * SNAPSHOT_SCALE));
-  // Shrinking with the best filtering averages the chalk's grain into a haze
-  // (without it, the grain is sampled into dashes).
-  drawing.imageSmoothingQuality = 'high';
-  drawing.drawImage(board, l * ratio, t * ratio, (r - l) * ratio, (b - t) * ratio, 0, 0, drawing.canvas.width, drawing.canvas.height);
-  return { source: drawing.canvas, rect: [l, t, r, b] };
-}
-
-function smearedLetters(letters) {
-  if (!letters.length) return null;
-  const l = Math.min(...letters.map((x) => x.left)) - SMEAR * 2;
-  const t = Math.min(...letters.map((x) => x.top)) - SMEAR * 2;
-  const r = Math.max(...letters.map((x) => x.right)) + SMEAR * 2;
-  const b = Math.max(...letters.map((x) => x.bottom)) + SMEAR * 2;
-  const [w, h] = [Math.ceil((r - l) * ratio), Math.ceil((b - t) * ratio)];
-
-  // The letters as dust...
-  const dust = canvasOfSize(w, h);
-  dust.setTransform(ratio, 0, 0, ratio, -l * ratio, -t * ratio);
-  dust.globalAlpha = NOTE_DUST;
-  dust.textBaseline = 'top';
-  for (const letter of letters) {
-    dust.font = letter.font;
-    dust.fillStyle = letter.color;
-    dust.fillText(letter.char, letter.left, letter.top);
+// Clip c to the ground a brush reaches; with `fresh`, only what it hadn't
+// already covered at (x0, y0).
+function clipToReach(c, x0, y0, x1, y1, r, fresh) {
+  c.clip(reach(x0, y0, x1, y1, r));
+  if (fresh) {
+    // A pixel short of the brush's edge: clipping softens edges, and where two
+    // soft edges meet, neither does the whole job. Going a pixel over twice is
+    // less noticeable than leaving one half done.
+    const covered = new Path2D();
+    covered.rect(Math.min(x0, x1) - 2 * r, Math.min(y0, y1) - 2 * r, Math.abs(x1 - x0) + 4 * r, Math.abs(y1 - y0) + 4 * r);
+    covered.arc(x0, y0, r - 1, 0, 2 * Math.PI);
+    c.clip(covered, 'evenodd');
   }
-  // ...except where the board's already been wiped (or drawn over): there's
-  // none left to smear there...
-  dust.setTransform(1, 0, 0, 1, 0, 0);
-  dust.globalAlpha = 1;
-  dust.globalCompositeOperation = 'destination-out';
-  dust.drawImage(board, l * ratio, t * ratio, w, h, 0, 0, w, h);
-  // ...then smeared.
-  const smeared = canvasOfSize(w, h);
-  smeared.filter = `blur(${(SMEAR / 2) * ratio}px)`;
-  smeared.drawImage(dust.canvas, 0, 0);
-  return { source: smeared.canvas, rect: [l, t, r, b] };
 }
 
-function canvasOfSize(width, height) {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  return canvas.getContext('2d');
+// Chalk's grain, averaged: about how much of the board a line of chalk covers.
+// The shadow is too small for grain, so it gets this instead.
+const CHALK_COVER = 0.8;
+
+function ink(s, x0, y0, x1, y1, first) {
+  const line = piece(x0, y0, x1, y1, first);
+  for (const c of [ctx, shadow]) {
+    c.save();
+    c.lineWidth = s.width;
+    c.lineCap = c.lineJoin = 'round';
+    c.strokeStyle = s.chalk && c === ctx ? chalk(s.color) : s.color;
+    if (s.chalk && c === shadow) c.globalAlpha = CHALK_COVER;
+    c.stroke(line);
+    c.restore();
+  }
 }
 
-// The part of a picked-up smear that falls along an eraser's path, within one
-// repainted rectangle (page coordinates): a canvas covering that rectangle,
-// or null if there's nothing to smear.
-const scratch = [document.createElement('canvas'), document.createElement('canvas')];
-function footprint(picked, path, width, [left, top, right, bottom], which) {
-  if (!picked) return null;
-  const canvas = scratch[which];
-  canvas.width = Math.ceil((right - left) * ratio); // also clears it
-  canvas.height = Math.ceil((bottom - top) * ratio);
-  const ctx = canvas.getContext('2d');
-  ctx.setTransform(ratio, 0, 0, ratio, -left * ratio, -top * ratio);
-  ctx.imageSmoothingQuality = 'high';
-  const [l, t, r, b] = picked.frame.rectToPage(picked.rect);
-  ctx.drawImage(picked.source, l, t, r - l, b - t);
-  ctx.globalCompositeOperation = 'destination-in';
-  ctx.lineWidth = width;
-  ctx.lineCap = ctx.lineJoin = 'round';
-  ctx.stroke(path);
-  return canvas;
+// Is a rectangle anywhere near a note?
+const nearNotes = (rect) => notes.rects.some((n) => overlaps(n, rect));
+
+// Wiping a rectangle under the current clip: on the bare board that removes
+// the drawing; on the notes it paints board colour over the handwriting. On
+// the shadow, where the handwriting's just more drawing, it all goes.
+function wipeArea([l, t, r, b]) {
+  shadow.globalCompositeOperation = 'destination-out';
+  shadow.fillRect(l, t, r - l, b - t);
+  shadow.globalCompositeOperation = 'source-over';
+  if (!nearNotes([l, t, r, b])) {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.fillRect(l, t, r - l, b - t);
+    ctx.globalCompositeOperation = 'source-over';
+    return;
+  }
+  ctx.save();
+  ctx.clip(elsewhere, 'evenodd');
+  ctx.globalCompositeOperation = 'destination-out';
+  ctx.fillRect(l, t, r - l, b - t);
+  ctx.restore();
+  ctx.save();
+  ctx.clip(notes.path, 'evenodd');
+  ctx.fillStyle = paper;
+  ctx.fillRect(l, t, r - l, b - t);
+  ctx.restore();
+}
+
+// The whiteboard's tissue: one piece of wiping. (Wiping twice is the same as
+// once, so it doesn't matter that each piece goes over the end of the last.)
+function wipe(s, x0, y0, x1, y1) {
+  const r = s.width / 2;
+  ctx.save();
+  shadow.save();
+  clipToReach(ctx, x0, y0, x1, y1, r, false);
+  clipToReach(shadow, x0, y0, x1, y1, r, false);
+  wipeArea([Math.min(x0, x1) - r, Math.min(y0, y1) - r, Math.max(x0, x1) + r, Math.max(y0, y1) + r]);
+  ctx.restore();
+  shadow.restore();
+}
+
+// The blackboard's hand. It goes in small steps (a quarter of its width at
+// most), so what it picks up never comes from far away.
+function smudge(s, x0, y0, x1, y1, first) {
+  const r = s.width / 2;
+  const steps = Math.max(1, Math.ceil(Math.hypot(x1 - x0, y1 - y0) / (r / 2)));
+  let [px, py] = [x0, y0];
+  for (let k = 1; k <= steps; k++) {
+    const [x, y] = [x0 + ((x1 - x0) * k) / steps, y0 + ((y1 - y0) * k) / steps];
+    smudgeStep(px, py, x, y, r, first && k === 1);
+    [px, py] = [x, y];
+  }
+}
+
+// What a step picks up goes on here, to be put back down. A step never picks
+// up more than about 15 shadow pixels across, so this is plenty.
+const held = document.createElement('canvas').getContext('2d');
+held.canvas.width = held.canvas.height = 64;
+
+function smudgeStep(x0, y0, x1, y1, r, first) {
+  // Pick up what's there, from the shadow, in whole shadow pixels...
+  const pad = r + SMEAR;
+  const sx = Math.floor((Math.min(x0, x1) - pad) * SHADOW);
+  const sy = Math.floor((Math.min(y0, y1) - pad) * SHADOW);
+  const sw = Math.ceil((Math.max(x0, x1) + pad) * SHADOW) - sx;
+  const sh = Math.ceil((Math.max(y0, y1) + pad) * SHADOW) - sy;
+  held.putImageData(shadow.getImageData(sx, sy, sw, sh), 0, 0);
+  const area = [sx / SHADOW, sy / SHADOW, (sx + sw) / SHADOW, (sy + sh) / SHADOW];
+  const [l, t, rr, b] = area;
+  ctx.save();
+  shadow.save();
+  // ...wipe the new ground clean (only the new ground: anywhere it's already
+  // been this pass, it's left the smudge it should)...
+  clipToReach(ctx, x0, y0, x1, y1, r, !first);
+  clipToReach(shadow, x0, y0, x1, y1, r, !first);
+  wipeArea(area);
+  // ...and put some of it back, smeared.
+  for (const c of [ctx, shadow]) {
+    c.globalAlpha = SMUDGE;
+    c.drawImage(held.canvas, 0, 0, sw, sh, l, t, rr - l, b - t);
+  }
+  ctx.restore();
+  shadow.restore();
 }
 
 // --- Chalk: drawn with a tile of grain made by the same #chalk filter that
@@ -278,21 +332,22 @@ function footprint(picked, path, width, [left, top, right, bottom], which) {
 // stroke directly would be slow, and patchy when only part of it repaints.)
 
 const GRAIN = 160; // tile size, in CSS pixels
-const chalkTiles = new Map();
-function chalk(ctx, color) {
+// One pattern per colour, made once: making a pattern copies its tile.
+const chalkPatterns = new Map();
+function chalk(color) {
   const key = `${color} ${ratio}`;
-  if (!chalkTiles.has(key)) {
+  if (!chalkPatterns.has(key)) {
     const tile = document.createElement('canvas');
     tile.width = tile.height = Math.round(GRAIN * ratio);
     const t = tile.getContext('2d');
     t.filter = chalkFilter();
     t.fillStyle = color;
     t.fillRect(0, 0, tile.width, tile.height);
-    chalkTiles.set(key, tile);
+    const pattern = ctx.createPattern(tile, 'repeat');
+    pattern.setTransform(new DOMMatrix().scaleSelf(1 / ratio)); // the tile is in canvas pixels
+    chalkPatterns.set(key, pattern);
   }
-  const pattern = ctx.createPattern(chalkTiles.get(key), 'repeat');
-  pattern.setTransform(new DOMMatrix().scaleSelf(1 / ratio)); // the tile is in canvas pixels
-  return pattern;
+  return chalkPatterns.get(key);
 }
 
 // A canvas applies filters in its own pixels, not CSS pixels, so on a

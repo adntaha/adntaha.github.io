@@ -18,7 +18,7 @@ const column = document.querySelector('main') ?? document.body;
 const ANCHORS = 'h1, h2, h3, p, li, figure, dl, pre, blockquote, hr, .mn, .doodle';
 
 // Where things are is read from the layout once, then reused until
-// remeasure() says the layout may have moved (each repaint, each new stroke).
+// remeasure() says the layout may have moved (as a stroke starts, after a resize).
 let middle = null;
 const tops = new Map(); // anchor → its top, in page coordinates
 

@@ -1,7 +1,7 @@
 /* --- Doodles (templates/doodles.js): three one-stroke stars in the homepage
    margins that draw themselves once scrolled into view, and an arrow from
    each note beside a post in "Writing" to that post. They're handwriting on the board, like
-   the margin notes: same colour, same chalk grain, same layer. Once someone
+   the margin notes: same colour, same chalk grain. Once someone
    picks up a marker, src/board/ turns them into strokes on its canvas (so
    they can be erased) and hides these. Only on screens wide enough to have
    margins. */
@@ -38,7 +38,6 @@
 
   .star {
     position: absolute;
-    z-index: -2;
     width: 4.5rem;
     height: 4.5rem;
   }
@@ -76,7 +75,6 @@
   .post-arrow {
     display: block;
     position: relative;
-    z-index: -2; /* with the notes, under the drawing layer */
     flex: 1;
     min-width: 2rem;
     height: 1lh;

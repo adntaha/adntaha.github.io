@@ -96,41 +96,15 @@
   }
 }
 
-/* The drawing covers the whole page and scrolls with it. It sits on the board
-   itself: behind the typed text, but over the handwritten notes in the margin
-   and the pictures in posts (which go one layer further back), so you can
-   draw on pictures and the eraser can rub the notes out. */
+/* The drawing covers the whole page and scrolls with it, on top of
+   everything (typed text, pictures, margin notes) except the tray. It lets the
+   pointer through, so links and text underneath still work. */
 .board {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: -1;
+  z-index: 10;
   pointer-events: none;
-}
-
-@media (min-width: 70rem) {
-  .mn {
-    position: relative;
-    z-index: -2;
-  }
-}
-
-/* (That far back, a picture is under the text column, which would catch a
-   click on it; no picture in a post is a link, so nothing is lost.) */
-.prose img {
-  position: relative;
-  z-index: -2;
-}
-
-/* That far back, the notes are behind <body> itself, which would swallow
-   clicks on links in them. So the body lets the pointer through, and only
-   what's in it responds. */
-body {
-  pointer-events: none;
-}
-
-body > * {
-  pointer-events: auto;
 }
 
 /* With a marker in hand, the whole page is the board: nothing under the

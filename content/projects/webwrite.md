@@ -22,8 +22,10 @@ links:
     url: https://www.mlh.com/events/hacktoberfest-hack-day-montreal-x-ageei/submissions/01a12335-f91e-8a37-1f9d-5806954da7fa
 ---
 
-Homework tools like WeBWorK can grade a number, because a number is either right or wrong. An explanation is harder: there are a dozen ways to say the right thing, and a dozen more to almost say it. WeBWrite lets teachers write questions that need an answer in words, along with the key ideas a good answer should contain.
+Homework tools like WeBWorK can easily grade an expression because it's either right or wrong. An explanation is harder: there are a dozen ways to say the right thing, and a dozen more to 'almost' say it. Our project, WeBWrite, solved this problem: it let teachers ask questions that need an answer in words, while providing the key ideas that a good answer should contain.
 
-As the student types, Gemma reads the answer and marks each key idea as missing, getting there, or included, and shows the teacher's hint for anything still missing. All of a question's key ideas, plus a check for anything factually wrong, are judged in one call that takes about a second, so the feedback keeps up with the typing. That way, we can grade essays fairly, since a unpredicted but defensible position shouldn't be as marked wrong. And multiple-choice questions are, of course, marked exactly.
+As the student types, Gemma reads the answer and marks each key idea as 'missing', 'getting there', or 'included', and shows the a hint for anything still missing (available to the student after 3 false tries). That way, we can grade essays fairly, since a unpredicted but defensible position shouldn't be as marked wrong. And multiple-choice questions are, of course, marked exactly.
 
-The interface is in Québec French by default, with English a toggle away. As part of the team, I handled the platform's integration with Gemma. We built it at Hacktoberfest Hack Day Montréal, where it won the Best Use of Gemma prize from Google DeepMind.
+All of a question's key ideas, plus a check for anything factually wrong, are judged in an HTTP request that takes about a second, so the feedback keeps up with the typing. 
+
+The interface is in Québec French by default, with English a toggle away. As part of the team, I handled the our integration with Gemma. We built it at Hacktoberfest Hack Day Montréal, where it won the Best Use of Gemma prize from Google DeepMind.

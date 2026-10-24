@@ -32,10 +32,10 @@ export function layout(site, page, content) {
 
   return html`<!doctype html>
 <!--
-  Hi, curious person. This page was built by a small script, not a framework:
-  build.js reads Markdown from content/, runs it through templates/, and writes plain HTML.
-  It's all readable here: https://github.com/adntaha/adntaha.github.io
-  More on how it's made at /colophon/.
+  Hi there, curious person. You don't have to sort through this mess,
+  you can just read the code here: https://github.com/adntaha/adntaha.github.io
+  Also, if you're the type to dig thru inspect element, you sound like someone
+  exactly my speed. Contact me or smth, let's get a coffee
 -->
 <html lang="en">
 <head>
@@ -80,7 +80,7 @@ ${page.url === '/' ? '' : html`<header class="site-header"><a href="/" class="si
 ${content}
 </main>
 <footer class="site-footer">
-<p>${site.location} · <a href="/colophon">how this site is made</a> · <a href="/feed.xml">rss</a></p>
+<p>${site.location} · <a href="/feed.xml">rss for the blog</a></p>
 </footer>
 </body>
 </html>

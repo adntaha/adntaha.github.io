@@ -93,7 +93,7 @@ write(
 );
 
 for (const p of projects) {
-  write(p.url, layout(site, { url: p.url, title: p.title, description: p.summary }, project(site, p)));
+  write(p.url, layout(site, { url: p.url, title: p.title, description: p.summary, hasMath: p.hasMath }, project(site, p)));
 }
 write('/projects/', layout(site, { url: '/projects/', title: 'Projects' }, projectsIndex(site, projects, archive)));
 
@@ -104,7 +104,7 @@ write('/blog/', layout(site, { url: '/blog/', title: 'Writing' }, blogIndex(site
 
 for (const p of pages) {
   const url = p.permalink ?? p.url;
-  write(url, layout(site, { url, title: p.title, description: p.description }, page(site, p)), { inSitemap: url.endsWith('/') });
+  write(url, layout(site, { url, title: p.title, description: p.description, hasMath: p.hasMath }, page(site, p)), { inSitemap: url.endsWith('/') });
 }
 
 for (const [from, to] of Object.entries(site.redirects)) {

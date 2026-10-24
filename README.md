@@ -16,7 +16,7 @@ npm run build   # writes the finished site to dist/
 | `content/projects/*.md` | One file per project page. `featured: 1` puts it on the homepage, `half: true` makes it a smaller entry, `thumb` is the picture pasted in the margin on `/projects/` |
 | `content/archive.yml` | The quieter list of hackathon builds and small experiments on `/projects/` |
 | `content/writing/*.md` | Blog posts, served at `/blog/<file-name>/` (same URLs as the old Jekyll blog) |
-| `content/pages/*.md` | Standalone pages such as `/colophon/` and the 404 page |
+| `content/pages/*.md` | Standalone pages such as the 404 page |
 | `site.config.js` | Name, email, links, base URL, analytics, redirects |
 | `templates/` | Functions that turn content into HTML |
 | `src/` | `css/` (the stylesheet in pieces; each template lists the ones it uses, and the build joins them into one file), `board/` (the marker/chalk tray, a few small modules; start at `main.js`) and `stars.js`, fingerprinted on build so they cache well |

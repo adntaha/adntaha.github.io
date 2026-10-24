@@ -85,7 +85,7 @@ export function home(site, { home, featured, posts }) {
     <h2 id="work-heading">Selected work</h2>
     <ul class="work-list">${full.map((p) => projectRow(p))}</ul>
     ${half.length ? html`<ul class="work-list work-list--pair">${half.map((p) => projectRow(p))}</ul>` : ''}
-    <p class="more"><a href="/projects/">Everything else, including small experiments →</a></p>
+    <p class="more"><a href="/projects/">More projects →</a></p>
   </section>
 
   <section class="writing" aria-labelledby="writing-heading">${star(3)}

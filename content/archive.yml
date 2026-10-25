@@ -6,19 +6,19 @@
 - heading: Other hackathon and school projects
   rows: true
   items:
+    - name: Telos
+      year: 2026
+      url: https://github.com/adntaha/telos
+      blurb: Experiment in harness engineering. It's the smallest agent harness I could make. The model gets one tool, Python, and can spawn copies of itself and restart to load its own changes.
     - name: Slidex
       year: 2026 · HackMIT
       url: https://plume.hackmit.org/project/lvlxw-lursq-ipext-xxjqw
       blurb: builds a slide deck live while you talk. the audio streams to a realtime voice model that adds and edits slides as you go, with images dynamically added from Wikipedia.
-    - name: telos
-      year: 2026
-      url: https://github.com/adntaha/telos
-      blurb: cool experiment in harness engineering. It's the smallest agent harness I could make. The model gets one tool, Python, and can spawn copies of itself and restart to load its own changes.
-    - name: morse beeper
+    - name: Morse beeper
       year: 2025 · YSWS
       url: https://blackbox.hackclub.com/editor/?code=888254
       image: /media/archive/morse-beeper.jpg
-      blurb: morse beeper for those who don't know morse code. Made for Hack Club's [Blackbox](https://blackbox.hackclub.com).
+      blurb: for those (like myself) who don't know morse code. made for Hack Club's [Blackbox](https://blackbox.hackclub.com).
     # - name: Cortesol
     #   year: 2026 · Hack the 6ix finalist
     #   url: https://devpost.com/software/cortesol

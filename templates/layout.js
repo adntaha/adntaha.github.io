@@ -8,7 +8,7 @@ export const styles = ['base.css', 'layout.css', 'notes.css', 'board.css'];
 const speculationRules = JSON.stringify({
   prerender: [{ where: { href_matches: '/*' }, eagerness: 'moderate' }],
 });
-
+//*/
 // Analytics, loaded only once the page is actually shown. A page prerendered
 // because someone hovered a link to it (see above) isn't a visit until they
 // click; the analytics script can't tell, so it waits for that here.
@@ -45,7 +45,7 @@ export function layout(site, page, content) {
 <meta name="description" content="${description}">
 <link rel="canonical" href="${canonical}">
 <meta name="color-scheme" content="light dark">
-<meta property="og:title" content="${page.title ?? site.title}">
+<meta property="og:title" content="${title}">
 <meta property="og:description" content="${description}">
 <meta property="og:url" content="${canonical}">
 <meta property="og:type" content="${page.type === 'post' ? 'article' : 'website'}">

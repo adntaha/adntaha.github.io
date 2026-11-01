@@ -49,7 +49,15 @@ export function layout(site, page, content) {
 <meta property="og:description" content="${description}">
 <meta property="og:url" content="${canonical}">
 <meta property="og:type" content="${page.type === 'post' ? 'article' : 'website'}">
-<meta name="twitter:card" content="summary">
+<meta property="og:site_name" content="${site.title}">
+<meta property="og:image" content="${new URL('/og.png', site.url).href}">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${site.title}: ai safety researcher and builder, stats and cs at mcgill. Blue marker doodles around the text.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@${site.twitter}">
+<meta name="author" content="${site.author}">
 <link rel="icon" href="/favicon.png" type="image/png" sizes="64x64">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="alternate" type="application/atom+xml" title="${site.title}" href="/feed.xml">

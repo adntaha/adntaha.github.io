@@ -1,6 +1,3 @@
-// Everything that identifies the site lives here, so moving to a new domain
-// or changing a link is a one-line edit.
-
 import fs from 'node:fs';
 import YAML from 'yaml';
 
@@ -12,18 +9,21 @@ const plain = (markdown) =>
     .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/\*+/g, '');
 
+const twitter = 'adntaha_ai';
+
 export default {
-  url: 'https://adntaha.github.io', // absolute url, used for the rss feed, sitemap, social cards, etc.
+  url: 'https://aidantaha.com', // absolute url, used for the rss feed, sitemap, social cards, etc.
   title: 'Aidan Taha',
   description: plain(intro),
   author: 'Aidan Taha',
   locale: 'en-CA',
   location: 'montréal',
+  twitter,
 
   // shown in the intro
   links: [
     { label: 'github', url: 'https://github.com/adntaha' },
-    { label: 'twitter', url: 'https://x.com/adntaha_ai' },
+    { label: 'twitter', url: `https://x.com/${twitter}` },
     { label: 'email', url: 'mailto:adnanaidantaha@gmail.com' },
     { label: 'résumé', url: '/resume.pdf' }
   ],

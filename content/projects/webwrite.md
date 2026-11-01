@@ -3,7 +3,7 @@ title: WeBWrite
 featured: 1
 period: Oct 2026
 summary: Homework where students answer in their own words, and Gemma checks each answer against the teacher's key ideas as they type.
-outcome: Best Use of Gemma (Google DeepMind)
+outcome: Best Use of Gemma (Google Cloud)
 stack: Next.js, Prisma and PostgreSQL, Gemma 4 through the Gemini API, Vercel
 thumb: /media/webwrite/poster.jpg
 asset:
@@ -20,6 +20,8 @@ links:
     url: https://github.com/Dutu2019/webwrite
   - label: Submission
     url: https://www.mlh.com/events/hacktoberfest-hack-day-montreal-x-ageei/submissions/01a12335-f91e-8a37-1f9d-5806954da7fa
+  - label: Prize certificate
+    url: /media/webwrite/hacktoberfest-certificate.pdf
 ---
 
 Homework tools like WeBWorK can easily grade an expression because it's either right or wrong. An explanation is harder: there are a dozen ways to say the right thing, and a dozen more to 'almost' say it. Our project, WeBWrite, solved this problem: it let teachers ask questions that need an answer in words, while providing the key ideas that a good answer should contain.
@@ -28,4 +30,4 @@ As the student types, Gemma reads the answer and marks each key idea as 'missing
 
 All of a question's key ideas, plus a check for anything factually wrong, are judged in an HTTP request that takes about a second, so the feedback keeps up with the typing. 
 
-The interface is in Québec French by default, with English a toggle away. As part of the team, I handled the our integration with Gemma. We built it at Hacktoberfest Hack Day Montréal, where it won the Best Use of Gemma prize from Google DeepMind.
+The interface is in Québec French by default, with English a toggle away. As part of the team, I handled the our integration with Gemma. We built it at Hacktoberfest Hack Day Montréal, where it won the Best Use of Gemma prize from Google Cloud.

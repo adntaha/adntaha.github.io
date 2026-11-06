@@ -9,7 +9,7 @@ const plain = (markdown) =>
     .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/\*+/g, '');
 
-const twitter = 'adntaha_ai';
+const twitter = 'adntaha';
 
 export default {
   url: 'https://aidantaha.com', // absolute url, used for the rss feed, sitemap, social cards, etc.
